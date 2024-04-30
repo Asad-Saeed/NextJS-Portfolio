@@ -9,7 +9,7 @@ const Location = () => {
         return (
           <div key={index} className='flex items-center justify-between'>
             <span className='text-Snow text-xs font-bold'>{key}</span>
-            <span className='text-xs text-gray-600'>{DETAILS[key]}</span>
+            <span className='text-xs text-LightGray'>{DETAILS[key]}</span>
           </div>
         );
       })}

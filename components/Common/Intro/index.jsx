@@ -8,16 +8,15 @@ import Tools from "./Tools";
 import Skills from "./Skills";
 import Image from "next/image";
 import { NAME, DESIGNATION, SOCIAL_LINKS } from "../../../constants/constants";
-import Raza from "../../../public/images/raza.jpeg";
 import profileIcon from "../../../public/images/asadsaeed.jpg";
 
 const Intro = () => {
   return (
     <>
       {/* fixed at top */}
-      <div className="headerr z-50 absolute bg-MidNightBlack backdrop-blur-sm inset-y-0 h-48 top-0 flex items-center justify-center w-full flex-col px-4 gap-y-4">
+      <div className="headerr z-50 absolute bg-MidNightBlack backdrop-blur-sm inset-y-0 h-48 top-0 flex items-center justify-center w-full flex-col px-4 gap-y-4 card_stylings">
         <Image
-          className="w-20 h-20 rounded-full"
+          className="w-20 h-20 rounded-full border bottom-1 p-1 border-Green"
           src={profileIcon}
           alt="asad saeed"
         />

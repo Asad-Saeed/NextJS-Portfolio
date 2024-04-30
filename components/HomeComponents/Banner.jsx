@@ -19,7 +19,7 @@ const Banner = () => {
                   <span>
                     {"<"}
                     <span className="text-Green sm:text-base xl:text-lg font-bold">
-                      div
+                      🫣
                     </span>
                     {">"}{" "}
                     <span className="text-Snow sm:text-xl xl:text-2xl font-bold">
@@ -27,7 +27,7 @@ const Banner = () => {
                       <span className="inline-block">
                         <Typewriter
                           options={{
-                            strings: ["Next.Js Developer"],
+                            strings: ["React.Js Developer","Next.Js Developer"],
                             autoStart: true,
                             loop: true,
                           }}
@@ -36,7 +36,7 @@ const Banner = () => {
                     </span>{" "}
                     {"</"}
                     <span className="text-Green sm:text-base xl:text-lg font-bold">
-                      div
+                      😎
                     </span>
                     {">"}{" "}
                   </span>

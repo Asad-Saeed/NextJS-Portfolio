@@ -7,6 +7,7 @@ import { BsChatTextFill } from "react-icons/bs";
 import Fiverr_Icon from "../components/Fiverr_Icon";
 import Footer from "../components/Footer";
 import { Modal } from "antd";
+import Link from "next/link";
 
 const Contact = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,17 +22,17 @@ const Contact = () => {
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Country:</span>
                 <span className="text-LightGray md:text-sm">
-                  United Arab Emirates
+                  Pakistan
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="md:text-base">City:</span>
-                <span className="text-LightGray md:text-sm">Dubai</span>
+                <span className="text-LightGray md:text-sm">Lahore</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Company:</span>
                 <span className="text-LightGray md:text-sm">
-                  Working as a Freelancer
+                  Global Software Consulting
                 </span>
               </div>
             </div>
@@ -39,74 +40,74 @@ const Contact = () => {
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Email:</span>
                 <span className="text-LightGray text-sm">
-                  razasabir23@icloud.com
+                asadsaeed.dev@gmail.com
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Linkedin:</span>
                 <span className="text-LightGray text-sm">
-                  raza-mughal-developer
+                asad-saeed-4685a9202
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Phone:</span>
                 <span className="text-LightGray text-sm">
-                  +92 (320) 0430489 / +971 54 3207229
+                +92 3017631644 / +92 478730644
                 </span>
               </div>
             </div>
           </div>
         </div>
         <div className="h-16 w-full card_stylings text-xl sm:text-3xl flex gap-x-8 sm:gap-x-16 items-center justify-center text-Snow">
-          <a
+          <Link
             className="hover:scale-125 ease-in-out duration-700"
-            href="mailto:razasabir23@icloud.com"
+            href="mailto:asadsaeed.dev@gmail.com"
             target="_blank"
             rel="noreferrer"
           >
             <HiMail />
-          </a>
-          <a
+          </Link>
+          <Link
             className="hover:scale-125 ease-in-out duration-700"
-            href="https://github.com/razamughal23"
+            href="https://github.com/Asad-Saeed"
             target="_blank"
             rel="noreferrer"
           >
             <FaGithub />
-          </a>
-          <a
+          </Link>
+          <Link
             className="hover:scale-125 ease-in-out duration-700"
-            href="https://www.linkedin.com/in/raza-mughal-developer/"
+            href="https://www.linkedin.com/in/asad-saeed-4685a9202/"
             target="_blank"
             rel="noreferrer"
           >
             <FaLinkedin />
-          </a>
+          </Link>
           {/* <a className='hover:scale-125 ease-in-out duration-700' href="https://x.com/iosamajavaid" target='_blank' rel="noreferrer"><FaTwitter /></a> 
-        <a
+        <Link
             className="hover:scale-125 ease-in-out duration-700 hidden sm:block"
             href="https://www.fiverr.com/codeworthy"
             target="_blank"
             rel="noreferrer"
           >
             <Fiverr_Icon />
-          </a>
+          </Link>
         */}
 
-          <a
+          <Link
             className="hover:scale-125 ease-in-out duration-700 text-2xl sm:text-4xl mt-1"
-            href="https://www.upwork.com/freelancers/~0113139a14691d6b68"
+            href="https://www.upwork.com/freelancers/~01c9dc528b3e2edcde"
             target="_blank"
             rel="noreferrer"
           >
             <SiUpwork />
-          </a>
+          </Link>
         </div>
 
-        {/*
+        
     <div className="my-12 w-full h-auto text-Snow">
           <h1 className="text-lg font-bold">Get In Touch</h1>
-          <div className="mt-4 py-8 px-8 bg-EveningBlack rounded-xl text-sm">
+          <div className="mt-4 py-8 px-8 card_stylings rounded-xl text-sm">
             <div>
               <div className="flex flex-col w-full">
                 <div className="userIcon relative mb-6">
@@ -166,7 +167,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
-    */}
+   
       </div>
       <Modal
         className="card_stylings backdrop-blur-3xl drop-shadow-2xl"
@@ -182,7 +183,7 @@ const Contact = () => {
           <a
             className="underline text-Snow"
             target="_blank"
-            href="https://github.com/osamajavaid/portfolio"
+            href="https://github.com/Asad-Saeed/NextJS-Portfolio"
           >
             Be the one to integrate this!
           </a>
