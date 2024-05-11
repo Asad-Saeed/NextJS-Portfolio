@@ -1,27 +1,35 @@
 const review = [
   {
     id: 0,
-    clientName: "Roshan Sajid",
-    clientLocation: "Lahore, Pakistan",
+    clientName: "Syed Baqir",
+    clientLocation: "Islamabad, Pakistan",
     clientSource: "",
     clientReview:
-      "Working with him is always a pleasure. He completes tasks swiftly and goes above and beyond expectations. His depth of knowledge in his field is evident, and I eagerly anticipate our next collaboration.",
+      "Working with Asad Saeed was a privilege; his deep understanding of web development and proficiency across frameworks were invaluable. I eagerly look forward to future collaborations.",
   },
   {
     id: 2,
-    clientName: "Muhammad Junaid",
-    clientLocation: "Canada",
+    clientName: "Muhammad Umar",
+    clientLocation: "Astralia",
     clientSource: "",
     clientReview:
-      "He not only demonstrates exceptional communication skills but also showcases a wealth of experience in website development. Collaborating with him is a seamless and enriching journey, where his expertise consistently elevates projects to new heights.",
+      "Collaborating with Asad Saeed was a game-changer; his expertise in web development and broad proficiency across frameworks were instrumental. I'm eager for the opportunity to work together again.",
   },
   {
     id: 3,
-    clientName: "Hassan",
+    clientName: "Qadar Munir",
     clientLocation: "Lahore, Pakistan",
     clientSource: "",
     clientReview:
-      "Raza's expertise and support are invaluable. He possesses a deep understanding of web app development, demonstrating proficiency across various technologies and frameworks in the field. I eagerly anticipate the opportunity to collaborate with him once more.",
+      "Asad Saeed's support and expertise in web app development were invaluable to our project success. His comprehensive understanding of various technologies ensured smooth progress throughout.",
+  },
+  {
+    id: 4,
+    clientName: "Shahzab Ali",
+    clientLocation: "United Kingdom",
+    clientSource: "",
+    clientReview:
+      " I anticipate future collaborations with great enthusiasm.",
   },
 ];
 export default function handler(req, res) {
