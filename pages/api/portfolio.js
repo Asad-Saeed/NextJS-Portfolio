@@ -1,55 +1,65 @@
 const portfolio = [
   {
     id: 0,
-    projectName: "Global Software Consulting",
-    url: "https://www.gsoftconsulting.com/",
-    image: "projects/gsoft.png",
+    projectName: "MNFT Swap",
+    url: "https://6479defc346047008733d056--chipper-pastelito-5673e8.netlify.app/#/",
+    image: "projects/swap.png",
     projectDetail: "",
     technologiesUsed: [
       {
         tech: "React JS",
       },
       {
-        tech: "Material UI",
+        tech: "SCSS",
       },
       {
-        tech: "Strapi",
+        tech: "Bootstrap",
       },
       {
-        tech: "GraphQL",
+        tech: "Ether.js",
+      },
+      {
+        tech: "Block Chain",
       },
     ],
   },
   {
     id: 1,
-    projectName: "Digital Wave Solutions",
-    url: "http://digitalwavesolutions.ca/",
-    image: "projects/dws.png",
+    projectName: "ESTRELLA TERA",
+    url: "https://646f0f0bad16221200c6b558--silver-cuchufli-1d1850.netlify.app/",
+    image: "projects/estra.png",
     projectDetail: "",
     technologiesUsed: [
       {
-        tech: "Next JS",
+        tech: "React JS",
       },
       {
-        tech: "Material UI",
+        tech: "SCSS",
       },
       {
-        tech: "Email Js",
+        tech: "Bootstrap",
+      },
+      {
+        tech: "Etherum",
+      },
+      {
+        tech: "Block Chain",
       },
     ],
   },
+
   {
     id: 2,
-    projectName: "NR Mobiles & Accessories Company",
-    url: "https://nrmobiles.com/",
-    image: "projects/nrmobiles.png",
+    projectName: "Company Needs",
+    url: "https://company-needs-front-end.vercel.app/",
+    image: "projects/companyneeds.png",
     projectDetail: "",
     technologiesUsed: [
       {
         tech: "Next JS",
       },
       {
-        tech: "Material UI",
+        tech: "SCSS",
       },
       {
         tech: "Strapi",
@@ -58,25 +68,29 @@ const portfolio = [
         tech: "GraphQL",
       },
       {
-        tech: "Bootstrap CSS",
+        tech: "Bootstrap",
       },
     ],
   },
+
   {
     id: 3,
-    projectName: "Pedlar Store",
-    url: "https://pedlar.store/",
-    image: "projects/pedlar.png",
+    projectName: "FoodSwitch Cloud",
+    url: "https://fscloud.foodswitch.com/login",
+    image: "projects/fscloud.png",
     projectDetail: "",
     technologiesUsed: [
       {
-        tech: "ReactJS",
+        tech: "Next Js",
       },
       {
-        tech: "REST API's",
+        tech: "Tailwind Css",
       },
       {
-        tech: "Material UI",
+        tech: "Rest Api",
+      },
+      {
+        tech: "Next Auth",
       },
     ],
   },
@@ -103,6 +117,88 @@ const portfolio = [
   },
   {
     id: 5,
+    projectName: "Global Software Consulting",
+    url: "https://www.gsoftconsulting.com/",
+    image: "projects/gsoft.png",
+    projectDetail: "",
+    technologiesUsed: [
+      {
+        tech: "React JS",
+      },
+      {
+        tech: "Material UI",
+      },
+      {
+        tech: "Strapi",
+      },
+      {
+        tech: "GraphQL",
+      },
+    ],
+  },
+  {
+    id: 6,
+    projectName: "Digital Wave Solutions",
+    url: "http://digitalwavesolutions.ca/",
+    image: "projects/dws.png",
+    projectDetail: "",
+    technologiesUsed: [
+      {
+        tech: "Next JS",
+      },
+      {
+        tech: "Material UI",
+      },
+      {
+        tech: "Email Js",
+      },
+    ],
+  },
+  {
+    id: 7,
+    projectName: "NR Mobiles & Accessories Company",
+    url: "https://nrmobiles.com/",
+    image: "projects/nrmobiles.png",
+    projectDetail: "",
+    technologiesUsed: [
+      {
+        tech: "Next JS",
+      },
+      {
+        tech: "Material UI",
+      },
+      {
+        tech: "Strapi",
+      },
+      {
+        tech: "GraphQL",
+      },
+      {
+        tech: "Bootstrap",
+      },
+    ],
+  },
+  {
+    id: 8,
+    projectName: "Pedlar Store",
+    url: "https://pedlar.store/",
+    image: "projects/pedlar.png",
+    projectDetail: "",
+    technologiesUsed: [
+      {
+        tech: "ReactJS",
+      },
+      {
+        tech: "REST API's",
+      },
+      {
+        tech: "Material UI",
+      },
+    ],
+  },
+
+  {
+    id: 9,
     projectName: "Obenan",
     url: "https://obenan.com/",
     image: "projects/obenan.png",
@@ -123,49 +219,29 @@ const portfolio = [
     ],
   },
   {
-    id: 6,
-    projectName: "Company Needs",
-    url: "https://company-needs-front-end.vercel.app/",
-    image: "projects/companyneeds.png",
+    id: 10,
+    projectName: "COINPICK 365",
+    url: "https://644a86b90b7aea042688fb66--effulgent-torrone-565a9a.netlify.app/",
+    image: "projects/coinpack.png",
     projectDetail: "",
     technologiesUsed: [
       {
-        tech: "Next JS",
+        tech: "React JS",
       },
       {
-        tech: "Material UI",
+        tech: "SCSS",
       },
       {
-        tech: "Strapi",
+        tech: "Bootstrap",
       },
       {
-        tech: "GraphQL",
+        tech: "Etherum",
       },
       {
-        tech: "Bootstrap CSS",
+        tech: "Block Chain",
       },
     ],
   },
-  /*
-  {
-    id: 7,
-    projectName: "Urdu Live News",
-    url: "",
-    image: "",
-    projectDetail: "",
-    technologiesUsed: [
-      {
-        tech: "HTML",
-      },
-      {
-        tech: "CSS",
-      },
-      {
-        tech: "Bootstrap CSS",
-      },
-    ],
-  },
-*/
 ];
 export default function handler(req, res) {
   res.status(200).json(portfolio);
