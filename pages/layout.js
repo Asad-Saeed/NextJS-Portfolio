@@ -21,9 +21,9 @@ export default function Layout({ children }) {
             <span className="icon border-2 text-Green border-Green p-1 text-sm rounded-lg">
               <SlOptionsVertical />
             </span>
-            <div className="text-Snow absolute -right-1 -bottom-1">
+            {/* <div className=" animate-bounce text-Snow absolute -right-1 -bottom-1">
               <FaMousePointer />
-            </div>
+            </div> */}
           </div>
           <div
             className="icon flex items-center gap-x-2"
