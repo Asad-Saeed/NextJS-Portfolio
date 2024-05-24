@@ -43,10 +43,6 @@ export const SKILLS = [
     level: "90%",
   },
   {
-    title: "Context, Redux, Redux toolkit",
-    level: "90%",
-  },
-  {
     title: "Git, GitHub, Bitbucket",
     level: "98%",
   },
@@ -61,6 +57,10 @@ export const SKILLS = [
   {
     title: "Backend Developer",
     level: "50%",
+  },
+  {
+    title: "WordPress Developer",
+    level: "80%",
   },
 ];
 

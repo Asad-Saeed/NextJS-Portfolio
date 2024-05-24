@@ -1,6 +1,6 @@
 import { ImCross } from "react-icons/im";
 import { FiAward } from "react-icons/fi";
-import { FaHandshake } from "react-icons/fa";
+import { FaHandshake, FaRegLightbulb } from "react-icons/fa";
 import { ImHome } from "react-icons/im";
 import { HiIdentification } from "react-icons/hi";
 import NavItem from "./NavItem";
@@ -22,6 +22,12 @@ const Nav = ({ setIsOpen, isOpen }) => {
             NavRoute={"/"}
             NavIcon={<ImHome />}
             NavText={"Home"}
+          />
+          <NavItem
+            setIsOpen={setIsOpen}
+            NavRoute={"/skills"}
+            NavIcon={<FaRegLightbulb />}
+            NavText={"Skills"}
           />
           <NavItem
             setIsOpen={setIsOpen}
@@ -48,3 +54,4 @@ const Nav = ({ setIsOpen, isOpen }) => {
 };
 
 export default Nav;
+

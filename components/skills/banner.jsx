@@ -3,7 +3,7 @@ import BannerLayout from "../Common/BannerLayout";
 import Link from "next/link";
 
 
-const Banner = () => {
+const SkillsBanner = () => {
   return (
     <BannerLayout>
       <div className="absolute inset-0 z-20 flex flex-col items-center py-6 justify-center w-full h-full bg-gradient-to-t from-MidNightBlack">
@@ -12,7 +12,7 @@ const Banner = () => {
             <div className="">
               <div className="">
                 <h1 className="text-3xl sm:text-4xl xl:text-5xl text-Snow font-bold">
-                  Hello, Check This Out!
+                What Skills I Have!
                 </h1>
               </div>
               <div className="">
@@ -89,4 +89,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default SkillsBanner;

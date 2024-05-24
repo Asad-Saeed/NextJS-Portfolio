@@ -23,8 +23,7 @@ const Intro = () => {
         <div className="flex flex-col items-center justify-center">
           <span className="text-gray-300 text-base font-bold break-normal">
             <Link
-              href="https://www.upwork.com/freelancers/~01c9dc528b3e2edcde"
-              target="_blank"
+              href="/"
               rel="noreferrer"
             >
               {NAME}
