@@ -146,11 +146,12 @@ const skills = [
     image: "skills/mongodb-vs-mysql.png",
     skill: [
       {
-        title: "MongoDB, MySql",
+        title: "MongoDB, FireBase, MySql",
         level: "50%",
       },
     ],
-    description: "Familiar with database management using MongoDB and MySQL.",
+    description:
+      "Familiar with database management using MongoDB, FireBase and MySQL.",
   },
   {
     id: 11,
@@ -159,12 +160,12 @@ const skills = [
     image: "skills/backend.png",
     skill: [
       {
-        title: "Backend Developer",
-        level: "50%",
+        title: "Node Js, Express JS",
+        level: "67%",
       },
     ],
     description:
-      "Basic knowledge of backend development and server-side logic.",
+      "Basic knowledge of backend development and server-side logic with Node Js and Express JS.",
   },
   {
     id: 12,

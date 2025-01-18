@@ -31,6 +31,20 @@ const portfolio = [
   },
   {
     id: 2,
+    projectName: "Safe Herit",
+    url: "https://testing-safeherit.web.app/login",
+    image: "projects/estra.png",
+    projectDetail:
+      "A platform for safe and secure storage of digital assets and documents, with advanced security features and user-friendly interface.",
+    technologiesUsed: [
+      { tech: "React JS" },
+      { tech: "Bootstrap" },
+      { tech: "Stripe" },
+      { tech: "FireBase" },
+    ],
+  },
+  {
+    id: 3,
     projectName: "ESTRELLA TERA",
     url: "https://646f0f0bad16221200c6b558--silver-cuchufli-1d1850.netlify.app/",
     image: "projects/estra.png",

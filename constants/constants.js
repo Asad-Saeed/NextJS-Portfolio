@@ -51,7 +51,7 @@ export const SKILLS = [
     level: "67%",
   },
   {
-    title: "MongoDB, MySql",
+    title: "MongoDB, FireBase, MySql",
     level: "50%",
   },
   {
@@ -87,6 +87,7 @@ export const TECH_STACK = [
   "Node Js",
   "Express JS",
   "MongoDB",
+  "FireBase",
   "MySql",
   "Jira Software",
   "Postman",
