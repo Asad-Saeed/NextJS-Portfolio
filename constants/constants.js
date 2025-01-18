@@ -1,6 +1,6 @@
 export const NAME = "Asad Saeed";
 
-export const DESIGNATION = `Front End Develper | React Js | Next Js | MERN Stack`;
+export const DESIGNATION = `Front End Engineer | React Js | Next Js | MERN Stack`;
 
 export const DETAILS = {
   Residence: "Lahore, Punjab",
@@ -11,11 +11,11 @@ export const DETAILS = {
 
 export const SKILLS = [
   {
-    title: "React Js Developer",
+    title: "React Js",
     level: "95%",
   },
   {
-    title: "Next JS Developer",
+    title: "Next Js",
     level: "95%",
   },
   {
@@ -31,7 +31,7 @@ export const SKILLS = [
     level: "96%",
   },
   {
-    title: "Material UI, SCSS, Styled Components",
+    title: "Next UI, Material UI, SCSS, Styled Components",
     level: "80%",
   },
   {
@@ -80,6 +80,7 @@ export const TECH_STACK = [
   "Redux Toolkit",
   "GraphQL API",
   "Rest API",
+  "Stripe Payment Integration",
   "Git",
   "GitHub",
   "Bitbucket",
@@ -92,6 +93,7 @@ export const TECH_STACK = [
   "Swagger",
   "Apollo Client",
   "Strapi",
+  "Sanity",
   "Figma",
   "Adobe XD",
 ];
@@ -104,4 +106,3 @@ export const SOCIAL_LINKS = {
   GITHUB: "https://github.com/Asad-Saeed",
   LINKEDIN: "https://www.linkedin.com/in/asad-saeed-4685a9202/",
 };
-

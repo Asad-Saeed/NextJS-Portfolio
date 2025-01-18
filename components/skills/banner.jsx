@@ -2,7 +2,6 @@ import Typewriter from "typewriter-effect";
 import BannerLayout from "../Common/BannerLayout";
 import Link from "next/link";
 
-
 const SkillsBanner = () => {
   return (
     <BannerLayout>
@@ -12,7 +11,7 @@ const SkillsBanner = () => {
             <div className="">
               <div className="">
                 <h1 className="text-3xl sm:text-4xl xl:text-5xl text-Snow font-bold">
-                What Skills I Have!
+                  What Skills I Have!
                 </h1>
               </div>
               <div className="">
@@ -28,7 +27,11 @@ const SkillsBanner = () => {
                       <span className="inline-block">
                         <Typewriter
                           options={{
-                            strings: ["React.Js Developer","Next.Js Developer"],
+                            strings: [
+                              "React.Js Engineer",
+                              "Next.Js Engineer",
+                              "MERN Stack Developer",
+                            ],
                             autoStart: true,
                             loop: true,
                           }}
@@ -65,24 +68,23 @@ const SkillsBanner = () => {
         <div className="grid grid-cols-2 gap-4 md:gap-0 md:flex items-center justify-between w-full px-4 xl:px-8 2xl:px-16">
           <div className="flex items-center gap-x-1">
             <span className="text-base md:text-lg text-Green font-bold">
-              12+
+              27+
             </span>
             <span className="text-xs text-Snow">Completed Projects</span>
           </div>
 
           <div className="flex items-center gap-x-1">
             <span className="text-base md:text-lg text-Green font-bold">
-              5+
+              13+
             </span>
             <span className="text-xs text-Snow">Freelance Clients</span>
           </div>
           <div className="flex items-center gap-x-1">
             <span className="text-base md:text-lg text-Green font-bold">
-              3+
+              4+
             </span>
             <span className="text-xs text-Snow">Honors & Awards</span>
           </div>
-          
         </div>
       </div>
     </BannerLayout>

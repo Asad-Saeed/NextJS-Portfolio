@@ -1,35 +1,54 @@
 const expertise = [
   {
     id: 0,
-    title: "Front End Engineer",
-    desc: "Experienced React and Next.js Frontend Developer Engineer with 2 years of proven work experience, proficient in crafting dynamic user interfaces and seamlessly integrating APIs. Leveraging expertise in React's componentbased architecture and Next.js's server-side rendering, I specialize in creating intuitive frontend experiences that seamlessly communicate with backend systems. With a meticulous approach to code quality and performance optimization, I ensure that applications are both visually stunning and functionally robust. Collaborating closely with backend teams, I adeptly integrate APIs to deliver data-driven solutions that meet client objectives. Passionate about innovation and continuous improvement, I actively seek out opportunities to enhance both my technical and soft skills.",
-  }, {
+    title: "Frontend Engineer",
+    desc: "I am a seasoned React and Next.js developer with 3+ years of experience in crafting seamless user interfaces and dynamic web applications. I specialize in building visually appealing, high-performance applications using React's component-based architecture and Next.js's server-side rendering capabilities. With a strong focus on API integration, I ensure efficient communication between frontend and backend systems. My commitment to code quality, performance optimization, and user-centered design drives the success of every project.",
+  },
+  {
     id: 1,
-    title: "Cross-Browser Compatibility",
-    desc: "As a developer, I'm proficient Cross-browser compatibility which is essential for ensuring that web applications function consistently across various browsers and platforms. Developers need to consider differences in rendering engines, CSS support, JavaScript interpretation, and HTML5 features across browsers like Chrome, Firefox, Safari, Edge, and others. Techniques such as progressive enhancement, graceful degradation, and feature detection are employed to address disparities and ensure a seamless user experience. Testing on multiple browsers and versions, along with tools like BrowserStack or cross-browser testing frameworks, helps identify and resolve compatibility issues early in the development process.",
+    title: "Problem-Solving and Logic Building",
+    desc: "I excel at breaking down complex problems into manageable solutions through logical analysis and creative thinking. Whether debugging intricate issues, optimizing performance, or designing scalable systems, I approach challenges methodically to deliver effective and efficient results.",
   },
   {
     id: 2,
-    title: "Version Control",
-    desc: "Experience with version control systems like Git, GitHub, Bitbucket for collaboration and code management.",
+    title: "Performance Optimization",
+    desc: "I have a strong focus on improving application performance by optimizing JavaScript, implementing lazy loading, code splitting, and analyzing bottlenecks to enhance user experiences and meet business goals.",
   },
   {
     id: 3,
-    title: "Design Patterns:",
-    desc: "Familiar with common design patterns and architectural principles for building scalable and maintainable frontend applications.",
+    title: "Cross-Browser Compatibility",
+    desc: "Ensuring web applications function consistently across various browsers and platforms is a core aspect of my expertise. I leverage techniques like progressive enhancement, feature detection, and thorough testing using tools like BrowserStack to deliver a seamless user experience, regardless of browser or device.",
   },
   {
     id: 4,
-    title: "Scrum and Jira",
-    desc: "As a developer, I'm proficient in Jira and Scrum methodologies. I use Jira to simplify project management tasks like task assignment, prioritization, and progress tracking. Scrum has improved my teamwork, utilizing daily stand-ups, sprint planning, and retrospectives. My expertise ensures high-quality software products are delivered promptly.",
+    title: "Strong Communication Skills",
+    desc: "Effective communication is at the core of my collaboration with cross-functional teams, ensuring that project requirements are clearly understood, timelines are met, and expectations are managed efficiently.",
   },
- 
   {
     id: 5,
-    title: "Open Source Contributor",
-    desc: "Open Source is the future. I usually take some time on weekend and contribute into opensource project. It gives me opportunity to learn from best developer's practices and also gives me a chance to help others and contribute into the community for the good.",
+    title: "Leadership and Mentorship",
+    desc: "As a mentor to junior developers, I provide guidance on coding best practices, problem-solving strategies, and project management techniques to help them grow and excel in their careers.",
   },
-
+  {
+    id: 6,
+    title: "Continuous Learning",
+    desc: "I actively stay updated with the latest technologies and trends in web development, such as advancements in React, Next.js, TypeScript, and other frameworks, ensuring that my skills remain relevant and cutting-edge.",
+  },
+  {
+    id: 7,
+    title: "Version Control",
+    desc: "Proficient in using Git, GitHub, and Bitbucket for effective collaboration and efficient code management, enabling smooth workflows in team-based projects.",
+  },
+  {
+    id: 8,
+    title: "Scrum and Agile Methodologies",
+    desc: "Experienced in Agile methodologies, especially Scrum, using tools like Jira for task management, sprint planning, and progress tracking. I actively participate in stand-ups and retrospectives to ensure the delivery of high-quality software solutions.",
+  },
+  {
+    id: 9,
+    title: "Open Source Contributor",
+    desc: "A passionate open-source contributor, I dedicate time to community-driven projects to learn best practices, share knowledge, and collaborate with like-minded developers. This allows me to stay updated with the latest trends and give back to the developer community.",
+  },
 ];
 
 export default function handler(req, res) {

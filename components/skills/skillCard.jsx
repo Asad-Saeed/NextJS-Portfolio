@@ -18,9 +18,17 @@ const SkillCard = ({ data }) => {
             {data?.techName}
           </h3>
         </div>
+        <p className="text-sm text-LightGray my-1">{data?.description}</p>
         <div className="text-sm gap-3 py-4">
-           {data?.skill?.map((skill, index) => {
-            return <ProgressBar key={index} title={skill.title} percent={skill.level} bgColor='bg-Green' />;
+          {data?.skill?.map((skill, index) => {
+            return (
+              <ProgressBar
+                key={index}
+                title={skill.title}
+                percent={skill.level}
+                bgColor="bg-Green"
+              />
+            );
           })}
         </div>
       </div>
