@@ -33,7 +33,7 @@ const portfolio = [
     id: 2,
     projectName: "Safe Herit",
     url: "https://testing-safeherit.web.app/login",
-    image: "projects/estra.png",
+    image: "projects/safeherit.png",
     projectDetail:
       "A platform for safe and secure storage of digital assets and documents, with advanced security features and user-friendly interface.",
     technologiesUsed: [
@@ -41,6 +41,7 @@ const portfolio = [
       { tech: "Bootstrap" },
       { tech: "Stripe" },
       { tech: "FireBase" },
+      { tech: "Rest API" },
     ],
   },
   {
@@ -59,7 +60,7 @@ const portfolio = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     projectName: "NR Mobiles & Accessories Company",
     url: "https://nrmobiles.com/",
     image: "projects/nrmobiles.png",
@@ -74,7 +75,7 @@ const portfolio = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     projectName: "Pedlar Store",
     url: "https://pedlar.store/",
     image: "projects/pedlar.png",
@@ -87,7 +88,7 @@ const portfolio = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     projectName: "Company Needs",
     url: "https://company-needs-front-end.vercel.app/",
     image: "projects/companyneeds.png",
@@ -102,7 +103,7 @@ const portfolio = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     projectName: "FoodSwitch Cloud",
     url: "https://fscloud.foodswitch.com/login",
     image: "projects/fscloud.png",
@@ -116,7 +117,7 @@ const portfolio = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     projectName: "Ask Cyborg",
     url: "https://askcyborg.com/",
     image: "projects/askcyborg.png",
@@ -130,7 +131,7 @@ const portfolio = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     projectName: "Global Software Consulting",
     url: "https://www.gsoftconsulting.com/",
     image: "projects/gsoft.png",
@@ -144,7 +145,7 @@ const portfolio = [
     ],
   },
   {
-    id: 9,
+    id: 10,
     projectName: "Digital Wave Solutions",
     url: "http://digitalwavesolutions.ca/",
     image: "projects/dws.png",
@@ -157,7 +158,7 @@ const portfolio = [
     ],
   },
   {
-    id: 10,
+    id: 11,
     projectName: "Obenan",
     url: "https://obenan.com/",
     image: "projects/obenan.png",
@@ -171,7 +172,7 @@ const portfolio = [
     ],
   },
   {
-    id: 11,
+    id: 12,
     projectName: "COINPICK 365",
     url: "https://644a86b90b7aea042688fb66--effulgent-torrone-565a9a.netlify.app/",
     image: "projects/coinpack.png",
