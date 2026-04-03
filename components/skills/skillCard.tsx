@@ -1,43 +1,37 @@
 import React from "react";
 import Image from "next/image";
 import ProgressBar from "./progressBar";
-import { SkillItem } from "../../types";
 
-interface SkillCardProps {
-  data: SkillItem;
-}
+const SkillCard = ({ data }: { data: any }) => {
+  const imageUrl = data?.image_url || (data?.image ? `/${data.image}` : "");
+  const techName = data?.tech_name || data?.techName;
+  const levels = data?.skill_levels || data?.skill || [];
 
-const SkillCard = ({ data }: SkillCardProps) => {
   return (
     <div className="card_stylings overflow-hidden h-full">
-      <Image
-        src={`/${data?.image}`}
-        alt={data?.techName}
-        width={600}
-        height={400}
-        className="w-full object-cover opacity-30 h-32 sm:h-48 md:h-64"
-      />
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={techName}
+          width={600}
+          height={400}
+          className="w-full object-cover opacity-30 h-32 sm:h-48 md:h-64"
+        />
+      )}
       <div
         id="arrow"
         className="py-2 px-6 card_stylings hover:-translate-y-10 transition-all ease-in-out duration-500"
       >
         <div className="flex justify-between p-0 m-0 ">
           <h3 className="mr-2 underline italic font-semibold pt-2 text-xl text-Snow leading-tight sm:leading-normal">
-            {data?.techName}
+            {techName}
           </h3>
         </div>
         <p className="text-sm text-LightGray my-1">{data?.description}</p>
         <div className="text-sm gap-3 py-4">
-          {data?.skill?.map((skill, index) => {
-            return (
-              <ProgressBar
-                key={index}
-                title={skill.title}
-                percent={skill.level}
-                bgColor="bg-Green"
-              />
-            );
-          })}
+          {levels?.map((skill: any, index: number) => (
+            <ProgressBar key={index} title={skill.title} percent={skill.level} bgColor="bg-Green" />
+          ))}
         </div>
       </div>
     </div>

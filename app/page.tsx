@@ -1,17 +1,30 @@
-import Footer from "@/components/Footer";
-import Banner from "@/components/HomeComponents/Banner";
-import MyExpertise from "@/components/HomeComponents/Expertise/MyExpertise";
-import Recommendations from "@/components/HomeComponents/Recommendations/Recommendations";
-import ClientReviews from "@/components/HomeComponents/ClientReviews/ClientReviews";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return (
-    <div className="Home-Page -z-10">
-      <Banner />
-      <MyExpertise />
-      <Recommendations />
-      <ClientReviews />
-      <Footer />
-    </div>
-  );
+export default async function RootPage() {
+  // If logged in, redirect to own portfolio
+  try {
+    const supabase = await createServerSupabaseClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profile")
+        .select("slug")
+        .eq("user_id", user.id)
+        .single();
+
+      if (profile?.slug) {
+        redirect(`/${profile.slug}`);
+      }
+    }
+  } catch {
+    // Not logged in
+  }
+
+  // Not logged in — redirect to default portfolio
+  const defaultSlug = process.env.NEXT_PUBLIC_DEFAULT_SLUG || "asad-saeed";
+  redirect(`/${defaultSlug}`);
 }

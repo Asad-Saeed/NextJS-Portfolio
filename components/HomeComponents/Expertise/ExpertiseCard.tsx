@@ -1,16 +1,10 @@
 import CardLayout from "../../Common/CardLayout";
-import { ExpertiseItem } from "../../../types";
-
-interface ExpertiseCardProps {
-  data: ExpertiseItem;
-}
-
-const ExpertiseCard = ({ data }: ExpertiseCardProps) => {
+const ExpertiseCard = ({ data }: { data: any }) => {
   return (
     <CardLayout>
       <div className="h-full space-y-2 p-8 card_stylings">
         <div className=" text-Snow">{data.title}</div>
-        <div className="text-sm text-LightGray font-normal">{data.desc}</div>
+        <div className="text-sm text-LightGray font-normal">{data.desc || data.description}</div>
       </div>
     </CardLayout>
   );

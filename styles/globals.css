@@ -90,6 +90,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===== Global button cursor ===== */
+button,
+[role="button"],
+a.button {
+  cursor: pointer;
+}
+button:disabled,
+[role="button"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 /* ===== Custom Utility Classes ===== */
 @utility card_stylings {
   background-color: rgb(17 34 64 / 0.95);

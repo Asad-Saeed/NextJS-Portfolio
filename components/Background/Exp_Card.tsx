@@ -1,12 +1,6 @@
 import React from "react";
 import CardLayout from "../Common/CardLayout";
-import { ExpCard } from "../../types";
-
-interface ExpCardProps {
-  data: ExpCard;
-}
-
-const Exp_Card = ({ data }: ExpCardProps) => {
+const Exp_Card = ({ data }: { data: any }) => {
   return (
     <CardLayout>
       <div className="card_stylings transition px-8 py-10 ">
@@ -17,7 +11,9 @@ const Exp_Card = ({ data }: ExpCardProps) => {
             {data.url}
           </a>
         </div>
-        <div className="text-LightGray text-sm font-normal mt-4 text-justify">{data.desc}</div>
+        <div className="text-LightGray text-sm font-normal mt-4 text-justify">
+          {data.desc || data.description}
+        </div>
         <div className="flex justify-between text-LightGray bg-DeepNightBlack w-full h-auto text-xs rounded-full py-3 px-6 mt-4 font-normal opacity-50">
           <div>{data.year}</div> <div>{data.location}</div>
         </div>

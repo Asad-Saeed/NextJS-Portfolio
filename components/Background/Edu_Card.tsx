@@ -1,12 +1,6 @@
 import React from "react";
 import CardLayout from "../Common/CardLayout";
-import { EduCard } from "../../types";
-
-interface EduCardProps {
-  data: EduCard;
-}
-
-const Edu_Card = ({ data }: EduCardProps) => {
+const Edu_Card = ({ data }: { data: any }) => {
   return (
     <CardLayout className="keepItEmpty">
       <div className="card_stylings transition px-8 py-10">

@@ -5,7 +5,18 @@ import BannerLayout from "../Common/BannerLayout";
 import Link from "next/link";
 import Image from "next/image";
 
-const Banner = () => {
+interface BannerProps {
+  data: {
+    banner_heading: string;
+    banner_subheadings: string[];
+    completed_projects_count: string;
+    freelance_clients_count: string;
+    honors_count: string;
+    upwork_url: string;
+  } | null;
+}
+
+const Banner = ({ data }: BannerProps) => {
   return (
     <BannerLayout>
       <div className="absolute inset-0 z-20 flex flex-col items-center py-6 justify-center w-full h-full bg-gradient-to-t from-MidNightBlack">
@@ -14,7 +25,7 @@ const Banner = () => {
             <div className="">
               <div className="">
                 <h1 className="text-3xl sm:text-4xl xl:text-5xl text-Snow font-bold">
-                  Hello, Check This Out!
+                  {data?.banner_heading || "Hello, Check This Out!"}
                 </h1>
               </div>
               <div className="">
@@ -28,7 +39,7 @@ const Banner = () => {
                       <span className="inline-block">
                         <Typewriter
                           options={{
-                            strings: [
+                            strings: data?.banner_subheadings || [
                               "React.Js Engineer",
                               "Next.Js Engineer",
                               "MERN Stack Developer",
@@ -45,11 +56,7 @@ const Banner = () => {
                   </span>
                 </div>
               </div>
-              <Link
-                className="button"
-                target="_blank"
-                href="https://www.upwork.com/freelancers/~01c9dc528b3e2edcde"
-              >
+              <Link className="button" target="_blank" href={data?.upwork_url || "#"}>
                 Explore
               </Link>
             </div>
@@ -65,19 +72,23 @@ const Banner = () => {
           </div>
         </div>
 
-        {/* details in row */}
         <div className="grid grid-cols-2 gap-4 md:gap-0 md:flex items-center justify-between w-full px-4 xl:px-8 2xl:px-16">
           <div className="flex items-center gap-x-1">
-            <span className="text-base md:text-lg text-Green font-bold">27+</span>
+            <span className="text-base md:text-lg text-Green font-bold">
+              {data?.completed_projects_count || "27+"}
+            </span>
             <span className="text-xs text-Snow">Completed Projects</span>
           </div>
-
           <div className="flex items-center gap-x-1">
-            <span className="text-base md:text-lg text-Green font-bold">13+</span>
+            <span className="text-base md:text-lg text-Green font-bold">
+              {data?.freelance_clients_count || "13+"}
+            </span>
             <span className="text-xs text-Snow">Freelance Clients</span>
           </div>
           <div className="flex items-center gap-x-1">
-            <span className="text-base md:text-lg text-Green font-bold">4+</span>
+            <span className="text-base md:text-lg text-Green font-bold">
+              {data?.honors_count || "4+"}
+            </span>
             <span className="text-xs text-Snow">Honors & Awards</span>
           </div>
         </div>

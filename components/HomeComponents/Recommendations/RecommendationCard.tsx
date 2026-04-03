@@ -1,25 +1,25 @@
 import React from "react";
 import Image from "next/image";
 import CardLayout from "../../Common/CardLayout";
-import { RecommendationItem } from "../../../types";
 
-interface RecommendationCardProps {
-  data: RecommendationItem;
-}
+const RecommendationCard = ({ data }: { data: any }) => {
+  const imageUrl = data?.image_url || (data?.image ? `/${data.image}` : "");
+  const linkedinUrl = data?.linkedin_url || data?.linkednURL || "#";
 
-const RecommendationCard = ({ data }: RecommendationCardProps) => {
   return (
     <CardLayout>
       <div className="p-8 h-full relative card_stylings transition">
-        <Image
-          src={`/${data?.image}`}
-          alt={data?.name}
-          width={64}
-          height={64}
-          className="absolute z-10 right-10 -top-5 border-Green w-16 h-16  border-[3px] rounded-full m-0"
-        />
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={data?.name}
+            width={64}
+            height={64}
+            className="absolute z-10 right-10 -top-5 border-Green w-16 h-16 border-[3px] rounded-full m-0"
+          />
+        )}
         <div className=" text-Snow underline italic">
-          <a href={data?.linkednURL} target="_blank" rel="noreferrer">
+          <a href={linkedinUrl} target="_blank" rel="noreferrer">
             {data?.name}
           </a>
         </div>

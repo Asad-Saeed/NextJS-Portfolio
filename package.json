@@ -8,9 +8,12 @@
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.10.0",
+    "@supabase/supabase-js": "^2.101.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@tanstack/react-query": "^5.96.0",
     "antd": "^6.3.5",
@@ -29,10 +32,12 @@
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "dotenv": "^17.4.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.2",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.2"
   }
 }

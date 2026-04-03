@@ -8,20 +8,30 @@ interface NavItemProps {
   NavText: string;
   NavRoute: string;
   setIsOpen: (open: boolean) => void;
+  slug?: string;
 }
 
-const NavItem = ({ NavIcon, NavText, NavRoute, setIsOpen }: NavItemProps) => {
+const NavItem = ({ NavIcon, NavText, NavRoute, setIsOpen, slug }: NavItemProps) => {
   const pathname = usePathname();
-  const activeClass =
-    pathname === NavRoute
-      ? "rounded-xl !text-DeepNightBlack bg-Green font-bold tracking-widest"
-      : "";
+
+  // Check active: exact match or for home route check if we're at the slug root
+  const isHome = slug && NavRoute === `/${slug}/`;
+  const isActive = isHome
+    ? pathname === `/${slug}` || pathname === `/${slug}/`
+    : pathname === NavRoute;
+
+  const activeClass = isActive
+    ? "rounded-xl !text-DeepNightBlack bg-Green font-bold tracking-widest"
+    : "";
+
+  // For home route, link to /{slug} (without trailing slash)
+  const href = isHome ? `/${slug}` : NavRoute;
 
   return (
     <Link
       onClick={() => setIsOpen(false)}
-      href={NavRoute}
-      className={`${activeClass} transition flex items-center px-2 hover:bg-EveningBlack text-SilverGray hover:text-SilverGray rounded-xl  py-1.5 font-semibold space-x-4 text-base`}
+      href={href}
+      className={`${activeClass} transition flex items-center px-2 hover:bg-EveningBlack text-SilverGray hover:text-SilverGray rounded-xl py-1.5 font-semibold space-x-4 text-base`}
     >
       {NavIcon}
       <span>{NavText}</span>

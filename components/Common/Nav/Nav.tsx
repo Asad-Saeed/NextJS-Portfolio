@@ -11,43 +11,56 @@ import DrawerLayout from "../DrawerLayout";
 interface NavProps {
   setIsOpen: (open: boolean) => void;
   isOpen: boolean;
+  slug?: string;
 }
 
-const Nav = ({ setIsOpen, isOpen }: NavProps) => {
+const Nav = ({ setIsOpen, isOpen, slug }: NavProps) => {
+  const base = slug ? `/${slug}` : "";
+
   return (
     <DrawerLayout setIsOpen={setIsOpen} isOpen={isOpen}>
       <div className="absolute z-50 flex flex-col justify-center lg:inset-y-0  -right-0 lg:right-0 w-64 h-screen lg:mt-3 lg:mr-3 lg:h-[96%] bg-DeepNightBlack shadow-2xl md:rounded-xl md:overflow-hidden">
         <div
-          onClick={(e) => setIsOpen(false)}
+          onClick={() => setIsOpen(false)}
           className="flex text-LightGray absolute top-0 w-full items-center justify-start pl-6 text-sm h-10 bg-EveningBlack cursor-pointer"
         >
           <ImCross />
         </div>
         <div className="flex flex-col gap-y-2 px-6 w-full transition">
-          <NavItem setIsOpen={setIsOpen} NavRoute={"/"} NavIcon={<ImHome />} NavText={"Home"} />
           <NavItem
             setIsOpen={setIsOpen}
-            NavRoute={"/skills"}
+            NavRoute={`${base}/`}
+            NavIcon={<ImHome />}
+            NavText={"Home"}
+            slug={slug}
+          />
+          <NavItem
+            setIsOpen={setIsOpen}
+            NavRoute={`${base}/skills`}
             NavIcon={<FaRegLightbulb />}
             NavText={"Skills"}
+            slug={slug}
           />
           <NavItem
             setIsOpen={setIsOpen}
-            NavRoute={"/contact"}
+            NavRoute={`${base}/contact`}
             NavIcon={<FaHandshake />}
             NavText={"Contact"}
+            slug={slug}
           />
           <NavItem
             setIsOpen={setIsOpen}
-            NavRoute={"/background"}
+            NavRoute={`${base}/background`}
             NavIcon={<HiIdentification />}
             NavText={"Background"}
+            slug={slug}
           />
           <NavItem
             setIsOpen={setIsOpen}
-            NavRoute={"/portfolio"}
+            NavRoute={`${base}/portfolio`}
             NavIcon={<FiAward />}
             NavText={"Portfolio"}
+            slug={slug}
           />
         </div>
       </div>

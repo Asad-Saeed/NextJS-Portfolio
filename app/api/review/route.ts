@@ -1,39 +1,17 @@
 import { NextResponse } from "next/server";
-
-const review = [
-  {
-    id: 0,
-    clientName: "Oliver Smith",
-    clientLocation: "United Kingdom",
-    clientSource: "",
-    clientReview:
-      "Working with Asad Saeed was a privilege; his deep understanding of web development and proficiency across frameworks were invaluable. I eagerly look forward to future collaborations.",
-  },
-  {
-    id: 2,
-    clientName: "William Johnson",
-    clientLocation: "Paris, France",
-    clientSource: "",
-    clientReview:
-      "Collaborating with Asad Saeed was a game-changer; his expertise in web development and broad proficiency across frameworks were instrumental. I'm eager for the opportunity to work together again.",
-  },
-  {
-    id: 3,
-    clientName: "Koshal",
-    clientLocation: "India",
-    clientSource: "",
-    clientReview:
-      "Asad Saeed's support and expertise in web app development were invaluable to our project success. His comprehensive understanding of various technologies ensured smooth progress throughout.",
-  },
-  {
-    id: 4,
-    clientName: "Harry Wilson",
-    clientLocation: "Amsterdam, Netherlands",
-    clientSource: "",
-    clientReview: " I anticipate future collaborations with great enthusiasm.",
-  },
-];
+import { getPublicSupabaseClient } from "@/lib/supabase/public";
 
 export async function GET() {
-  return NextResponse.json(review);
+  const supabase = getPublicSupabaseClient();
+  const { data } = await supabase.from("client_reviews").select("*").order("sort_order");
+
+  const response = (data ?? []).map((r: any) => ({
+    id: r.id,
+    clientName: r.client_name,
+    clientLocation: r.client_location,
+    clientSource: r.client_source,
+    clientReview: r.client_review,
+  }));
+
+  return NextResponse.json(response);
 }

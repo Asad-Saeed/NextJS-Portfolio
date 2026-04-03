@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import QueryProvider from "@/lib/providers/query-provider";
-import LayoutShell from "@/components/LayoutShell";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -25,9 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${firaCode.variable}`}>
       <body>
-        <QueryProvider>
-          <LayoutShell>{children}</LayoutShell>
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

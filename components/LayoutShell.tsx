@@ -6,7 +6,13 @@ import { FaBars } from "react-icons/fa";
 import { SlOptionsVertical } from "react-icons/sl";
 import { useState } from "react";
 
-export default function LayoutShell({ children }: { children: React.ReactNode }) {
+interface LayoutShellProps {
+  children: React.ReactNode;
+  sidebarData?: any;
+  slug?: string;
+}
+
+export default function LayoutShell({ children, sidebarData, slug }: LayoutShellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [intro, setIntro] = useState(false);
 
@@ -28,15 +34,13 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
         </div>
       </div>
       <div className="flex relative h-full justify-between gap-x-3">
-        {/* left most side */}
         <div
           className={`w-64 h-screen left-0 lg:rounded-xl -top-10 lg:top-0 lg:left-0 lg:h-full overflow-hidden bg-DeepNightBlack shadow-2xl z-50 lg:flex flex-col  lg:relative ${
             intro ? "flex absolute" : "hidden"
           }`}
         >
-          <Intro isOpen={intro} setIsOpen={setIntro} />
+          <Intro isOpen={intro} setIsOpen={setIntro} sidebarData={sidebarData} slug={slug} />
         </div>
-        {/* overlay */}
         {intro && (
           <div
             onClick={() => setIntro(false)}
@@ -44,12 +48,10 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
           ></div>
         )}
 
-        {/* middle of screen */}
         <div className="w-full h-auto lg:w-9/12 shadow-2xl bg-DeepNightBlack relative overflow-auto overflow-x-hidden no-scrollbar">
           {children}
         </div>
 
-        {/* right side */}
         <div
           className={`hidden lg:block absolute lg:w-20 lg:relative bg-DeepNightBlack shadow-2xl rounded-xl overflow-hidden`}
         >
@@ -66,7 +68,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
             NavBar
           </span>
         </div>
-        {<Nav isOpen={isOpen} setIsOpen={setIsOpen} />}
+        {<Nav isOpen={isOpen} setIsOpen={setIsOpen} slug={slug} />}
       </div>
     </div>
   );
