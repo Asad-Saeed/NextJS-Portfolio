@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FiLoader } from "react-icons/fi";
+import { FiLoader, FiX } from "react-icons/fi";
 import { updateProfile } from "@/lib/actions/profile";
 import ImageUpload from "@/components/admin/ImageUpload";
 
@@ -72,7 +72,7 @@ export default function ProfileClient({ profile }: { profile: any }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-Snow text-2xl font-bold">Profile & Banner</h1>
           <p className="text-LightGray text-sm mt-1">Edit your personal info, links, and banner</p>
@@ -80,7 +80,7 @@ export default function ProfileClient({ profile }: { profile: any }) {
         <button
           onClick={handleSave}
           disabled={loading}
-          className="button flex items-center gap-2 disabled:opacity-50"
+          className="button flex items-center justify-center gap-2 disabled:opacity-50 w-full sm:w-auto"
         >
           {loading && <FiLoader className="animate-spin" />}
           {loading ? "Saving..." : "Save Changes"}
@@ -146,7 +146,7 @@ export default function ProfileClient({ profile }: { profile: any }) {
           <h2 className="text-Snow text-base font-semibold mb-4">Typewriter Subheadings</h2>
           <div className="flex flex-col gap-2">
             {subheadings.map((s, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex gap-2 items-center">
                 <input
                   value={s}
                   onChange={(e) => {
@@ -159,9 +159,9 @@ export default function ProfileClient({ profile }: { profile: any }) {
                 />
                 <button
                   onClick={() => setSubheadings(subheadings.filter((_, j) => j !== i))}
-                  className="text-red-400 hover:text-red-300 px-2"
+                  className="bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0"
                 >
-                  Remove
+                  <FiX className="text-xs" />
                 </button>
               </div>
             ))}

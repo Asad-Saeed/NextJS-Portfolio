@@ -25,9 +25,9 @@ export default function MessagesClient({ messages }: { messages: any[] }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6">
         <div>
-          <h1 className="text-Snow text-2xl font-bold">Messages</h1>
+          <h1 className="text-Snow text-xl sm:text-2xl font-bold">Messages</h1>
           <p className="text-LightGray text-sm mt-1">
             {messages.length} total · {unread} unread
           </p>
@@ -46,7 +46,7 @@ export default function MessagesClient({ messages }: { messages: any[] }) {
             key={msg.id}
             className={`card_stylings p-5 ${!msg.is_read ? "border-l-4 border-l-Green" : ""}`}
           >
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-1">
                   <span className="text-Snow font-semibold text-sm">{msg.sender_name}</span>
@@ -63,7 +63,7 @@ export default function MessagesClient({ messages }: { messages: any[] }) {
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 ml-4">
+              <div className="flex items-center gap-2 sm:ml-4">
                 {!msg.is_read && (
                   <button
                     onClick={() => handleMarkRead(msg.id)}

@@ -8,14 +8,22 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   } = await supabase.auth.getUser();
 
   let slug = "";
+  let userName = "";
+  let userEmail = "";
   if (user) {
     const { data: profile } = await supabase
       .from("profile")
-      .select("slug")
+      .select("slug, name, email")
       .eq("user_id", user.id)
       .single();
     slug = profile?.slug || "";
+    userName = profile?.name || user.email || "";
+    userEmail = profile?.email || user.email || "";
   }
 
-  return <AdminShell slug={slug}>{children}</AdminShell>;
+  return (
+    <AdminShell slug={slug} userName={userName} userEmail={userEmail}>
+      {children}
+    </AdminShell>
+  );
 }

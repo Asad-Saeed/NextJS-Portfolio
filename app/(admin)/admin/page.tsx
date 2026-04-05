@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-Snow text-2xl font-bold mb-2">Dashboard</h1>
+      <h1 className="text-Snow text-xl sm:text-2xl font-bold mb-2">Dashboard</h1>
       <p className="text-LightGray text-sm mb-8">Manage your portfolio content</p>
 
       {/* Unread Messages KPI */}
@@ -118,12 +118,12 @@ export default async function AdminDashboard() {
         </Link>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
         {cards.map((card) => (
           <Link
             key={card.key}
             href={card.href}
-            className="card_stylings p-6 flex flex-col gap-3 group"
+            className="card_stylings p-4 sm:p-6 flex flex-col gap-3 group overflow-hidden"
           >
             <div className="flex items-center justify-between">
               <card.icon className="text-Green text-xl" />
@@ -131,7 +131,7 @@ export default async function AdminDashboard() {
                 {counts[card.key as keyof typeof counts]}
               </span>
             </div>
-            <span className="text-LightGray text-sm group-hover:text-Snow transition-colors">
+            <span className="text-LightGray text-xs sm:text-sm group-hover:text-Snow transition-colors truncate block">
               {card.label}
             </span>
           </Link>

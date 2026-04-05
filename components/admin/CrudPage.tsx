@@ -81,12 +81,15 @@ export default function CrudPage({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-Snow text-2xl font-bold">{title}</h1>
+          <h1 className="text-Snow text-xl sm:text-2xl font-bold">{title}</h1>
           <p className="text-LightGray text-sm mt-1">{data.length} items</p>
         </div>
-        <button onClick={openCreate} className="button flex items-center gap-2">
+        <button
+          onClick={openCreate}
+          className="button flex items-center gap-2 w-full sm:w-auto justify-center"
+        >
           <FiPlus /> Add New
         </button>
       </div>
@@ -151,7 +154,7 @@ export default function CrudPage({
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-Black/80 backdrop-blur-sm">
-          <div className="card_stylings w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto relative">
+          <div className="card_stylings w-full max-w-lg mx-2 sm:mx-4 p-4 sm:p-6 max-h-[90vh] overflow-y-auto relative">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 text-LightGray hover:text-Snow"
