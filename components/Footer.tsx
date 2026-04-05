@@ -26,7 +26,7 @@ const Footer = ({ data }: FooterProps) => {
             {data?.footer_text || "Made with ❤️ by Asad Saeed"}
           </Link>
         </div>
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center hover:text-Green transition-colors">
           <div className="mr-1 text-base">
             <MdMail />
           </div>

@@ -80,10 +80,20 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
 
       {/* fixed at bottom */}
       <div className="footer absolute flex justify-center space-x-6 text-xl items-center bottom-0 z-50 h-10 w-full bg-MidNightBlack text-Snow">
-        <Link href={githubUrl} target="_blank" rel="noreferrer">
+        <Link
+          href={githubUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-Green transition-colors"
+        >
           <FaGithub />
         </Link>
-        <Link href={linkedinUrl} target="_blank" rel="noreferrer">
+        <Link
+          href={linkedinUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-Green transition-colors"
+        >
           <FaLinkedin />
         </Link>
       </div>

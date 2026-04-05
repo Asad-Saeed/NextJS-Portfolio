@@ -11,7 +11,7 @@ const Download = ({ icon, resumeUrl }: DownloadProps) => {
       <Link
         href={resumeUrl || "/Asad_Saeed_Resume.pdf"}
         target="_blank"
-        className="flex flex-row justify-between text-LightGray items-center gap-x-4 py-5 pb-14"
+        className="flex flex-row justify-between text-LightGray hover:text-Green transition-colors items-center gap-x-4 py-5 pb-14"
       >
         <span className="text-Snow">Download Resume</span>
         <span>{icon}</span>

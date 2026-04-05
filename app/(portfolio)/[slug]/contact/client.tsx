@@ -111,7 +111,7 @@ export default function ContactClient({
         <div className="h-16 w-full card_stylings text-xl sm:text-3xl flex gap-x-8 sm:gap-x-16 items-center justify-center text-Snow">
           {email && (
             <Link
-              className="hover:scale-125 ease-in-out duration-700"
+              className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
               href={`mailto:${email}`}
               target="_blank"
               rel="noreferrer"
@@ -121,7 +121,7 @@ export default function ContactClient({
           )}
           {github && (
             <Link
-              className="hover:scale-125 ease-in-out duration-700"
+              className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
               href={github}
               target="_blank"
               rel="noreferrer"
@@ -131,7 +131,7 @@ export default function ContactClient({
           )}
           {linkedin && (
             <Link
-              className="hover:scale-125 ease-in-out duration-700"
+              className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
               href={linkedin}
               target="_blank"
               rel="noreferrer"
@@ -141,7 +141,7 @@ export default function ContactClient({
           )}
           {upwork && (
             <Link
-              className="hover:scale-125 ease-in-out duration-700 text-2xl sm:text-4xl mt-1"
+              className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors text-2xl sm:text-4xl mt-1"
               href={upwork}
               target="_blank"
               rel="noreferrer"
