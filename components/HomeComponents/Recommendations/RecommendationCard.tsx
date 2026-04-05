@@ -8,7 +8,7 @@ const RecommendationCard = ({ data }: { data: any }) => {
 
   return (
     <CardLayout>
-      <div className="p-8 h-full relative card_stylings transition">
+      <div className="p-4 sm:p-6 h-full relative card_stylings transition">
         {imageUrl && (
           <Image
             src={imageUrl}

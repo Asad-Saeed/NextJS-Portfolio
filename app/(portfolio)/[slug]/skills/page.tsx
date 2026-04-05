@@ -1,7 +1,7 @@
 export const revalidate = 60;
 
 import Footer from "@/components/Footer";
-import SkillsBanner from "@/components/skills/banner";
+import Banner from "@/components/HomeComponents/Banner";
 import SkillsCards from "@/components/skills/skillsCards";
 import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
 import { getSkills } from "@/lib/queries/skills";
@@ -20,8 +20,8 @@ export default async function SkillsPage({ params }: { params: Promise<{ slug: s
   ]);
 
   return (
-    <div className="Home-Page -z-10">
-      <SkillsBanner data={bannerData} />
+    <div>
+      <Banner data={bannerData} heading={bannerData?.skills_banner_heading} />
       <SkillsCards data={skills} />
       <Footer data={footerData} />
     </div>

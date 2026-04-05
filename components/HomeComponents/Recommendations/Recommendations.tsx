@@ -7,8 +7,8 @@ interface RecommendationsProps {
 const Recommendations = ({ data }: RecommendationsProps) => {
   return (
     <>
-      <div className="px-2 md:px-8 py-4 text-lg font-bold text-Snow">Recommendations</div>
-      <div className="grid w-full h-full mt-5 justify-items-start grid-flow-row md:grid-cols-2 grid-rows-auto gap-x-4 gap-y-4 px-2 md:px-8 pb-8">
+      <div className="px-4 sm:px-6 py-4 text-lg font-semibold text-Green">Recommendations</div>
+      <div className="grid w-full grid-flow-row md:grid-cols-2 gap-4 px-4 sm:px-6 pb-6">
         {data?.map((item: any) => (
           <RecommendationCard key={item.id} data={item} />
         ))}

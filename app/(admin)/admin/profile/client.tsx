@@ -33,12 +33,23 @@ const sections = [
     ],
   },
   {
-    title: "Banner Content",
+    title: "Banner Page Headings",
     fields: [
-      { key: "banner_heading", label: "Banner Heading" },
+      { key: "banner_heading", label: "Home Page Heading" },
+      { key: "skills_banner_heading", label: "Skills Page Heading" },
+      { key: "background_banner_heading", label: "Background Page Heading" },
+      { key: "portfolio_banner_heading", label: "Portfolio Page Heading" },
+      { key: "contact_banner_heading", label: "Contact Page Heading" },
+    ],
+  },
+  {
+    title: "Banner Stats & Button",
+    fields: [
       { key: "completed_projects_count", label: "Completed Projects Count" },
-      { key: "freelance_clients_count", label: "Freelance Clients Count" },
+      { key: "freelance_clients_count", label: "Companies Worked Count" },
       { key: "honors_count", label: "Honors & Awards Count" },
+      { key: "explore_button_text", label: "Explore Button Text" },
+      { key: "explore_button_url", label: "Explore Button URL" },
     ],
   },
   {
@@ -126,9 +137,15 @@ export default function ProfileClient({ profile }: { profile: any }) {
               bucket="profile"
             />
             <ImageUpload
-              label="Banner Image"
+              label="Banner Background Image"
               value={form.banner_image_url || ""}
               onChange={(url) => setForm({ ...form, banner_image_url: url })}
+              bucket="profile"
+            />
+            <ImageUpload
+              label="Banner Character/Emoji Image"
+              value={form.banner_emoji_url || ""}
+              onChange={(url) => setForm({ ...form, banner_emoji_url: url })}
               bucket="profile"
             />
             <ImageUpload
@@ -159,7 +176,7 @@ export default function ProfileClient({ profile }: { profile: any }) {
                 />
                 <button
                   onClick={() => setSubheadings(subheadings.filter((_, j) => j !== i))}
-                  className="bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0"
+                  className="bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shrink-0"
                 >
                   <FiX className="text-xs" />
                 </button>

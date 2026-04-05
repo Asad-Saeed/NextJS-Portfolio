@@ -10,7 +10,7 @@ const ReviewCard = ({ data }: { data: any }) => {
 
   return (
     <CardLayout>
-      <div className="flex flex-col justify-between card_stylings w-80 md:w-96 h-full p-4 md:p-8">
+      <div className="flex flex-col justify-between card_stylings w-80 md:w-96 h-full p-4 sm:p-6">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
             <span className="text-sm text-Snow font-bold">{name}</span>

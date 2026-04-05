@@ -118,7 +118,7 @@ export default function AdminShell({
                     : "text-LightGray hover:text-Snow hover:bg-EveningBlack"
                 }`}
               >
-                <item.icon className="text-base flex-shrink-0" />
+                <item.icon className="text-base shrink-0" />
                 {item.label}
               </Link>
             );

@@ -27,7 +27,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   ]);
 
   return (
-    <div className="Home-Page -z-10">
+    <div>
       <Banner data={bannerData} />
       <MyExpertise data={expertise} />
       <Recommendations data={recommendations} />

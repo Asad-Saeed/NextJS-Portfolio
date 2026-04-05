@@ -1,5 +1,22 @@
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
 
+export interface BannerData {
+  banner_heading: string;
+  banner_subheadings: string[];
+  completed_projects_count: string;
+  freelance_clients_count: string;
+  honors_count: string;
+  upwork_url: string;
+  skills_banner_heading: string;
+  background_banner_heading: string;
+  portfolio_banner_heading: string;
+  contact_banner_heading: string;
+  banner_image_url: string;
+  banner_emoji_url: string;
+  explore_button_text: string;
+  explore_button_url: string;
+}
+
 export async function getProfileBySlug(slug: string) {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase.from("profile").select("*").eq("slug", slug).single();
@@ -12,16 +29,10 @@ export async function getProfile(userId: string) {
   return data;
 }
 
-export async function getBannerData(userId: string) {
+export async function getBannerData(userId: string): Promise<BannerData | null> {
   const supabase = getPublicSupabaseClient();
-  const { data } = await supabase
-    .from("profile")
-    .select(
-      "banner_heading, banner_subheadings, completed_projects_count, freelance_clients_count, honors_count, upwork_url"
-    )
-    .eq("user_id", userId)
-    .single();
-  return data;
+  const { data } = await supabase.from("profile").select("*").eq("user_id", userId).single();
+  return data as BannerData | null;
 }
 
 export async function getSidebarProfile(userId: string) {

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import BannerLayout from "@/components/Common/BannerLayout";
+import Banner from "@/components/HomeComponents/Banner";
+import { BannerData } from "@/lib/queries/profile";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { SiUpwork } from "react-icons/si";
 import { HiMail, HiUser } from "react-icons/hi";
@@ -15,9 +16,15 @@ interface ContactClientProps {
   profile: any;
   userId: string;
   footerData: any;
+  bannerData: BannerData | null;
 }
 
-export default function ContactClient({ profile, userId, footerData }: ContactClientProps) {
+export default function ContactClient({
+  profile,
+  userId,
+  footerData,
+  bannerData,
+}: ContactClientProps) {
   const [form, setForm] = useState({ sender_name: "", sender_email: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -54,10 +61,11 @@ export default function ContactClient({ profile, userId, footerData }: ContactCl
   const residence = profile?.residence || "";
 
   return (
-    <BannerLayout>
-      <div className="px-4 py-2">
+    <div>
+      <Banner data={bannerData} heading={bannerData?.contact_banner_heading} />
+      <div className="px-4 sm:px-6">
         <div className="my-6 text-Snow flex flex-col gap-y-5">
-          <h1 className="text-lg font-bold">Contact Information</h1>
+          <h1 className="text-lg font-semibold text-Green">Contact Information</h1>
           <div className="flex flex-col md:flex-row items-center gap-5 text-xs">
             <div className="card_stylings w-full md:w-1/2 p-5 md:p-6 lg:p-8 flex flex-col gap-y-4">
               <div className="flex justify-between items-center">
@@ -72,11 +80,29 @@ export default function ContactClient({ profile, userId, footerData }: ContactCl
             <div className="card_stylings rounded-xl w-full md:w-1/2 p-5 md:p-6 lg:p-8 flex flex-col gap-y-4">
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Email:</span>
-                <span className="text-LightGray text-sm">{email}</span>
+                <a
+                  href={`mailto:${email}`}
+                  className="text-LightGray text-sm hover:text-Green transition-colors"
+                >
+                  {email}
+                </a>
               </div>
               <div className="flex justify-between items-center">
                 <span className="md:text-base">Phone:</span>
-                <span className="text-LightGray text-sm">{phone}</span>
+                <span className="text-sm flex flex-wrap items-center gap-1">
+                  {phone.split(/[/|]/).map((p: string, i: number) => (
+                    <span key={i} className="flex items-center gap-1">
+                      {i > 0 && <span className="text-SlateGray">/</span>}
+                      <a
+                        href={`https://wa.me/${p.trim().replace(/[^0-9]/g, "")}`}
+                        target="_blank"
+                        className="text-LightGray hover:text-Green transition-colors"
+                      >
+                        {p.trim()}
+                      </a>
+                    </span>
+                  ))}
+                </span>
               </div>
             </div>
           </div>
@@ -126,8 +152,11 @@ export default function ContactClient({ profile, userId, footerData }: ContactCl
         </div>
 
         <div className="my-12 w-full h-auto text-Snow">
-          <h1 className="text-lg font-bold">Get In Touch</h1>
-          <form onSubmit={handleSubmit} className="mt-4 py-8 px-8 card_stylings rounded-xl text-sm">
+          <h1 className="text-lg font-semibold text-Green">Get In Touch</h1>
+          <form
+            onSubmit={handleSubmit}
+            className="mt-4 py-6 px-4 sm:px-6 card_stylings rounded-xl text-sm"
+          >
             <div className="flex flex-col w-full">
               <div className="userIcon relative mb-6">
                 <div
@@ -210,6 +239,6 @@ export default function ContactClient({ profile, userId, footerData }: ContactCl
         </div>
       </div>
       <Footer data={footerData} />
-    </BannerLayout>
+    </div>
   );
 }
