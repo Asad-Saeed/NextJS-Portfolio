@@ -15,19 +15,19 @@
   --color-Snow: #ffffff;
   */
 
-  /* New Cyan Luxe palette */
+  /* Cyan Luxe — improved readability */
   --color-Green: #00e5ff;
-  --color-Magenta: #ff00ff;
-  --color-Black: #050b14;
-  --color-DeepNightBlack: #0a192f;
-  --color-MidNightBlack: #0d1f3c;
-  --color-EveningBlack: #112240;
-  --color-DarkGray: #1d3461;
-  --color-SlateGray: #2a4a7f;
-  --color-LightGray: #8892b0;
-  --color-SilverGray: #a8b2d1;
-  --color-Snow: #ccd6f6;
-  --color-White: #e6f1ff;
+  --color-Magenta: #06b6d4;
+  --color-Black: #060d16;
+  --color-DeepNightBlack: #0b1726;
+  --color-MidNightBlack: #0f1e33;
+  --color-EveningBlack: #142440;
+  --color-DarkGray: #1e3355;
+  --color-SlateGray: #2d4a6e;
+  --color-LightGray: #9aacbe;
+  --color-SilverGray: #c4ced9;
+  --color-Snow: #e8ecf1;
+  --color-White: #f5f7fa;
 
   /* Old fonts (commented out — kept for reference)
   --font-cascadia-normal: "cascadia-normal", monospace;
