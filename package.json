@@ -6,26 +6,39 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "seed": "tsx scripts/seed.ts",
+    "seed:banner": "tsx scripts/seed-banner.ts"
   },
   "dependencies": {
-    "@next/font": "13.1.1",
-    "antd": "^5.6.1",
-    "axios": "^1.3.4",
-    "eslint": "8.30.0",
-    "eslint-config-next": "13.1.1",
-    "next": "13.1.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.7.1",
+    "@supabase/ssr": "^0.10.0",
+    "@supabase/supabase-js": "^2.101.1",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@tanstack/react-query": "^5.96.0",
+    "antd": "^6.3.5",
+    "axios": "^1.14.0",
+    "next": "^16.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.6.0",
     "react-query": "^3.39.3",
-    "react-scroll": "^1.8.9",
-    "sass": "^1.64.2",
-    "typewriter-effect": "^2.19.0"
+    "react-scroll": "^1.9.3",
+    "sass": "^1.98.0",
+    "tailwindcss": "^4.2.2",
+    "typewriter-effect": "^2.22.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "postcss": "^8.4.20",
-    "tailwindcss": "^3.2.4"
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "dotenv": "^17.4.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.2",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
   }
 }
