@@ -7,10 +7,11 @@ import Intro from "@/components/Common/Intro";
 import Nav from "@/components/Common/Nav/Nav";
 import { FaBars } from "react-icons/fa";
 import { FiUser, FiHome, FiCode, FiBriefcase, FiGrid, FiMail } from "react-icons/fi";
+import { SidebarData } from "@/types";
 
 interface LayoutShellProps {
   children: React.ReactNode;
-  sidebarData?: any;
+  sidebarData?: SidebarData;
   slug?: string;
 }
 

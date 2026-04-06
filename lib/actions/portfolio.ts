@@ -3,7 +3,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function createProject(data: Record<string, any>, techs: string[]) {
+export async function createProject(data: Record<string, unknown>, techs: string[]) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -24,7 +24,7 @@ export async function createProject(data: Record<string, any>, techs: string[]) 
   return { success: true };
 }
 
-export async function updateProject(id: string, data: Record<string, any>, techs: string[]) {
+export async function updateProject(id: string, data: Record<string, unknown>, techs: string[]) {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.from("portfolio_projects").update(data).eq("id", id);
   if (error) return { error: error.message };

@@ -3,7 +3,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function updateProfile(data: Record<string, any>) {
+export async function updateProfile(data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },

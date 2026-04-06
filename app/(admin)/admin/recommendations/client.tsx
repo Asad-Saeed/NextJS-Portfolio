@@ -6,6 +6,7 @@ import {
   updateRecommendation,
   deleteRecommendation,
 } from "@/lib/actions/recommendations";
+import { Recommendation } from "@/types";
 
 const columns = [
   { key: "name", label: "Name" },
@@ -27,7 +28,7 @@ const fields = [
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 
-export default function RecommendationsClient({ data }: { data: any[] }) {
+export default function RecommendationsClient({ data }: { data: Recommendation[] }) {
   return (
     <CrudPage
       title="Recommendations"

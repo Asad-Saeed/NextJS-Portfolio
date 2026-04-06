@@ -12,11 +12,12 @@ import Skills from "./Skills";
 import Image from "next/image";
 import { useLongPress } from "@/lib/hooks/useLongPress";
 import { createClient } from "@/lib/supabase/client";
+import { SidebarData } from "@/types";
 
 interface IntroProps {
   isOpen?: boolean;
   setIsOpen?: (open: boolean) => void;
-  sidebarData?: any;
+  sidebarData?: SidebarData;
   slug?: string;
 }
 
@@ -70,11 +71,11 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
 
       {/* middle components */}
       <div className="beech z-20 flex flex-col overflow-y-scroll pt-48 top-48 overflow-x-hidden no-scrollbar px-4">
-        <Location profile={profile} />
+        <Location profile={profile ?? undefined} />
         <Languages data={sidebarData?.languages} />
         <Skills data={sidebarData?.sidebarSkills} />
         <Tools data={sidebarData?.techStack} />
-        <Contact profile={profile} />
+        <Contact profile={profile ?? undefined} />
         <Download icon={<FaDownload />} resumeUrl={profile?.resume_url} />
       </div>
 

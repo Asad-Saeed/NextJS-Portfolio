@@ -7,7 +7,10 @@ import ImageUpload from "@/components/admin/ImageUpload";
 interface Column {
   key: string;
   label: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (
+    value: string | number | boolean | null | undefined,
+    row: Record<string, unknown>
+  ) => React.ReactNode;
 }
 
 interface Field {
@@ -18,17 +21,17 @@ interface Field {
   bucket?: string;
 }
 
-interface CrudPageProps {
+interface CrudPageProps<T extends { id: string }> {
   title: string;
-  data: any[];
+  data: T[];
   columns: Column[];
   fields: Field[];
-  onCreate: (data: Record<string, any>) => Promise<any>;
-  onUpdate: (id: string, data: Record<string, any>) => Promise<any>;
-  onDelete: (id: string) => Promise<any>;
+  onCreate: (data: Record<string, unknown>) => Promise<unknown>;
+  onUpdate: (id: string, data: Record<string, unknown>) => Promise<unknown>;
+  onDelete: (id: string) => Promise<unknown>;
 }
 
-export default function CrudPage({
+export default function CrudPage<T extends { id: string }>({
   title,
   data,
   columns,
@@ -36,10 +39,10 @@ export default function CrudPage({
   onCreate,
   onUpdate,
   onDelete,
-}: CrudPageProps) {
+}: CrudPageProps<T>) {
   const [showModal, setShowModal] = useState(false);
-  const [editItem, setEditItem] = useState<any>(null);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [editItem, setEditItem] = useState<T | null>(null);
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -51,10 +54,11 @@ export default function CrudPage({
     setError(null);
   }
 
-  function openEdit(item: any) {
+  function openEdit(item: T) {
     setEditItem(item);
-    const initial: Record<string, any> = {};
-    fields.forEach((f) => (initial[f.key] = item[f.key] ?? ""));
+    const initial: Record<string, unknown> = {};
+    const row = item as unknown as Record<string, unknown>;
+    fields.forEach((f) => (initial[f.key] = row[f.key] ?? ""));
     setFormData(initial);
     setShowModal(true);
     setError(null);
@@ -65,8 +69,8 @@ export default function CrudPage({
     setError(null);
     const result = editItem ? await onUpdate(editItem.id, formData) : await onCreate(formData);
     setLoading(false);
-    if (result?.error) {
-      setError(result.error);
+    if ((result as { error?: string })?.error) {
+      setError((result as { error: string }).error);
     } else {
       setShowModal(false);
     }
@@ -111,11 +115,17 @@ export default function CrudPage({
             <tbody>
               {data.map((item) => (
                 <tr key={item.id} className="border-t border-DarkGray/20 hover:bg-EveningBlack/50">
-                  {columns.map((col) => (
-                    <td key={col.key} className="px-4 py-3 text-SilverGray">
-                      {col.render ? col.render(item[col.key], item) : item[col.key]}
-                    </td>
-                  ))}
+                  {columns.map((col) => {
+                    const row = item as unknown as Record<string, unknown>;
+                    const val = row[col.key];
+                    return (
+                      <td key={col.key} className="px-4 py-3 text-SilverGray">
+                        {col.render
+                          ? col.render(val as string | number | boolean | null | undefined, row)
+                          : String(val ?? "")}
+                      </td>
+                    );
+                  })}
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <button
@@ -171,7 +181,7 @@ export default function CrudPage({
                   {field.type === "image" ? (
                     <ImageUpload
                       label={field.label}
-                      value={formData[field.key] || ""}
+                      value={String(formData[field.key] || "")}
                       onChange={(url) => setFormData((prev) => ({ ...prev, [field.key]: url }))}
                       bucket={field.bucket || "profile"}
                     />
@@ -179,7 +189,7 @@ export default function CrudPage({
                     <>
                       <label className="text-LightGray text-xs mb-1 block">{field.label}</label>
                       <textarea
-                        value={formData[field.key] || ""}
+                        value={String(formData[field.key] || "")}
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, [field.key]: e.target.value }))
                         }
@@ -193,7 +203,7 @@ export default function CrudPage({
                       <label className="text-LightGray text-xs mb-1 block">{field.label}</label>
                       <input
                         type={field.type || "text"}
-                        value={formData[field.key] || ""}
+                        value={String(formData[field.key] || "")}
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,

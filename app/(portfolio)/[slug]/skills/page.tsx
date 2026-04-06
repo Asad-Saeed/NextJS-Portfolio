@@ -12,7 +12,7 @@ export default async function SkillsPage({ params }: { params: Promise<{ slug: s
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
-  const userId = (profileData as any).user_id;
+  const userId = profileData.user_id;
   const [bannerData, skills, footerData] = await Promise.all([
     getBannerData(userId),
     getSkills(userId),

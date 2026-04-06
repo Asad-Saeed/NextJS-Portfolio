@@ -1,11 +1,12 @@
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
+import type { Education } from "@/types";
 
-export async function getEducation(userId: string) {
+export async function getEducation(userId: string): Promise<Education[]> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase
     .from("education")
     .select("*")
     .eq("user_id", userId)
     .order("sort_order");
-  return data ?? [];
+  return (data ?? []) as Education[];
 }

@@ -6,10 +6,11 @@ export default async function EducationPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) return null;
   const { data } = await supabase
     .from("education")
     .select("*")
-    .eq("user_id", user!.id)
+    .eq("user_id", user.id)
     .order("sort_order");
   return <EducationClient data={data ?? []} />;
 }

@@ -2,13 +2,17 @@
 
 import CrudPage from "@/components/admin/CrudPage";
 import { createExpertise, updateExpertise, deleteExpertise } from "@/lib/actions/expertise";
+import { Expertise } from "@/types";
 
 const columns = [
   { key: "title", label: "Title" },
   {
     key: "description",
     label: "Description",
-    render: (v: string) => (v?.length > 80 ? v.slice(0, 80) + "..." : v),
+    render: (v: string | number | boolean | null | undefined) => {
+      const s = String(v || "");
+      return s.length > 80 ? s.slice(0, 80) + "..." : s;
+    },
   },
   { key: "sort_order", label: "Order" },
 ];
@@ -24,7 +28,7 @@ const fields = [
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 
-export default function ExpertiseClient({ data }: { data: any[] }) {
+export default function ExpertiseClient({ data }: { data: Expertise[] }) {
   return (
     <CrudPage
       title="Expertise"

@@ -1,7 +1,8 @@
 import ExpertiseCard from "./ExpertiseCard";
+import { Expertise } from "@/types";
 
 interface MyExpertiseProps {
-  data: any[];
+  data: Expertise[];
 }
 
 const MyExpertise = ({ data }: MyExpertiseProps) => {
@@ -9,7 +10,7 @@ const MyExpertise = ({ data }: MyExpertiseProps) => {
     <>
       <div className="px-4 sm:px-6 py-4 text-lg font-semibold text-Green">My Expertise</div>
       <div className="grid grid-flow-row md:grid-cols-2 gap-4 px-4 sm:px-6">
-        {data?.map((item: any) => (
+        {data?.map((item: Expertise) => (
           <ExpertiseCard key={item.id} data={item} />
         ))}
       </div>

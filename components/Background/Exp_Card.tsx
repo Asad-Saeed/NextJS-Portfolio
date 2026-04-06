@@ -1,6 +1,7 @@
 import React from "react";
 import CardLayout from "../Common/CardLayout";
-const Exp_Card = ({ data }: { data: any }) => {
+import { Experience } from "@/types";
+const Exp_Card = ({ data }: { data: Experience }) => {
   return (
     <CardLayout>
       <div className="card_stylings transition px-4 sm:px-6 py-6 sm:py-8">
@@ -12,7 +13,7 @@ const Exp_Card = ({ data }: { data: any }) => {
           </a>
         </div>
         <div className="text-LightGray text-sm font-normal mt-4 text-justify">
-          {data.desc || data.description}
+          {data.description}
         </div>
         <div className="flex justify-between text-SilverGray bg-DeepNightBlack w-full h-auto text-xs rounded-full py-3 px-6 mt-4 font-normal">
           <div>{data.year}</div> <div>{data.location}</div>

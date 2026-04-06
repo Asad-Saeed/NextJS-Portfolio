@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function createSkill(
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   levels: { title: string; level: string }[]
 ) {
   const supabase = await createServerSupabaseClient();
@@ -34,7 +34,7 @@ export async function createSkill(
 
 export async function updateSkill(
   id: string,
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   levels: { title: string; level: string }[]
 ) {
   const supabase = await createServerSupabaseClient();

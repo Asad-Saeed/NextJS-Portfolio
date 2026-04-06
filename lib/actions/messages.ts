@@ -1,7 +1,7 @@
 "use server";
 
-import { getAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getPublicSupabaseClient } from "@/lib/supabase/public";
 import { revalidatePath } from "next/cache";
 
 export async function sendMessage(data: {
@@ -14,9 +14,9 @@ export async function sendMessage(data: {
     return { error: "All fields are required" };
   }
 
-  // Use admin client to bypass RLS for public insert
-  const supabase = getAdminSupabaseClient();
-  const { error } = await supabase.from("messages").insert(data as any);
+  // Use public client — RLS "Public insert" policy allows anyone to insert
+  const supabase = getPublicSupabaseClient();
+  const { error } = await supabase.from("messages").insert(data as unknown as never);
 
   if (error) return { error: error.message };
   return { success: true };

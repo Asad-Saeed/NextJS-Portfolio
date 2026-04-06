@@ -1,14 +1,10 @@
 import Link from "next/link";
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { MdMail } from "react-icons/md";
+import { FooterData } from "@/types";
 
 interface FooterProps {
-  data?: {
-    footer_text: string;
-    copyright_year: string;
-    email: string;
-    upwork_url: string;
-  } | null;
+  data?: FooterData | null;
 }
 
 const Footer = ({ data }: FooterProps) => {

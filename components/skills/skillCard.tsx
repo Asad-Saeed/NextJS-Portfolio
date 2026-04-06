@@ -1,11 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import ProgressBar from "./progressBar";
+import { Skill, SkillLevel } from "@/types";
 
-const SkillCard = ({ data }: { data: any }) => {
-  const imageUrl = data?.image_url || (data?.image ? `/${data.image}` : "");
-  const techName = data?.tech_name || data?.techName;
-  const levels = data?.skill_levels || data?.skill || [];
+const SkillCard = ({ data }: { data: Skill }) => {
+  const imageUrl = data?.image_url || "";
+  const techName = data?.tech_name;
+  const levels = data?.skill_levels || [];
 
   return (
     <div className="bg-EveningBlack/95 border border-DarkGray/30 rounded-xl overflow-hidden h-full">
@@ -29,7 +30,7 @@ const SkillCard = ({ data }: { data: any }) => {
         </div>
         <p className="text-xs sm:text-sm text-LightGray my-1">{data?.description}</p>
         <div className="text-sm gap-3 py-2 sm:py-4">
-          {levels?.map((skill: any, index: number) => (
+          {levels?.map((skill: SkillLevel, index: number) => (
             <ProgressBar key={index} title={skill.title} percent={skill.level} bgColor="bg-Green" />
           ))}
         </div>

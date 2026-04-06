@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import CardLayout from "../../Common/CardLayout";
+import { Recommendation } from "@/types";
 
-const RecommendationCard = ({ data }: { data: any }) => {
-  const imageUrl = data?.image_url || (data?.image ? `/${data.image}` : "");
-  const linkedinUrl = data?.linkedin_url || data?.linkednURL || "#";
+const RecommendationCard = ({ data }: { data: Recommendation }) => {
+  const imageUrl = data?.image_url || "";
+  const linkedinUrl = data?.linkedin_url || "#";
 
   return (
     <CardLayout>

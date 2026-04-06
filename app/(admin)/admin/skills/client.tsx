@@ -4,10 +4,11 @@ import { useState } from "react";
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiLoader } from "react-icons/fi";
 import { createSkill, updateSkill, deleteSkill } from "@/lib/actions/skills";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { Skill, SkillLevel } from "@/types";
 
-export default function SkillsClient({ data }: { data: any[] }) {
+export default function SkillsClient({ data }: { data: Skill[] }) {
   const [showModal, setShowModal] = useState(false);
-  const [editItem, setEditItem] = useState<any>(null);
+  const [editItem, setEditItem] = useState<Skill | null>(null);
   const [form, setForm] = useState({
     tech_name: "",
     url: "",
@@ -28,7 +29,7 @@ export default function SkillsClient({ data }: { data: any[] }) {
     setError(null);
   }
 
-  function openEdit(item: any) {
+  function openEdit(item: Skill) {
     setEditItem(item);
     setForm({
       tech_name: item.tech_name,
@@ -37,7 +38,9 @@ export default function SkillsClient({ data }: { data: any[] }) {
       description: item.description,
       sort_order: item.sort_order,
     });
-    setLevels((item.skill_levels || []).map((l: any) => ({ title: l.title, level: l.level })));
+    setLevels(
+      (item.skill_levels || []).map((l: SkillLevel) => ({ title: l.title, level: l.level }))
+    );
     setShowModal(true);
     setError(null);
   }
@@ -87,7 +90,9 @@ export default function SkillsClient({ data }: { data: any[] }) {
                 <tr key={item.id} className="border-t border-DarkGray/20 hover:bg-EveningBlack/50">
                   <td className="px-4 py-3 text-Snow font-medium">{item.tech_name}</td>
                   <td className="px-4 py-3 text-SilverGray text-xs">
-                    {(item.skill_levels || []).map((l: any) => `${l.title}: ${l.level}`).join(", ")}
+                    {(item.skill_levels || [])
+                      .map((l: SkillLevel) => `${l.title}: ${l.level}`)
+                      .join(", ")}
                   </td>
                   <td className="px-4 py-3 text-SilverGray">{item.sort_order}</td>
                   <td className="px-4 py-3">

@@ -17,7 +17,7 @@ export default async function PortfolioLayout({
 
   if (!profileData) notFound();
 
-  const userId = (profileData as any).user_id;
+  const userId = profileData.user_id;
 
   const [profile, languages, techStack, sidebarSkills] = await Promise.all([
     getSidebarProfile(userId),

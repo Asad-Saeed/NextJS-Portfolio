@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FiLoader, FiX } from "react-icons/fi";
 import { updateProfile } from "@/lib/actions/profile";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { Profile } from "@/types";
 
 const sections = [
   {
@@ -61,8 +62,10 @@ const sections = [
   },
 ];
 
-export default function ProfileClient({ profile }: { profile: any }) {
-  const [form, setForm] = useState<Record<string, any>>(profile || {});
+export default function ProfileClient({ profile }: { profile: Profile | null }) {
+  const [form, setForm] = useState<Record<string, unknown>>(
+    (profile as unknown as Record<string, unknown>) ?? {}
+  );
   const [subheadings, setSubheadings] = useState<string[]>(profile?.banner_subheadings || []);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -116,7 +119,7 @@ export default function ProfileClient({ profile }: { profile: any }) {
                 <div key={field.key}>
                   <label className="text-LightGray text-xs mb-1 block">{field.label}</label>
                   <input
-                    value={form[field.key] || ""}
+                    value={String(form[field.key] || "")}
                     onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                     className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                   />
@@ -132,25 +135,25 @@ export default function ProfileClient({ profile }: { profile: any }) {
           <div className="flex flex-col gap-5">
             <ImageUpload
               label="Profile Image"
-              value={form.profile_image_url || ""}
+              value={String(form.profile_image_url || "")}
               onChange={(url) => setForm({ ...form, profile_image_url: url })}
               bucket="profile"
             />
             <ImageUpload
               label="Banner Background Image"
-              value={form.banner_image_url || ""}
+              value={String(form.banner_image_url || "")}
               onChange={(url) => setForm({ ...form, banner_image_url: url })}
               bucket="profile"
             />
             <ImageUpload
               label="Banner Character/Emoji Image"
-              value={form.banner_emoji_url || ""}
+              value={String(form.banner_emoji_url || "")}
               onChange={(url) => setForm({ ...form, banner_emoji_url: url })}
               bucket="profile"
             />
             <ImageUpload
               label="Resume PDF"
-              value={form.resume_url || ""}
+              value={String(form.resume_url || "")}
               onChange={(url) => setForm({ ...form, resume_url: url })}
               bucket="documents"
               accept=".pdf,application/pdf"

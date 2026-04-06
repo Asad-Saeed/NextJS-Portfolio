@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Badge from "../Common/Badge";
 import { FiExternalLink } from "react-icons/fi";
+import { PortfolioProject, ProjectTechnology } from "@/types";
 
-const PortfolioCard = ({ data }: { data: any }) => {
-  const imageUrl = data?.image_url || (data?.image ? `/${data.image}` : "");
-  const projectName = data?.project_name || data?.projectName;
-  const projectDetail = data?.project_detail || data?.projectDetail;
-  const techs = data?.project_technologies || data?.technologiesUsed || [];
+const PortfolioCard = ({ data }: { data: PortfolioProject }) => {
+  const imageUrl = data?.image_url || "";
+  const projectName = data?.project_name;
+  const projectDetail = data?.project_detail;
+  const techs = data?.project_technologies || [];
 
   return (
     <div className="bg-EveningBlack/95 border border-DarkGray/30 rounded-xl overflow-hidden h-full">
@@ -40,8 +41,8 @@ const PortfolioCard = ({ data }: { data: any }) => {
         </div>
         <p className="text-xs sm:text-sm text-LightGray my-1">{projectDetail}</p>
         <div className="flex flex-wrap gap-2 py-2">
-          {techs.map((t: any, i: number) => (
-            <Badge key={i} title={t.tech_name || t.tech} />
+          {techs.map((t: ProjectTechnology, i: number) => (
+            <Badge key={i} title={t.tech_name} />
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import CardLayout from "../Common/CardLayout";
-const Edu_Card = ({ data }: { data: any }) => {
+import { Education } from "@/types";
+const Edu_Card = ({ data }: { data: Education }) => {
   return (
     <CardLayout className="keepItEmpty">
       <div className="card_stylings transition px-4 sm:px-6 py-6 sm:py-8">

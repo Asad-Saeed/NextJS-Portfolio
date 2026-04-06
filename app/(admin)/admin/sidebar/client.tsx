@@ -12,11 +12,12 @@ import {
   updateSidebarSkill,
   deleteSidebarSkill,
 } from "@/lib/actions/sidebar";
+import { Language, TechStack, SidebarSkill } from "@/types";
 
 interface SidebarClientProps {
-  languages: any[];
-  techStack: any[];
-  sidebarSkills: any[];
+  languages: Language[];
+  techStack: TechStack[];
+  sidebarSkills: SidebarSkill[];
 }
 
 export default function SidebarClient({ languages, techStack, sidebarSkills }: SidebarClientProps) {

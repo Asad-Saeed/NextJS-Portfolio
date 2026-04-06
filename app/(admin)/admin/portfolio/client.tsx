@@ -4,10 +4,11 @@ import { useState } from "react";
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiLoader } from "react-icons/fi";
 import { createProject, updateProject, deleteProject } from "@/lib/actions/portfolio";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { PortfolioProject, ProjectTechnology } from "@/types";
 
-export default function PortfolioClient({ data }: { data: any[] }) {
+export default function PortfolioClient({ data }: { data: PortfolioProject[] }) {
   const [showModal, setShowModal] = useState(false);
-  const [editItem, setEditItem] = useState<any>(null);
+  const [editItem, setEditItem] = useState<PortfolioProject | null>(null);
   const [form, setForm] = useState({
     project_name: "",
     url: "",
@@ -29,7 +30,7 @@ export default function PortfolioClient({ data }: { data: any[] }) {
     setError(null);
   }
 
-  function openEdit(item: any) {
+  function openEdit(item: PortfolioProject) {
     setEditItem(item);
     setForm({
       project_name: item.project_name,
@@ -38,7 +39,7 @@ export default function PortfolioClient({ data }: { data: any[] }) {
       project_detail: item.project_detail,
       sort_order: item.sort_order,
     });
-    setTechs((item.project_technologies || []).map((t: any) => t.tech_name));
+    setTechs((item.project_technologies || []).map((t: ProjectTechnology) => t.tech_name));
     setShowModal(true);
     setError(null);
   }
@@ -95,7 +96,9 @@ export default function PortfolioClient({ data }: { data: any[] }) {
                 <tr key={item.id} className="border-t border-DarkGray/20 hover:bg-EveningBlack/50">
                   <td className="px-4 py-3 text-Snow font-medium">{item.project_name}</td>
                   <td className="px-4 py-3 text-SilverGray text-xs">
-                    {(item.project_technologies || []).map((t: any) => t.tech_name).join(", ")}
+                    {(item.project_technologies || [])
+                      .map((t: ProjectTechnology) => t.tech_name)
+                      .join(", ")}
                   </td>
                   <td className="px-4 py-3 text-SilverGray">{item.sort_order}</td>
                   <td className="px-4 py-3">

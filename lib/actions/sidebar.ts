@@ -3,7 +3,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function createLanguage(data: Record<string, any>) {
+export async function createLanguage(data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -14,7 +14,7 @@ export async function createLanguage(data: Record<string, any>) {
   revalidatePath("/", "layout");
   return { success: true };
 }
-export async function updateLanguage(id: string, data: Record<string, any>) {
+export async function updateLanguage(id: string, data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.from("languages").update(data).eq("id", id);
   if (error) return { error: error.message };
@@ -29,7 +29,7 @@ export async function deleteLanguage(id: string) {
   return { success: true };
 }
 
-export async function createTechStack(data: Record<string, any>) {
+export async function createTechStack(data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -40,7 +40,7 @@ export async function createTechStack(data: Record<string, any>) {
   revalidatePath("/", "layout");
   return { success: true };
 }
-export async function updateTechStack(id: string, data: Record<string, any>) {
+export async function updateTechStack(id: string, data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.from("tech_stack").update(data).eq("id", id);
   if (error) return { error: error.message };
@@ -55,7 +55,7 @@ export async function deleteTechStack(id: string) {
   return { success: true };
 }
 
-export async function createSidebarSkill(data: Record<string, any>) {
+export async function createSidebarSkill(data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -66,7 +66,7 @@ export async function createSidebarSkill(data: Record<string, any>) {
   revalidatePath("/", "layout");
   return { success: true };
 }
-export async function updateSidebarSkill(id: string, data: Record<string, any>) {
+export async function updateSidebarSkill(id: string, data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.from("sidebar_skills").update(data).eq("id", id);
   if (error) return { error: error.message };

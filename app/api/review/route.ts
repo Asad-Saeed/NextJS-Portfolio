@@ -1,11 +1,21 @@
 import { NextResponse } from "next/server";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
+import { ClientReview } from "@/types";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get("userId");
+  if (!userId) return NextResponse.json({ error: "userId is required" }, { status: 400 });
+
   const supabase = getPublicSupabaseClient();
-  const { data } = await supabase.from("client_reviews").select("*").order("sort_order");
+  const { data } = await supabase
+    .from("client_reviews")
+    .select("*")
+    .eq("user_id", userId)
+    .order("sort_order");
 
-  const response = (data ?? []).map((r: any) => ({
+  const typed = (data ?? []) as ClientReview[];
+  const response = typed.map((r) => ({
     id: r.id,
     clientName: r.client_name,
     clientLocation: r.client_location,
