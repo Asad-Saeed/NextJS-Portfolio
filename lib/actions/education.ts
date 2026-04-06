@@ -3,7 +3,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function createEducation(data: Record<string, any>) {
+export async function createEducation(data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -15,7 +15,7 @@ export async function createEducation(data: Record<string, any>) {
   return { success: true };
 }
 
-export async function updateEducation(id: string, data: Record<string, any>) {
+export async function updateEducation(id: string, data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.from("education").update(data).eq("id", id);
   if (error) return { error: error.message };

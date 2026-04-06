@@ -1,32 +1,34 @@
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
+import type { Profile, FooterData } from "@/types";
 
-export interface BannerData {
-  banner_heading: string;
-  banner_subheadings: string[];
-  completed_projects_count: string;
-  freelance_clients_count: string;
-  honors_count: string;
-  upwork_url: string;
-  skills_banner_heading: string;
-  background_banner_heading: string;
-  portfolio_banner_heading: string;
-  contact_banner_heading: string;
-  banner_image_url: string;
-  banner_emoji_url: string;
-  explore_button_text: string;
-  explore_button_url: string;
-}
+export type BannerData = Pick<
+  Profile,
+  | "banner_heading"
+  | "banner_subheadings"
+  | "completed_projects_count"
+  | "freelance_clients_count"
+  | "honors_count"
+  | "upwork_url"
+  | "skills_banner_heading"
+  | "background_banner_heading"
+  | "portfolio_banner_heading"
+  | "contact_banner_heading"
+  | "banner_image_url"
+  | "banner_emoji_url"
+  | "explore_button_text"
+  | "explore_button_url"
+>;
 
-export async function getProfileBySlug(slug: string) {
+export async function getProfileBySlug(slug: string): Promise<Profile | null> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase.from("profile").select("*").eq("slug", slug).single();
-  return data;
+  return data as Profile | null;
 }
 
-export async function getProfile(userId: string) {
+export async function getProfile(userId: string): Promise<Profile | null> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase.from("profile").select("*").eq("user_id", userId).single();
-  return data;
+  return data as Profile | null;
 }
 
 export async function getBannerData(userId: string): Promise<BannerData | null> {
@@ -35,7 +37,7 @@ export async function getBannerData(userId: string): Promise<BannerData | null> 
   return data as BannerData | null;
 }
 
-export async function getSidebarProfile(userId: string) {
+export async function getSidebarProfile(userId: string): Promise<Partial<Profile> | null> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase
     .from("profile")
@@ -44,15 +46,15 @@ export async function getSidebarProfile(userId: string) {
     )
     .eq("user_id", userId)
     .single();
-  return data;
+  return data as Partial<Profile> | null;
 }
 
-export async function getFooterData(userId: string) {
+export async function getFooterData(userId: string): Promise<FooterData | null> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase
     .from("profile")
     .select("footer_text, copyright_year, email, upwork_url")
     .eq("user_id", userId)
     .single();
-  return data;
+  return data as FooterData | null;
 }

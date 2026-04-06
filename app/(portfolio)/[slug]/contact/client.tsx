@@ -11,11 +11,12 @@ import { FiLoader, FiCheck } from "react-icons/fi";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { sendMessage } from "@/lib/actions/messages";
+import { Profile, FooterData } from "@/types";
 
 interface ContactClientProps {
-  profile: any;
+  profile: Profile | null;
   userId: string;
-  footerData: any;
+  footerData: FooterData | null;
   bannerData: BannerData | null;
 }
 

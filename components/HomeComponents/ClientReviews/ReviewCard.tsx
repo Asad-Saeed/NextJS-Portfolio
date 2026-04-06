@@ -1,12 +1,13 @@
 import { MdLocationOn } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import CardLayout from "../../Common/CardLayout";
+import { ClientReview } from "@/types";
 
-const ReviewCard = ({ data }: { data: any }) => {
-  const name = data?.client_name || data?.clientName;
-  const location = data?.client_location || data?.clientLocation;
-  const source = data?.client_source || data?.clientSource;
-  const review = data?.client_review || data?.clientReview;
+const ReviewCard = ({ data }: { data: ClientReview }) => {
+  const name = data?.client_name;
+  const location = data?.client_location;
+  const source = data?.client_source;
+  const review = data?.client_review;
 
   return (
     <CardLayout>

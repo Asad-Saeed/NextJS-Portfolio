@@ -48,13 +48,16 @@ export async function signUp(formData: FormData) {
   }
 
   // Create initial profile (admin client bypasses RLS)
-  const { error: profileError } = await adminSupabase.from("profile").insert({
+  const profileData = {
     user_id: authData.user.id,
     name,
     slug,
     designation: "",
     email,
-  } as any);
+  };
+  const { error: profileError } = await adminSupabase
+    .from("profile")
+    .insert(profileData as unknown as never);
 
   if (profileError) return { error: profileError.message };
 

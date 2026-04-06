@@ -6,7 +6,8 @@ export default async function SidebarPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const uid = user!.id;
+  if (!user) return null;
+  const uid = user.id;
   const [{ data: languages }, { data: techStack }, { data: sidebarSkills }] = await Promise.all([
     supabase.from("languages").select("*").eq("user_id", uid).order("sort_order"),
     supabase.from("tech_stack").select("*").eq("user_id", uid).order("sort_order"),

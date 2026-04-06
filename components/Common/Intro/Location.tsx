@@ -1,6 +1,7 @@
 import { DETAILS } from "../../../constants/constants";
+import { Profile } from "@/types";
 
-const Location = ({ profile }: { profile?: any }) => {
+const Location = ({ profile }: { profile?: Partial<Profile> }) => {
   const details = profile
     ? {
         Residence: profile.residence,

@@ -2,6 +2,7 @@
 
 import CrudPage from "@/components/admin/CrudPage";
 import { createEducation, updateEducation, deleteEducation } from "@/lib/actions/education";
+import { Education } from "@/types";
 
 const columns = [
   { key: "title", label: "Title" },
@@ -20,7 +21,7 @@ const fields = [
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 
-export default function EducationClient({ data }: { data: any[] }) {
+export default function EducationClient({ data }: { data: Education[] }) {
   return (
     <CrudPage
       title="Education"

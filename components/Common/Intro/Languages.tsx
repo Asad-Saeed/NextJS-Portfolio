@@ -1,20 +1,20 @@
 "use client";
 
 import { Progress } from "antd";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { Language } from "@/types";
 
-interface LanguageItem {
-  name: string;
-  proficiency: number;
-}
-
-const Languages = ({ data }: { data?: LanguageItem[] }) => {
-  const languages = data?.length
-    ? data
-    : [
-        { name: "Urdu", proficiency: 98 },
-        { name: "English", proficiency: 90 },
-      ];
+const Languages = ({ data }: { data?: Language[] }) => {
+  const languages = useMemo(
+    () =>
+      data?.length
+        ? data
+        : [
+            { name: "Urdu", proficiency: 98 },
+            { name: "English", proficiency: 90 },
+          ],
+    [data]
+  );
 
   const [counts, setCounts] = useState<number[]>(languages.map(() => 0));
   const animatedRef = useRef(false);

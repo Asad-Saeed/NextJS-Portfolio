@@ -1,7 +1,8 @@
 import { CONTACTS } from "../../../constants/constants";
 import Link from "next/link";
+import { Profile } from "@/types";
 
-const Contact = ({ profile }: { profile?: any }) => {
+const Contact = ({ profile }: { profile?: Partial<Profile> }) => {
   const email = profile?.email || CONTACTS.EMAIL;
   const phone = profile?.phone || CONTACTS.PHONE;
   const phones = phone

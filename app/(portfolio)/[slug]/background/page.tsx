@@ -14,7 +14,7 @@ export default async function BackgroundPage({ params }: { params: Promise<{ slu
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
-  const userId = (profileData as any).user_id;
+  const userId = profileData.user_id;
   const [bannerData, education, experience, footerData] = await Promise.all([
     getBannerData(userId),
     getEducation(userId),
@@ -29,14 +29,14 @@ export default async function BackgroundPage({ params }: { params: Promise<{ slu
         <div className="hidden md:block absolute left-1/2 top-6 bottom-2 w-1 rounded-full bg-SlateGray" />
         <div className="flex flex-col gap-y-4 order-2 md:order-1">
           <div className="mt-6 md:mt-0 text-xl text-Green font-semibold">Education</div>
-          {education.map((item: any) => (
+          {education.map((item) => (
             <Edu_Card key={item.id} data={item} />
           ))}
         </div>
         <div className="order-1 md:order-2">
           <div className="flex flex-col gap-y-4">
             <div className="text-xl text-Green font-semibold">Experience</div>
-            {experience.map((item: any) => (
+            {experience.map((item) => (
               <Exp_Card key={item.id} data={item} />
             ))}
           </div>

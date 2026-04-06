@@ -2,6 +2,7 @@
 
 import CrudPage from "@/components/admin/CrudPage";
 import { createExperience, updateExperience, deleteExperience } from "@/lib/actions/experience";
+import { Experience } from "@/types";
 
 const columns = [
   { key: "title", label: "Company" },
@@ -26,7 +27,7 @@ const fields = [
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 
-export default function ExperienceClient({ data }: { data: any[] }) {
+export default function ExperienceClient({ data }: { data: Experience[] }) {
   return (
     <CrudPage
       title="Experience"

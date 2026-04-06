@@ -16,7 +16,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
-  const userId = (profileData as any).user_id;
+  const userId = profileData.user_id;
 
   const [bannerData, expertise, recommendations, reviews, footerData] = await Promise.all([
     getBannerData(userId),

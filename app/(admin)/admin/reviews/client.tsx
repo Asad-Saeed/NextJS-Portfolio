@@ -2,6 +2,7 @@
 
 import CrudPage from "@/components/admin/CrudPage";
 import { createReview, updateReview, deleteReview } from "@/lib/actions/reviews";
+import { ClientReview } from "@/types";
 
 const columns = [
   { key: "client_name", label: "Client" },
@@ -9,7 +10,10 @@ const columns = [
   {
     key: "client_review",
     label: "Review",
-    render: (v: string) => (v?.length > 60 ? v.slice(0, 60) + "..." : v),
+    render: (v: string | number | boolean | null | undefined) => {
+      const s = String(v || "");
+      return s.length > 60 ? s.slice(0, 60) + "..." : s;
+    },
   },
   { key: "sort_order", label: "Order" },
 ];
@@ -27,7 +31,7 @@ const fields = [
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 
-export default function ReviewsClient({ data }: { data: any[] }) {
+export default function ReviewsClient({ data }: { data: ClientReview[] }) {
   return (
     <CrudPage
       title="Reviews"

@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { FiTrash2, FiMail, FiCheck, FiLoader } from "react-icons/fi";
 import { markAsRead, deleteMessage } from "@/lib/actions/messages";
+import { Message } from "@/types";
 
-export default function MessagesClient({ messages }: { messages: any[] }) {
+export default function MessagesClient({ messages }: { messages: Message[] }) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [markingId, setMarkingId] = useState<string | null>(null);
 

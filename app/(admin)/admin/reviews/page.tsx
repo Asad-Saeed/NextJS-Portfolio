@@ -6,10 +6,11 @@ export default async function ReviewsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) return null;
   const { data } = await supabase
     .from("client_reviews")
     .select("*")
-    .eq("user_id", user!.id)
+    .eq("user_id", user.id)
     .order("sort_order");
   return <ReviewsClient data={data ?? []} />;
 }

@@ -7,7 +7,7 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
-  const userId = (profileData as any).user_id;
+  const userId = profileData.user_id;
   const [bannerData, footerData] = await Promise.all([
     getBannerData(userId),
     getFooterData(userId),
