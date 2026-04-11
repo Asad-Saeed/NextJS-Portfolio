@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { signIn } from "@/lib/actions/auth";
 import { FaLock } from "react-icons/fa";
 import { FiLoader } from "react-icons/fi";
@@ -68,6 +69,13 @@ export default function LoginPage() {
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
+
+          <p className="text-LightGray text-xs text-center mt-6">
+            Don&apos;t have an account?{" "}
+            <Link href="/auth/signup" className="text-Green hover:underline">
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

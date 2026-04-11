@@ -13,7 +13,7 @@ const columns = [
 ];
 
 const fields = [
-  { key: "title", label: "Company Name", placeholder: "e.g. Global Software Consulting" },
+  { key: "title", label: "Company Name", placeholder: "e.g. Acme Corp" },
   { key: "role", label: "Role", placeholder: "e.g. Senior Frontend Engineer" },
   { key: "url", label: "Company URL", placeholder: "https://..." },
   {
@@ -23,7 +23,7 @@ const fields = [
     placeholder: "Job description...",
   },
   { key: "year", label: "Period", placeholder: "e.g. 06/2023 - Present" },
-  { key: "location", label: "Location", placeholder: "e.g. Lahore, Pakistan" },
+  { key: "location", label: "Location", placeholder: "e.g. City, Country" },
   { key: "sort_order", label: "Sort Order", type: "number" as const, placeholder: "0" },
 ];
 

@@ -1,11 +1,28 @@
 export const revalidate = 60;
 
+import type { Metadata } from "next";
 import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import PortfolioCard from "@/components/Portfolio/PortfolioCard";
 import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
 import { getPortfolio } from "@/lib/queries/portfolio";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const profileData = await getProfileBySlug(slug);
+  if (!profileData) return {};
+  const name = profileData.name || "Portfolio";
+  return {
+    title: "Projects",
+    description: `Selected projects and case studies by ${name}.`,
+    alternates: { canonical: `/${slug}/portfolio` },
+  };
+}
 
 export default async function PortfolioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

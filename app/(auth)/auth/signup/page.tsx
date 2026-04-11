@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { signUp } from "@/lib/actions/auth";
 import { FaUserPlus } from "react-icons/fa";
 import { FiLoader } from "react-icons/fi";
@@ -82,6 +83,13 @@ export default function SignupPage() {
               {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
+
+          <p className="text-LightGray text-xs text-center mt-6">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="text-Green hover:underline">
+              Log in
+            </Link>
+          </p>
         </div>
       </div>
     </div>

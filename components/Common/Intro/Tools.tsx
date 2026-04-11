@@ -1,9 +1,10 @@
 import Badge from "../Badge";
-import { TECH_STACK } from "../../../constants/constants";
 import { TechStack } from "@/types";
 
 const Tools = ({ data }: { data?: TechStack[] }) => {
-  const items = data?.length ? data.map((t: TechStack) => t.name) : TECH_STACK;
+  const items = data?.length ? data.map((t: TechStack) => t.name) : [];
+
+  if (items.length === 0) return null;
 
   return (
     <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">
