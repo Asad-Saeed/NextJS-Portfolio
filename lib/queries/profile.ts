@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
 import type { Profile, FooterData } from "@/types";
 
@@ -19,11 +20,11 @@ export type BannerData = Pick<
   | "explore_button_url"
 >;
 
-export async function getProfileBySlug(slug: string): Promise<Profile | null> {
+export const getProfileBySlug = cache(async (slug: string): Promise<Profile | null> => {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase.from("profile").select("*").eq("slug", slug).single();
   return data as Profile | null;
-}
+});
 
 export async function getProfile(userId: string): Promise<Profile | null> {
   const supabase = getPublicSupabaseClient();

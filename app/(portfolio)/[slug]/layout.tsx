@@ -1,9 +1,64 @@
 export const revalidate = 60;
 
+import type { Metadata } from "next";
 import LayoutShell from "@/components/LayoutShell";
 import { getProfileBySlug, getSidebarProfile } from "@/lib/queries/profile";
 import { getLanguages, getTechStack, getSidebarSkills } from "@/lib/queries/sidebar";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const profileData = await getProfileBySlug(slug);
+
+  if (!profileData) {
+    return { title: "Portfolio" };
+  }
+
+  const name = profileData.name || "Portfolio";
+  const designation = profileData.designation || "A personal portfolio platform";
+  const portfolioUrl = `/${slug}`;
+  const profileImage = profileData.profile_image_url || undefined;
+
+  return {
+    title: {
+      default: `${name} — Portfolio`,
+      template: `%s | ${name} — Portfolio`,
+    },
+    description: designation,
+    alternates: {
+      canonical: portfolioUrl,
+    },
+    openGraph: {
+      title: `${name} — Portfolio`,
+      description: designation,
+      url: portfolioUrl,
+      type: "profile",
+      siteName: `${name} — Portfolio`,
+      ...(profileImage && {
+        images: [
+          {
+            url: profileImage,
+            alt: name,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} — Portfolio`,
+      description: designation,
+      ...(profileImage && { images: [profileImage] }),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 export default async function PortfolioLayout({
   children,

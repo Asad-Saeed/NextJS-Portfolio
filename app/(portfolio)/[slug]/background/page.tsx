@@ -1,5 +1,6 @@
 export const revalidate = 60;
 
+import type { Metadata } from "next";
 import Edu_Card from "@/components/Background/Edu_Card";
 import Exp_Card from "@/components/Background/Exp_Card";
 import Banner from "@/components/HomeComponents/Banner";
@@ -8,6 +9,22 @@ import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/pr
 import { getEducation } from "@/lib/queries/education";
 import { getExperience } from "@/lib/queries/experience";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const profileData = await getProfileBySlug(slug);
+  if (!profileData) return {};
+  const name = profileData.name || "Portfolio";
+  return {
+    title: "Background",
+    description: `Education and work experience of ${name}.`,
+    alternates: { canonical: `/${slug}/background` },
+  };
+}
 
 export default async function BackgroundPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

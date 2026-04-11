@@ -1,5 +1,6 @@
 export const revalidate = 60;
 
+import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Banner from "@/components/HomeComponents/Banner";
 import MyExpertise from "@/components/HomeComponents/Expertise/MyExpertise";
@@ -10,6 +11,21 @@ import { getExpertise } from "@/lib/queries/expertise";
 import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const profileData = await getProfileBySlug(slug);
+  if (!profileData) return {};
+  const name = profileData.name || "Portfolio";
+  return {
+    title: { absolute: `${name} — Portfolio` },
+    alternates: { canonical: `/${slug}` },
+  };
+}
 
 export default async function HomePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

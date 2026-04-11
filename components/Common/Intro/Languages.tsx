@@ -5,22 +5,14 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { Language } from "@/types";
 
 const Languages = ({ data }: { data?: Language[] }) => {
-  const languages = useMemo(
-    () =>
-      data?.length
-        ? data
-        : [
-            { name: "Urdu", proficiency: 98 },
-            { name: "English", proficiency: 90 },
-          ],
-    [data]
-  );
+  const languages = useMemo(() => data ?? [], [data]);
 
   const [counts, setCounts] = useState<number[]>(languages.map(() => 0));
   const animatedRef = useRef(false);
 
   useEffect(() => {
     if (animatedRef.current) return;
+    if (languages.length === 0) return;
     animatedRef.current = true;
 
     const timer = setInterval(() => {
@@ -33,6 +25,8 @@ const Languages = ({ data }: { data?: Language[] }) => {
 
     return () => clearInterval(timer);
   }, [languages]);
+
+  if (languages.length === 0) return null;
 
   return (
     <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">

@@ -32,7 +32,7 @@ export default function SidebarClient({ languages, techStack, sidebarSkills }: S
           { key: "sort_order", label: "Order" },
         ]}
         fields={[
-          { key: "name", label: "Language Name", placeholder: "e.g. Urdu" },
+          { key: "name", label: "Language Name", placeholder: "e.g. English" },
           { key: "proficiency", label: "Proficiency (%)", type: "number", placeholder: "98" },
           { key: "sort_order", label: "Sort Order", type: "number", placeholder: "0" },
         ]}

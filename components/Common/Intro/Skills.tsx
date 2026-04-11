@@ -1,9 +1,8 @@
 import LinearBar from "./LinearBar";
-import { SKILLS } from "../../../constants/constants";
 import { SidebarSkill } from "@/types";
 
 const Skills = ({ data }: { data?: SidebarSkill[] }) => {
-  const skills = data?.length ? data : SKILLS;
+  if (!data?.length) return null;
 
   return (
     <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">
@@ -12,7 +11,7 @@ const Skills = ({ data }: { data?: SidebarSkill[] }) => {
           Experties and Competencies
         </span>
         <div className="flex flex-col space-y-4">
-          {skills.map((skill: SidebarSkill | { title: string; level: string }, index: number) => (
+          {data.map((skill: SidebarSkill, index: number) => (
             <LinearBar key={index} title={skill.title} percent={skill.level} bgColor="bg-Green" />
           ))}
         </div>
