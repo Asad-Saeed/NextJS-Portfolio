@@ -6,18 +6,18 @@ Built with Next.js 16, React 19, TypeScript, Supabase (Auth, Database, Storage),
 
 ## Tech Stack
 
-| Category | Technologies |
-|---|---|
-| **Framework** | Next.js 16 (App Router), React 19, TypeScript 6 |
-| **Database & Auth** | Supabase (PostgreSQL, Auth, Row-Level Security, Storage) |
-| **Styling** | Tailwind CSS v4, PostCSS, SASS |
-| **UI Components** | Ant Design 6, React Icons |
-| **State Management** | TanStack React Query 5 |
-| **HTTP Client** | Axios |
-| **GitHub Integration** | GitHub GraphQL API, jogruber Contributions API |
-| **SEO** | JSON-LD Structured Data, Dynamic Metadata, Sitemap, Robots |
-| **Animations** | Typewriter Effect, React Scroll |
-| **Fonts** | Inter (sans), Fira Code (mono) via next/font |
+| Category               | Technologies                                               |
+| ---------------------- | ---------------------------------------------------------- |
+| **Framework**          | Next.js 16 (App Router), React 19, TypeScript 6            |
+| **Database & Auth**    | Supabase (PostgreSQL, Auth, Row-Level Security, Storage)   |
+| **Styling**            | Tailwind CSS v4, PostCSS, SASS                             |
+| **UI Components**      | Ant Design 6, React Icons                                  |
+| **State Management**   | TanStack React Query 5                                     |
+| **HTTP Client**        | Axios                                                      |
+| **GitHub Integration** | GitHub GraphQL API, jogruber Contributions API             |
+| **SEO**                | JSON-LD Structured Data, Dynamic Metadata, Sitemap, Robots |
+| **Animations**         | Typewriter Effect, React Scroll                            |
+| **Fonts**              | Inter (sans), Fira Code (mono) via next/font               |
 
 ## Key Features
 
@@ -159,15 +159,15 @@ NextJS-Portfolio/
 
 ## Available Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
-| `npm run seed` | Seed database with sample data |
+| Command                | Description                    |
+| ---------------------- | ------------------------------ |
+| `npm run dev`          | Start development server       |
+| `npm run build`        | Build for production           |
+| `npm start`            | Start production server        |
+| `npm run lint`         | Run ESLint                     |
+| `npm run format`       | Format code with Prettier      |
+| `npm run format:check` | Check code formatting          |
+| `npm run seed`         | Seed database with sample data |
 
 ## Deployment
 
