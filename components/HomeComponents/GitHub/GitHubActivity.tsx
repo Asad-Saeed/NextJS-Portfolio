@@ -20,7 +20,8 @@ export default async function GitHubActivity({ username, heading }: GitHubActivi
 
   if (!initialData || initialData.weeks.length === 0) return null;
 
-  const availableYears = stats ? getAvailableYears(stats.user.created_at) : [currentYear];
+  const allYears = stats ? getAvailableYears(stats.user.created_at) : [currentYear];
+  const availableYears = allYears.slice(0, 5);
 
   return (
     <GitHubActivityClient
