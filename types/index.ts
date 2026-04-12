@@ -90,9 +90,14 @@ export interface PortfolioProject {
   id: string;
   user_id: string;
   project_name: string;
+  project_slug: string;
   url: string;
   image_url: string;
   project_detail: string;
+  challenge: string;
+  solution: string;
+  impact: string;
+  role: string;
   sort_order: number;
   project_technologies: ProjectTechnology[];
   created_at: string;

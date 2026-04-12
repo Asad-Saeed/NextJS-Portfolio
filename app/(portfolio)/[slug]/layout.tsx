@@ -83,8 +83,41 @@ export default async function PortfolioLayout({
 
   const sidebarData = { profile, languages, techStack, sidebarSkills };
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    mainEntity: {
+      "@type": "Person",
+      name: profileData.name || undefined,
+      jobTitle: profileData.designation || undefined,
+      url: `${siteUrl}/${slug}`,
+      ...(profileData.profile_image_url && { image: profileData.profile_image_url }),
+      ...(profileData.email && { email: profileData.email }),
+      ...(profileData.city &&
+        profileData.residence && {
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: profileData.city,
+            addressRegion: profileData.residence,
+          },
+        }),
+      sameAs: [profileData.github_url, profileData.linkedin_url, profileData.upwork_url].filter(
+        Boolean
+      ),
+      ...(profileData.designation && {
+        knowsAbout: profileData.designation.split("|").map((s: string) => s.trim()),
+      }),
+    },
+  };
+
   return (
     <LayoutShell sidebarData={sidebarData} slug={slug}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {children}
     </LayoutShell>
   );
