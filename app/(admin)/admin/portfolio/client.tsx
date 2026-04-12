@@ -71,12 +71,14 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
 
   async function handleSubmit() {
     setLoading(true);
-    const projectSlug = form.project_name
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+    const projectSlug =
+      editItem?.project_slug ||
+      form.project_name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
     const submitData = { ...form, project_slug: projectSlug };
     const result = editItem
       ? await updateProject(editItem.id, submitData, techs)

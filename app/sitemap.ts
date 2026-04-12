@@ -2,11 +2,12 @@ export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
+import { getSiteUrl } from "@/lib/site-url";
 
 const portfolioSubpaths = ["", "/skills", "/background", "/portfolio", "/contact"] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const supabase = getPublicSupabaseClient();
   const { data: profiles } = await supabase
     .from("profile")

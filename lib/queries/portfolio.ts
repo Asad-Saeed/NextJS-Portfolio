@@ -21,6 +21,6 @@ export async function getProjectBySlug(
     .select("*, project_technologies(*)")
     .eq("user_id", userId)
     .eq("project_slug", projectSlug)
-    .single();
+    .maybeSingle();
   return data as PortfolioProject | null;
 }

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import LayoutShell from "@/components/LayoutShell";
 import { getProfileBySlug, getSidebarProfile } from "@/lib/queries/profile";
 import { getLanguages, getTechStack, getSidebarSkills } from "@/lib/queries/sidebar";
+import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -83,7 +84,7 @@ export default async function PortfolioLayout({
 
   const sidebarData = { profile, languages, techStack, sidebarSkills };
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   const jsonLd = {
     "@context": "https://schema.org",
