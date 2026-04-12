@@ -1,8 +1,8 @@
 const STATUS_CONFIG: Record<string, { label: string; dotClass: string; bgClass: string }> = {
   open_to_work: {
     label: "Open to Work",
-    dotClass: "bg-emerald-400",
-    bgClass: "bg-emerald-400/10 text-emerald-400 border-emerald-400/20",
+    dotClass: "bg-Green",
+    bgClass: "bg-Green/10 text-Green border-Green/20",
   },
   freelance: {
     label: "Freelance",
