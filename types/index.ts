@@ -37,6 +37,7 @@ export interface Profile {
   show_expertise_section: boolean;
   show_recommendations_section: boolean;
   show_reviews_section: boolean;
+  availability_status: string;
   created_at: string;
   updated_at: string;
 }
