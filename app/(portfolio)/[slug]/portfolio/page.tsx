@@ -42,7 +42,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ slug
       <div className="px-4 sm:px-6 py-4 text-lg font-semibold text-Green">My Projects</div>
       <div className="grid grid-flow-row md:grid-cols-2 gap-4 px-4 sm:px-6 mb-6">
         {projects.map((item) => (
-          <PortfolioCard key={item.id} data={item} />
+          <PortfolioCard key={item.id} data={item} slug={slug} />
         ))}
       </div>
       <Footer data={footerData} />

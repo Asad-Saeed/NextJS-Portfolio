@@ -14,6 +14,10 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
     url: "",
     image_url: "",
     project_detail: "",
+    challenge: "",
+    solution: "",
+    impact: "",
+    role: "",
     sort_order: 0,
   });
   const [techs, setTechs] = useState<string[]>([]);
@@ -24,7 +28,17 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
 
   function openCreate() {
     setEditItem(null);
-    setForm({ project_name: "", url: "", image_url: "", project_detail: "", sort_order: 0 });
+    setForm({
+      project_name: "",
+      url: "",
+      image_url: "",
+      project_detail: "",
+      challenge: "",
+      solution: "",
+      impact: "",
+      role: "",
+      sort_order: 0,
+    });
     setTechs([]);
     setShowModal(true);
     setError(null);
@@ -37,6 +51,10 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
       url: item.url,
       image_url: item.image_url,
       project_detail: item.project_detail,
+      challenge: item.challenge || "",
+      solution: item.solution || "",
+      impact: item.impact || "",
+      role: item.role || "",
       sort_order: item.sort_order,
     });
     setTechs((item.project_technologies || []).map((t: ProjectTechnology) => t.tech_name));
@@ -53,9 +71,18 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
 
   async function handleSubmit() {
     setLoading(true);
+    const projectSlug =
+      editItem?.project_slug ||
+      form.project_name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    const submitData = { ...form, project_slug: projectSlug };
     const result = editItem
-      ? await updateProject(editItem.id, form, techs)
-      : await createProject(form, techs);
+      ? await updateProject(editItem.id, submitData, techs)
+      : await createProject(submitData, techs);
     setLoading(false);
     if (result?.error) setError(result.error);
     else setShowModal(false);
@@ -167,6 +194,52 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
                   value={form.project_detail}
                   onChange={(e) => setForm({ ...form, project_detail: e.target.value })}
                   rows={3}
+                  className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                />
+              </div>
+              <div className="border-t border-DarkGray/30 pt-3 mt-1">
+                <span className="text-LightGray text-xs font-semibold uppercase tracking-wide">
+                  Case Study Details
+                </span>
+                <p className="text-LightGray/60 text-[10px] mt-0.5 mb-3">
+                  Fill these to create a detailed case study page for this project.
+                </p>
+              </div>
+              <div>
+                <label className="text-LightGray text-xs mb-1 block">Challenge</label>
+                <textarea
+                  value={form.challenge}
+                  onChange={(e) => setForm({ ...form, challenge: e.target.value })}
+                  rows={2}
+                  placeholder="What problem did the client/team face?"
+                  className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                />
+              </div>
+              <div>
+                <label className="text-LightGray text-xs mb-1 block">Solution</label>
+                <textarea
+                  value={form.solution}
+                  onChange={(e) => setForm({ ...form, solution: e.target.value })}
+                  rows={2}
+                  placeholder="What did you build and why?"
+                  className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                />
+              </div>
+              <div>
+                <label className="text-LightGray text-xs mb-1 block">Impact</label>
+                <input
+                  value={form.impact}
+                  onChange={(e) => setForm({ ...form, impact: e.target.value })}
+                  placeholder="e.g. 40% faster load time, 100K users served"
+                  className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                />
+              </div>
+              <div>
+                <label className="text-LightGray text-xs mb-1 block">Your Role</label>
+                <input
+                  value={form.role}
+                  onChange={(e) => setForm({ ...form, role: e.target.value })}
+                  placeholder="e.g. Led frontend team of 3 engineers"
                   className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 />
               </div>

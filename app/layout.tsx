@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import QueryProvider from "@/lib/providers/query-provider";
+import { getSiteUrl } from "@/lib/site-url";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -15,10 +16,8 @@ const firaCode = Fira_Code({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "Portfolio",
     template: "%s | Portfolio",
