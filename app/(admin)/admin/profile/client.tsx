@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { FiLoader, FiX } from "react-icons/fi";
+import { FaGithub } from "react-icons/fa";
 import { updateProfile } from "@/lib/actions/profile";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { parseGithubUsername } from "@/lib/github";
 import { Profile } from "@/types";
 
 const sections = [
@@ -159,6 +161,87 @@ export default function ProfileClient({ profile }: { profile: Profile | null }) 
               accept=".pdf,application/pdf"
             />
           </div>
+        </div>
+
+        {/* Home Page Sections */}
+        <div className="card_stylings p-6">
+          <h2 className="text-Snow text-base font-semibold mb-4">Home Page Sections</h2>
+          <div className="flex flex-col gap-3">
+            {[
+              {
+                key: "show_github_section",
+                label: "GitHub Activity",
+                desc: "Contribution graph, stats, top languages, and featured repositories.",
+              },
+              {
+                key: "show_expertise_section",
+                label: "My Expertise",
+                desc: "Show expertise cards on the home page.",
+              },
+              {
+                key: "show_recommendations_section",
+                label: "Recommendations",
+                desc: "Show LinkedIn-style recommendations on the home page.",
+              },
+              {
+                key: "show_reviews_section",
+                label: "Client Reviews",
+                desc: "Show client review testimonials on the home page.",
+              },
+            ].map((item) => (
+              <label key={item.key} className="flex items-start gap-3 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={form[item.key] !== false}
+                  onChange={(e) => setForm({ ...form, [item.key]: e.target.checked })}
+                  className="mt-1 w-4 h-4 accent-Green cursor-pointer"
+                />
+                <div className="flex-1">
+                  <div className="text-Snow text-sm font-medium">{item.label}</div>
+                  <div className="text-LightGray text-xs mt-0.5">{item.desc}</div>
+                </div>
+              </label>
+            ))}
+          </div>
+
+          {/* GitHub settings (shown when GitHub section is enabled) */}
+          {form.show_github_section !== false && (
+            <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-DarkGray/30">
+              <div>
+                <label className="text-LightGray text-xs mb-1 block">GitHub Section Heading</label>
+                <input
+                  value={String(form.github_section_heading || "")}
+                  onChange={(e) => setForm({ ...form, github_section_heading: e.target.value })}
+                  placeholder="GitHub Activity"
+                  className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                />
+              </div>
+
+              {(() => {
+                const username = parseGithubUsername(String(form.github_url || ""));
+                if (!form.github_url) {
+                  return (
+                    <div className="text-xs text-yellow-400 bg-yellow-400/10 rounded-lg p-3 border border-yellow-400/20">
+                      Enter your GitHub URL in the Social Links section above for this to work.
+                    </div>
+                  );
+                }
+                if (!username) {
+                  return (
+                    <div className="text-xs text-red-400 bg-red-400/10 rounded-lg p-3 border border-red-400/20">
+                      Could not parse a GitHub username from your URL. Expected format:
+                      https://github.com/your-username
+                    </div>
+                  );
+                }
+                return (
+                  <div className="text-xs text-LightGray bg-DeepNightBlack rounded-lg p-3 border border-DarkGray/50">
+                    Detected username: <span className="text-Green font-semibold">{username}</span>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
         </div>
 
         {/* Typewriter Subheadings */}

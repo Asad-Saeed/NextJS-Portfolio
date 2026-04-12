@@ -32,6 +32,11 @@ export interface Profile {
   contact_banner_heading: string;
   explore_button_text: string;
   explore_button_url: string;
+  show_github_section: boolean;
+  github_section_heading: string;
+  show_expertise_section: boolean;
+  show_recommendations_section: boolean;
+  show_reviews_section: boolean;
   created_at: string;
   updated_at: string;
 }
