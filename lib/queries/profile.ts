@@ -43,7 +43,7 @@ export async function getSidebarProfile(userId: string): Promise<Partial<Profile
   const { data } = await supabase
     .from("profile")
     .select(
-      "name, designation, profile_image_url, resume_url, email, phone, github_url, linkedin_url, upwork_url, residence, nationality, city, age"
+      "name, designation, profile_image_url, resume_url, email, phone, github_url, linkedin_url, upwork_url, residence, nationality, city, age, availability_status"
     )
     .eq("user_id", userId)
     .single();

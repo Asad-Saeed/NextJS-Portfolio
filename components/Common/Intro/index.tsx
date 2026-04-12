@@ -12,6 +12,7 @@ import Skills from "./Skills";
 import Image from "next/image";
 import { useLongPress } from "@/lib/hooks/useLongPress";
 import { createClient } from "@/lib/supabase/client";
+import AvailabilityBadge from "@/components/Common/AvailabilityBadge";
 import { SidebarData } from "@/types";
 
 interface IntroProps {
@@ -47,7 +48,7 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
   return (
     <>
       {/* fixed at top */}
-      <div className="headerr z-50 absolute bg-MidNightBlack backdrop-blur-sm inset-y-0 h-48 top-0 flex items-center justify-center w-full flex-col px-4 gap-y-4 card_stylings">
+      <div className="headerr z-50 absolute bg-MidNightBlack backdrop-blur-sm inset-y-0 h-48 top-0 flex items-center justify-center w-full flex-col px-4 gap-y-1 card_stylings">
         <div {...longPressHandlers} className="cursor-pointer select-none">
           {profileImage ? (
             <Image
@@ -64,16 +65,13 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <span className="text-Snow text-base font-bold break-normal">
-            <Link href={homeUrl} rel="noreferrer">
-              {name}
-            </Link>
-          </span>
-          {designation && (
-            <span className="text-sm text-LightGray text-center mt-2">{designation}</span>
-          )}
-        </div>
+        <span className="text-Snow text-base font-bold break-normal">
+          <Link href={homeUrl} rel="noreferrer">
+            {name}
+          </Link>
+        </span>
+        <AvailabilityBadge status={profile?.availability_status} />
+        {designation && <span className="text-sm text-LightGray text-center">{designation}</span>}
       </div>
 
       {/* middle components */}

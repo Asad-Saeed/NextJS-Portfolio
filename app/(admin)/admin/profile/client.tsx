@@ -131,6 +131,43 @@ export default function ProfileClient({ profile }: { profile: Profile | null }) 
           </div>
         ))}
 
+        {/* Availability Status */}
+        <div className="card_stylings p-6">
+          <h2 className="text-Snow text-base font-semibold mb-4">Availability Status</h2>
+          <div className="flex flex-col gap-3">
+            <p className="text-LightGray text-xs">
+              Shown as a badge below your name in the sidebar. Recruiters look for this first.
+            </p>
+            <div className="flex flex-col gap-2">
+              {[
+                { value: "open_to_work", label: "Open to Work", dot: "bg-emerald-400" },
+                { value: "freelance", label: "Available for Freelance", dot: "bg-amber-400" },
+                { value: "not_available", label: "Not Available (hidden)", dot: "bg-SlateGray" },
+              ].map((opt) => (
+                <label
+                  key={opt.value}
+                  className={`flex items-center gap-3 cursor-pointer select-none rounded-lg p-3 border transition-colors ${
+                    form.availability_status === opt.value
+                      ? "border-Green/40 bg-Green/5"
+                      : "border-DarkGray/50 hover:border-DarkGray"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="availability_status"
+                    value={opt.value}
+                    checked={form.availability_status === opt.value}
+                    onChange={(e) => setForm({ ...form, availability_status: e.target.value })}
+                    className="sr-only"
+                  />
+                  <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${opt.dot}`} />
+                  <span className="text-Snow text-sm">{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Media section with upload */}
         <div className="card_stylings p-6">
           <h2 className="text-Snow text-base font-semibold mb-4">Media</h2>
