@@ -17,7 +17,20 @@ export async function createCertification(data: Record<string, unknown>) {
 
 export async function updateCertification(id: string, data: Record<string, unknown>) {
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.from("certifications").update(data).eq("id", id);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated" };
+
+  const { user_id: _ignored, ...updateData } = data;
+  void _ignored;
+
+  const { error } = await supabase
+    .from("certifications")
+    .update(updateData)
+    .eq("id", id)
+    .eq("user_id", user.id);
+
   if (error) return { error: error.message };
   revalidatePath("/", "layout");
   return { success: true };
@@ -25,7 +38,17 @@ export async function updateCertification(id: string, data: Record<string, unkno
 
 export async function deleteCertification(id: string) {
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.from("certifications").delete().eq("id", id);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated" };
+
+  const { error } = await supabase
+    .from("certifications")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
   if (error) return { error: error.message };
   revalidatePath("/", "layout");
   return { success: true };
