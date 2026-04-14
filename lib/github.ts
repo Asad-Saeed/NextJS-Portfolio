@@ -28,17 +28,76 @@ type JogruberResponse = {
   contributions: JogruberDay[];
 };
 
-const githubHeaders = (): HeadersInit => {
+const githubHeaders = (token?: string): HeadersInit => {
   const headers: HeadersInit = { Accept: "application/vnd.github+json" };
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const t = token || process.env.GITHUB_TOKEN;
+  if (t) {
+    headers.Authorization = `Bearer ${t}`;
   }
   return headers;
 };
 
+function tokenForIndex(index: number): string | undefined {
+  if (index === 0) return process.env.GITHUB_TOKEN;
+  return process.env.GITHUB_TOKEN_SECONDARY || process.env.GITHUB_TOKEN;
+}
+
 export function getCurrentYear(): string {
   return String(new Date().getUTCFullYear());
 }
+
+function countToLevel(count: number, max: number): ContributionLevel {
+  if (count <= 0 || max <= 0) return 0;
+  const ratio = count / max;
+  if (ratio <= 0.25) return 1;
+  if (ratio <= 0.5) return 2;
+  if (ratio <= 0.75) return 3;
+  return 4;
+}
+
+export const getMergedGithubContributions = cache(
+  async (usernames: string[], year: string): Promise<ContributionsData | null> => {
+    const cleaned = usernames.filter(Boolean);
+    if (cleaned.length === 0) return null;
+    if (cleaned.length === 1) return getGithubContributions(cleaned[0], year, tokenForIndex(0));
+
+    const results = await Promise.all(
+      cleaned.map((u, i) => getGithubContributions(u, year, tokenForIndex(i)))
+    );
+    const valid = results.filter((r): r is ContributionsData => r !== null);
+    if (valid.length === 0) return null;
+    if (valid.length === 1) return valid[0];
+
+    const mergedMap = new Map<string, number>();
+    for (const data of valid) {
+      for (const week of data.weeks) {
+        for (const day of week) {
+          if (!day.date) continue;
+          mergedMap.set(day.date, (mergedMap.get(day.date) ?? 0) + day.count);
+        }
+      }
+    }
+
+    const maxCount = Math.max(0, ...Array.from(mergedMap.values()));
+    const template = valid[0];
+
+    const newWeeks: ContributionDay[][] = template.weeks.map((week) =>
+      week.map((day) => {
+        if (!day.date) return day;
+        const count = mergedMap.get(day.date) ?? 0;
+        return {
+          date: day.date,
+          count,
+          level: countToLevel(count, maxCount),
+        };
+      })
+    );
+
+    const total = valid.reduce((sum, d) => sum + d.total, 0);
+
+    return { total, weeks: newWeeks, months: template.months };
+  }
+);
 
 const MONTH_NAMES = [
   "Jan",
@@ -70,13 +129,24 @@ const GQL_LEVEL_MAP: Record<string, ContributionLevel> = {
 
 async function fetchContribsFromGraphQL(
   username: string,
-  year: number
+  year: number | "last",
+  tokenOverride?: string
 ): Promise<ContribSource | null> {
-  const token = process.env.GITHUB_TOKEN;
+  const token = tokenOverride || process.env.GITHUB_TOKEN;
   if (!token) return null;
 
-  const from = `${year}-01-01T00:00:00Z`;
-  const to = `${year}-12-31T23:59:59Z`;
+  let from: string;
+  let to: string;
+  if (year === "last") {
+    const now = new Date();
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setUTCDate(oneYearAgo.getUTCDate() - 364);
+    from = oneYearAgo.toISOString();
+    to = now.toISOString();
+  } else {
+    from = `${year}-01-01T00:00:00Z`;
+    to = `${year}-12-31T23:59:59Z`;
+  }
 
   const query = `
     query($username: String!, $from: DateTime!, $to: DateTime!) {
@@ -175,64 +245,90 @@ async function fetchContribsFromJogruber(
   }
 }
 
-export const getGithubContributions = cache(
-  async (username: string, year: string): Promise<ContributionsData | null> => {
-    if (!/^\d{4}$/.test(year)) return null;
-    const yearNum = parseInt(year, 10);
+function buildContributionGrid(
+  contribMap: Map<string, { count: number; level: ContributionLevel }>,
+  startDate: Date,
+  endDate: Date
+): { weeks: ContributionDay[][]; months: { name: string; weekIndex: number }[] } {
+  const weeks: ContributionDay[][] = [];
+  let currentWeek: ContributionDay[] = [];
 
-    const source =
-      (await fetchContribsFromGraphQL(username, yearNum)) ??
-      (await fetchContribsFromJogruber(username, year));
-    if (!source) return null;
+  const firstDayOfWeek = startDate.getUTCDay();
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    currentWeek.push({ date: "", count: 0, level: 0 });
+  }
 
-    const { map: contribMap, total } = source;
+  const cursor = new Date(startDate);
+  while (cursor.getTime() <= endDate.getTime()) {
+    const dateStr = cursor.toISOString().slice(0, 10);
+    const contrib = contribMap.get(dateStr);
+    currentWeek.push({
+      date: dateStr,
+      count: contrib?.count ?? 0,
+      level: contrib?.level ?? 0,
+    });
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
 
-    const startDate = new Date(Date.UTC(yearNum, 0, 1));
-    const endDate = new Date(Date.UTC(yearNum, 11, 31));
-
-    const weeks: ContributionDay[][] = [];
-    let currentWeek: ContributionDay[] = [];
-
-    const firstDayOfWeek = startDate.getUTCDay();
-    for (let i = 0; i < firstDayOfWeek; i++) {
+  if (currentWeek.length > 0) {
+    while (currentWeek.length < 7) {
       currentWeek.push({ date: "", count: 0, level: 0 });
     }
+    weeks.push(currentWeek);
+  }
 
-    const cursor = new Date(startDate);
-    while (cursor.getTime() <= endDate.getTime()) {
-      const dateStr = cursor.toISOString().slice(0, 10);
-      const contrib = contribMap.get(dateStr);
-      currentWeek.push({
-        date: dateStr,
-        count: contrib?.count ?? 0,
-        level: contrib?.level ?? 0,
-      });
-      if (currentWeek.length === 7) {
-        weeks.push(currentWeek);
-        currentWeek = [];
-      }
-      cursor.setUTCDate(cursor.getUTCDate() + 1);
+  const months: { name: string; weekIndex: number }[] = [];
+  let lastMonth = -1;
+  weeks.forEach((week, weekIndex) => {
+    const firstRealDay = week.find((d) => d.date);
+    if (!firstRealDay) return;
+    const month = new Date(firstRealDay.date + "T00:00:00Z").getUTCMonth();
+    if (month !== lastMonth) {
+      months.push({ name: MONTH_NAMES[month], weekIndex });
+      lastMonth = month;
+    }
+  });
+
+  return { weeks, months };
+}
+
+export const getGithubContributions = cache(
+  async (
+    username: string,
+    year: string,
+    tokenOverride?: string
+  ): Promise<ContributionsData | null> => {
+    if (!/^(last|\d{4})$/.test(year)) return null;
+    const isLast = year === "last";
+
+    const source = isLast
+      ? ((await fetchContribsFromGraphQL(username, "last", tokenOverride)) ??
+        (await fetchContribsFromJogruber(username, "last")))
+      : ((await fetchContribsFromGraphQL(username, parseInt(year, 10), tokenOverride)) ??
+        (await fetchContribsFromJogruber(username, year)));
+
+    if (!source) return null;
+    const { map: contribMap, total } = source;
+
+    let startDate: Date;
+    let endDate: Date;
+
+    if (isLast) {
+      const dates = Array.from(contribMap.keys()).sort();
+      if (dates.length === 0) return null;
+      startDate = new Date(dates[0] + "T00:00:00Z");
+      endDate = new Date(dates[dates.length - 1] + "T00:00:00Z");
+    } else {
+      const yearNum = parseInt(year, 10);
+      startDate = new Date(Date.UTC(yearNum, 0, 1));
+      endDate = new Date(Date.UTC(yearNum, 11, 31));
     }
 
-    if (currentWeek.length > 0) {
-      while (currentWeek.length < 7) {
-        currentWeek.push({ date: "", count: 0, level: 0 });
-      }
-      weeks.push(currentWeek);
-    }
-
-    const months: { name: string; weekIndex: number }[] = [];
-    let lastMonth = -1;
-    weeks.forEach((week, weekIndex) => {
-      const firstRealDay = week.find((d) => d.date);
-      if (!firstRealDay) return;
-      const month = new Date(firstRealDay.date + "T00:00:00Z").getUTCMonth();
-      if (month !== lastMonth) {
-        months.push({ name: MONTH_NAMES[month], weekIndex });
-        lastMonth = month;
-      }
-    });
-
+    const { weeks, months } = buildContributionGrid(contribMap, startDate, endDate);
     return { total, weeks, months };
   }
 );
@@ -479,8 +575,11 @@ type GraphQLPinnedResponse = {
   errors?: unknown;
 };
 
-async function fetchPinnedRepos(username: string): Promise<GithubRepo[] | null> {
-  const token = process.env.GITHUB_TOKEN;
+async function fetchPinnedRepos(
+  username: string,
+  tokenOverride?: string
+): Promise<GithubRepo[] | null> {
+  const token = tokenOverride || process.env.GITHUB_TOKEN;
   if (!token) return null;
 
   const query = `
@@ -537,52 +636,114 @@ async function fetchPinnedRepos(username: string): Promise<GithubRepo[] | null> 
   }
 }
 
-export const getGithubStats = cache(async (username: string): Promise<GithubStats | null> => {
-  try {
-    const [userRes, reposRes, pinnedRepos] = await Promise.all([
-      fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, {
-        headers: githubHeaders(),
-        next: { revalidate: 600 },
-      }),
-      fetch(
-        `https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=updated&per_page=100&type=owner`,
-        { headers: githubHeaders(), next: { revalidate: 600 } }
-      ),
-      fetchPinnedRepos(username),
-    ]);
+export const getGithubStats = cache(
+  async (username: string, tokenOverride?: string): Promise<GithubStats | null> => {
+    try {
+      const [userRes, reposRes, pinnedRepos] = await Promise.all([
+        fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, {
+          headers: githubHeaders(tokenOverride),
+          next: { revalidate: 600 },
+        }),
+        fetch(
+          `https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=updated&per_page=100&type=owner`,
+          { headers: githubHeaders(tokenOverride), next: { revalidate: 600 } }
+        ),
+        fetchPinnedRepos(username, tokenOverride),
+      ]);
 
-    if (!userRes.ok || !reposRes.ok) return null;
+      if (!userRes.ok || !reposRes.ok) return null;
 
-    const user = (await userRes.json()) as GithubUser;
-    const rawRepos = (await reposRes.json()) as RawRepo[];
+      const user = (await userRes.json()) as GithubUser;
+      const rawRepos = (await reposRes.json()) as RawRepo[];
 
-    const ownRepos = rawRepos.filter((r) => !r.fork && !r.archived);
+      const ownRepos = rawRepos.filter((r) => !r.fork && !r.archived);
 
-    const totalStars = ownRepos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
-    const totalForks = ownRepos.reduce((sum, r) => sum + (r.forks_count || 0), 0);
+      const totalStars = ownRepos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+      const totalForks = ownRepos.reduce((sum, r) => sum + (r.forks_count || 0), 0);
 
-    const topRepos: GithubRepo[] =
-      pinnedRepos ??
-      [...ownRepos]
-        .sort((a, b) => b.stargazers_count - a.stargazers_count)
-        .slice(0, 6)
-        .map((r) => ({
-          name: r.name,
-          description: r.description,
-          stars: r.stargazers_count,
-          forks: r.forks_count,
-          language: r.language,
-          url: r.html_url,
-        }));
+      const topRepos: GithubRepo[] =
+        pinnedRepos ??
+        [...ownRepos]
+          .sort((a, b) => b.stargazers_count - a.stargazers_count)
+          .slice(0, 6)
+          .map((r) => ({
+            name: r.name,
+            description: r.description,
+            stars: r.stargazers_count,
+            forks: r.forks_count,
+            language: r.language,
+            url: r.html_url,
+          }));
 
-    const langCounts: Record<string, number> = {};
-    for (const r of ownRepos) {
-      if (r.language) langCounts[r.language] = (langCounts[r.language] ?? 0) + 1;
+      const langCounts: Record<string, number> = {};
+      for (const r of ownRepos) {
+        if (r.language) langCounts[r.language] = (langCounts[r.language] ?? 0) + 1;
+      }
+      const langTotal = Object.values(langCounts).reduce((a, b) => a + b, 0);
+      const topLanguages: GithubLanguage[] =
+        langTotal > 0
+          ? Object.entries(langCounts)
+              .map(([name, count]) => ({
+                name,
+                count,
+                percentage: Math.round((count / langTotal) * 100),
+              }))
+              .sort((a, b) => b.count - a.count)
+              .slice(0, 6)
+          : [];
+
+      return { user, totalStars, totalForks, topRepos, topLanguages };
+    } catch {
+      return null;
     }
-    const langTotal = Object.values(langCounts).reduce((a, b) => a + b, 0);
+  }
+);
+
+export const getMergedGithubStats = cache(
+  async (usernames: string[]): Promise<GithubStats | null> => {
+    const cleaned = usernames.filter(Boolean);
+    if (cleaned.length === 0) return null;
+    if (cleaned.length === 1) return getGithubStats(cleaned[0], tokenForIndex(0));
+
+    const results = await Promise.all(cleaned.map((u, i) => getGithubStats(u, tokenForIndex(i))));
+    const valid = results.filter((r): r is GithubStats => r !== null);
+    if (valid.length === 0) return null;
+    if (valid.length === 1) return valid[0];
+
+    const primary = valid[0];
+
+    const totalStars = valid.reduce((sum, s) => sum + s.totalStars, 0);
+    const totalForks = valid.reduce((sum, s) => sum + s.totalForks, 0);
+    const totalFollowers = valid.reduce((sum, s) => sum + s.user.followers, 0);
+    const totalPublicRepos = valid.reduce((sum, s) => sum + s.user.public_repos, 0);
+
+    const mergedUser: GithubUser = {
+      ...primary.user,
+      followers: totalFollowers,
+      public_repos: totalPublicRepos,
+    };
+
+    const allRepos = valid.flatMap((s) => s.topRepos);
+    const seenRepoNames = new Set<string>();
+    const topRepos: GithubRepo[] = [];
+    for (const repo of [...allRepos].sort((a, b) => b.stars - a.stars)) {
+      const key = `${repo.url}`;
+      if (seenRepoNames.has(key)) continue;
+      seenRepoNames.add(key);
+      topRepos.push(repo);
+      if (topRepos.length >= 6) break;
+    }
+
+    const langMap = new Map<string, number>();
+    for (const stats of valid) {
+      for (const lang of stats.topLanguages) {
+        langMap.set(lang.name, (langMap.get(lang.name) ?? 0) + lang.count);
+      }
+    }
+    const langTotal = Array.from(langMap.values()).reduce((a, b) => a + b, 0);
     const topLanguages: GithubLanguage[] =
       langTotal > 0
-        ? Object.entries(langCounts)
+        ? Array.from(langMap.entries())
             .map(([name, count]) => ({
               name,
               count,
@@ -592,8 +753,12 @@ export const getGithubStats = cache(async (username: string): Promise<GithubStat
             .slice(0, 6)
         : [];
 
-    return { user, totalStars, totalForks, topRepos, topLanguages };
-  } catch {
-    return null;
+    return {
+      user: mergedUser,
+      totalStars,
+      totalForks,
+      topRepos,
+      topLanguages,
+    };
   }
-});
+);

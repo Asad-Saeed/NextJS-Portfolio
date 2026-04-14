@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import type { Metadata } from "next";
 import Edu_Card from "@/components/Background/Edu_Card";

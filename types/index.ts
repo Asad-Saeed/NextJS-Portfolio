@@ -13,6 +13,7 @@ export interface Profile {
   email: string;
   phone: string;
   github_url: string;
+  secondary_github_url: string;
   linkedin_url: string;
   upwork_url: string;
   profile_image_url: string;
@@ -37,6 +38,7 @@ export interface Profile {
   show_expertise_section: boolean;
   show_recommendations_section: boolean;
   show_reviews_section: boolean;
+  show_certifications_section: boolean;
   availability_status: string;
   created_at: string;
   updated_at: string;
@@ -171,6 +173,19 @@ export interface SidebarSkill {
   title: string;
   level: string;
   sort_order: number;
+}
+
+export interface Certification {
+  id: string;
+  user_id: string;
+  title: string;
+  issuer: string;
+  issue_date: string;
+  credential_url: string;
+  badge_image_url: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Message {

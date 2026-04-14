@@ -1,18 +1,17 @@
 import {
-  getGithubStats,
-  getGithubContributions,
+  getMergedGithubStats,
+  getMergedGithubContributions,
   computeAchievements,
-  getCurrentYear,
 } from "@/lib/github";
 
 interface GitHubAchievementsProps {
-  username: string;
+  usernames: string[];
 }
 
-export default async function GitHubAchievements({ username }: GitHubAchievementsProps) {
+export default async function GitHubAchievements({ usernames }: GitHubAchievementsProps) {
   const [stats, contributions] = await Promise.all([
-    getGithubStats(username),
-    getGithubContributions(username, getCurrentYear()),
+    getMergedGithubStats(usernames),
+    getMergedGithubContributions(usernames, "last"),
   ]);
 
   if (!stats) return null;

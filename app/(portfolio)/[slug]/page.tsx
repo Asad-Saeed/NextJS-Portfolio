@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
@@ -6,6 +6,7 @@ import Banner from "@/components/HomeComponents/Banner";
 import MyExpertise from "@/components/HomeComponents/Expertise/MyExpertise";
 import Recommendations from "@/components/HomeComponents/Recommendations/Recommendations";
 import ClientReviews from "@/components/HomeComponents/ClientReviews/ClientReviews";
+import Certifications from "@/components/HomeComponents/Certifications/Certifications";
 import GitHubActivity from "@/components/HomeComponents/GitHub/GitHubActivity";
 import GitHubProStats from "@/components/HomeComponents/GitHub/GitHubProStats";
 import GitHubAchievements from "@/components/HomeComponents/GitHub/GitHubAchievements";
@@ -13,6 +14,7 @@ import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/pr
 import { getExpertise } from "@/lib/queries/expertise";
 import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
+import { getCertifications } from "@/lib/queries/certifications";
 import { parseGithubUsername } from "@/lib/github";
 import { notFound } from "next/navigation";
 
@@ -38,34 +40,42 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
 
   const userId = profileData.user_id;
 
-  const [bannerData, expertise, recommendations, reviews, footerData] = await Promise.all([
-    getBannerData(userId),
-    getExpertise(userId),
-    getRecommendations(userId),
-    getReviews(userId),
-    getFooterData(userId),
-  ]);
+  const [bannerData, expertise, recommendations, reviews, certifications, footerData] =
+    await Promise.all([
+      getBannerData(userId),
+      getExpertise(userId),
+      getRecommendations(userId),
+      getReviews(userId),
+      getCertifications(userId),
+      getFooterData(userId),
+    ]);
 
-  const githubUsername = profileData.show_github_section
-    ? parseGithubUsername(profileData.github_url)
-    : null;
+  const githubUsernames = profileData.show_github_section
+    ? [
+        parseGithubUsername(profileData.github_url),
+        parseGithubUsername(profileData.secondary_github_url),
+      ].filter((u): u is string => Boolean(u))
+    : [];
+  const showGithub = githubUsernames.length > 0;
   const githubHeading = profileData.github_section_heading || "GitHub Activity";
 
   const showExpertise = profileData.show_expertise_section !== false;
   const showRecommendations = profileData.show_recommendations_section !== false;
   const showReviews = profileData.show_reviews_section !== false;
+  const showCertifications = profileData.show_certifications_section !== false;
 
   return (
     <div>
       <Banner data={bannerData} />
-      {githubUsername && (
+      {showGithub && (
         <div className="flex flex-col gap-4 px-4 sm:px-6 pt-6 pb-4">
-          <GitHubActivity username={githubUsername} heading={githubHeading} />
-          <GitHubProStats username={githubUsername} />
-          <GitHubAchievements username={githubUsername} />
+          <GitHubActivity usernames={githubUsernames} heading={githubHeading} />
+          <GitHubProStats usernames={githubUsernames} />
+          <GitHubAchievements usernames={githubUsernames} />
         </div>
       )}
       {showExpertise && <MyExpertise data={expertise} />}
+      {showCertifications && <Certifications data={certifications} />}
       {showRecommendations && <Recommendations data={recommendations} />}
       {showReviews && <ClientReviews data={reviews} />}
       <Footer data={footerData} />

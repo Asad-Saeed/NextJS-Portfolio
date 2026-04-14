@@ -13,7 +13,7 @@ const levelClass: Record<ContributionLevel, string> = {
 };
 
 interface GitHubActivityClientProps {
-  username: string;
+  usernames: string[];
   heading: string;
   initialData: ContributionsData;
   initialYear: string;
@@ -21,7 +21,7 @@ interface GitHubActivityClientProps {
 }
 
 export default function GitHubActivityClient({
-  username,
+  usernames,
   heading,
   initialData,
   initialYear,
@@ -38,7 +38,7 @@ export default function GitHubActivityClient({
     startTransition(async () => {
       try {
         const res = await fetch(
-          `/api/github/contributions?username=${encodeURIComponent(username)}&year=${year}`
+          `/api/github/contributions?username=${encodeURIComponent(usernames.join(","))}&year=${year}`
         );
         if (!res.ok) {
           setError("Couldn't load data for that year.");
@@ -53,10 +53,10 @@ export default function GitHubActivityClient({
     });
   }
 
-  const yearButtons: { key: string; label: string }[] = availableYears.map((y) => ({
-    key: y,
-    label: y,
-  }));
+  const yearButtons: { key: string; label: string }[] = [
+    { key: "last", label: "Last year" },
+    ...availableYears.map((y) => ({ key: y, label: y })),
+  ];
 
   return (
     <div className="card_stylings p-4 sm:p-6">
@@ -67,7 +67,7 @@ export default function GitHubActivityClient({
         </div>
         <div className="text-xs sm:text-sm text-LightGray">
           <span className="text-Green font-bold">{data.total.toLocaleString("en-US")}</span>{" "}
-          contributions in {selectedYear}
+          contributions in {selectedYear === "last" ? "the last year" : selectedYear}
         </div>
       </div>
 
@@ -157,7 +157,7 @@ export default function GitHubActivityClient({
           </div>
 
           {/* Legend */}
-          <div className="flex items-center justify-end gap-2 mt-3 text-[10px] text-LightGray">
+          <div className="flex items-center justify-end gap-2 mt-3 text-xs text-SilverGray">
             <span>Less</span>
             <div className={`w-3 h-3 rounded-[2px] ${levelClass[0]}`} />
             <div className={`w-3 h-3 rounded-[2px] ${levelClass[1]}`} />

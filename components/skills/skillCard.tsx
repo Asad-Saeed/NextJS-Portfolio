@@ -16,6 +16,7 @@ const SkillCard = ({ data }: { data: Skill }) => {
           alt={techName}
           width={600}
           height={400}
+          sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
           className="w-full object-cover opacity-30 h-24 sm:h-48 md:h-64"
         />
       )}

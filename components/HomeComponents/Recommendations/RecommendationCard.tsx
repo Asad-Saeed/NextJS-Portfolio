@@ -16,6 +16,7 @@ const RecommendationCard = ({ data }: { data: Recommendation }) => {
             alt={data?.name}
             width={64}
             height={64}
+            sizes="64px"
             className="absolute z-10 right-10 -top-5 border-Green w-16 h-16 border-[3px] rounded-full m-0"
           />
         )}

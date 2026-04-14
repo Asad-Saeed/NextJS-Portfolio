@@ -60,7 +60,7 @@ export default function ImageUpload({
         <div className="mb-3 relative inline-block">
           {isImage ? (
             <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-DarkGray/50">
-              <Image src={value} alt={label} fill className="object-cover" unoptimized />
+              <Image src={value} alt={label} fill sizes="96px" className="object-cover" />
             </div>
           ) : (
             <a

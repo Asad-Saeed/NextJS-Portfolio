@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import Badge from "@/components/Common/Badge";
 import { FiExternalLink, FiArrowLeft } from "react-icons/fi";
 import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
+import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 import { ProjectTechnology } from "@/types";
 
@@ -50,8 +51,38 @@ export default async function CaseStudyPage({
 
   const techs = projectData.project_technologies || [];
 
+  const siteUrl = getSiteUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: profileData.name || "Portfolio",
+        item: `${siteUrl}/${slug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${siteUrl}/${slug}/portfolio`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: projectData.project_name,
+        item: `${siteUrl}/${slug}/portfolio/${project}`,
+      },
+    ],
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Banner data={bannerData} heading={bannerData?.portfolio_banner_heading} />
 
       <div className="px-4 sm:px-6 py-6">
@@ -72,6 +103,8 @@ export default async function CaseStudyPage({
                 alt={projectData.project_name}
                 width={1200}
                 height={600}
+                sizes="(min-width: 1024px) 75vw, 100vw"
+                priority
                 className="w-full object-cover h-48 sm:h-64 md:h-80"
               />
             </div>
