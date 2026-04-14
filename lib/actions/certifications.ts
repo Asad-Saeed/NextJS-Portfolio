@@ -22,8 +22,7 @@ export async function updateCertification(id: string, data: Record<string, unkno
   } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated" };
 
-  const { user_id: _ignored, ...updateData } = data;
-  void _ignored;
+  const { user_id: _u, id: _i, ...updateData } = data;
 
   const { error } = await supabase
     .from("certifications")
