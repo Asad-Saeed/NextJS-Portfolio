@@ -45,7 +45,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
       {/* ===== MOBILE LAYOUT ===== */}
       <div className="lg:hidden flex flex-col h-screen">
         {/* Mobile content area */}
-        <div className="flex-1 overflow-auto no-scrollbar">
+        <main id="main-content-mobile" className="flex-1 overflow-auto no-scrollbar">
           {showProfile ? (
             <div className="h-full bg-DeepNightBlack">
               <Intro isOpen={false} setIsOpen={() => {}} sidebarData={sidebarData} slug={slug} />
@@ -53,7 +53,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
           ) : (
             <div className="bg-DeepNightBlack h-full overflow-auto no-scrollbar">{children}</div>
           )}
-        </div>
+        </main>
 
         {/* Mobile bottom nav bar */}
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-DeepNightBlack h-16 flex items-end justify-around px-2 pb-3">
@@ -62,6 +62,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
           {/* Profile tab */}
           <button
             onClick={() => setShowProfile(true)}
+            aria-label="Show profile"
             className="relative flex flex-col items-center"
           >
             {showProfile && (
@@ -86,6 +87,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
                 key={item.href}
                 href={item.href}
                 onClick={() => setShowProfile(false)}
+                aria-label={item.label}
                 className="relative flex flex-col items-center"
               >
                 {isActive && (
@@ -133,6 +135,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
               <Link
                 key={item.href}
                 href={item.href}
+                aria-label={item.label}
                 className="relative flex items-center justify-center group"
               >
                 <div
