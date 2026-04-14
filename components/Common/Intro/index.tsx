@@ -57,6 +57,7 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
               alt={name || "Profile"}
               width={160}
               height={160}
+              sizes="80px"
               draggable={false}
             />
           ) : (
@@ -93,8 +94,9 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
               target="_blank"
               rel="noreferrer"
               className="hover:text-Green transition-colors"
+              aria-label="Visit GitHub profile"
             >
-              <FaGithub />
+              <FaGithub aria-hidden="true" />
             </Link>
           )}
           {linkedinUrl && (
@@ -103,8 +105,9 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
               target="_blank"
               rel="noreferrer"
               className="hover:text-Green transition-colors"
+              aria-label="Visit LinkedIn profile"
             >
-              <FaLinkedin />
+              <FaLinkedin aria-hidden="true" />
             </Link>
           )}
         </div>

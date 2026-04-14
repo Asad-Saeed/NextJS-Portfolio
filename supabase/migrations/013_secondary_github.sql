@@ -1,0 +1,2 @@
+ALTER TABLE profile
+  ADD COLUMN IF NOT EXISTS secondary_github_url TEXT NOT NULL DEFAULT '';

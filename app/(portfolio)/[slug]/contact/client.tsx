@@ -15,14 +15,14 @@ import { Profile, FooterData } from "@/types";
 
 interface ContactClientProps {
   profile: Profile | null;
-  userId: string;
+  slug: string;
   footerData: FooterData | null;
   bannerData: BannerData | null;
 }
 
 export default function ContactClient({
   profile,
-  userId,
+  slug,
   footerData,
   bannerData,
 }: ContactClientProps) {
@@ -38,7 +38,7 @@ export default function ContactClient({
     setSuccess(false);
 
     const result = await sendMessage({
-      user_id: userId,
+      slug,
       sender_name: form.sender_name,
       sender_email: form.sender_email,
       message: form.message,
@@ -66,7 +66,7 @@ export default function ContactClient({
       <Banner data={bannerData} heading={bannerData?.contact_banner_heading} />
       <div className="px-4 sm:px-6">
         <div className="my-6 text-Snow flex flex-col gap-y-5">
-          <h1 className="text-lg font-semibold text-Green">Contact Information</h1>
+          <h2 className="text-lg font-semibold text-Green">Contact Information</h2>
           <div className="flex flex-col md:flex-row items-center gap-5 text-xs">
             <div className="card_stylings w-full md:w-1/2 p-5 md:p-6 lg:p-8 flex flex-col gap-y-4">
               <div className="flex justify-between items-center">
@@ -116,8 +116,9 @@ export default function ContactClient({
               href={`mailto:${email}`}
               target="_blank"
               rel="noreferrer"
+              aria-label="Send an email"
             >
-              <HiMail />
+              <HiMail aria-hidden="true" />
             </Link>
           )}
           {github && (
@@ -126,8 +127,9 @@ export default function ContactClient({
               href={github}
               target="_blank"
               rel="noreferrer"
+              aria-label="Visit GitHub profile"
             >
-              <FaGithub />
+              <FaGithub aria-hidden="true" />
             </Link>
           )}
           {linkedin && (
@@ -136,8 +138,9 @@ export default function ContactClient({
               href={linkedin}
               target="_blank"
               rel="noreferrer"
+              aria-label="Visit LinkedIn profile"
             >
-              <FaLinkedin />
+              <FaLinkedin aria-hidden="true" />
             </Link>
           )}
           {upwork && (
@@ -146,28 +149,36 @@ export default function ContactClient({
               href={upwork}
               target="_blank"
               rel="noreferrer"
+              aria-label="Visit Upwork profile"
             >
-              <SiUpwork />
+              <SiUpwork aria-hidden="true" />
             </Link>
           )}
         </div>
 
         <div className="my-12 w-full h-auto text-Snow">
-          <h1 className="text-lg font-semibold text-Green">Get In Touch</h1>
+          <h2 className="text-lg font-semibold text-Green">Get In Touch</h2>
           <form
             onSubmit={handleSubmit}
             className="mt-4 py-6 px-4 sm:px-6 card_stylings rounded-xl text-sm"
           >
             <div className="flex flex-col w-full">
+              <label htmlFor="sender_name" className="sr-only">
+                Your name
+              </label>
               <div className="userIcon relative mb-6">
                 <div
                   id="icon"
                   className="absolute inset-y-0 left-0 flex items-center pl-3 text-xl pointer-events-none"
+                  aria-hidden="true"
                 >
                   <HiUser />
                 </div>
                 <input
+                  id="sender_name"
+                  name="sender_name"
                   type="text"
+                  autoComplete="name"
                   className="input_stylings"
                   placeholder="Name"
                   required
@@ -178,15 +189,22 @@ export default function ContactClient({
             </div>
 
             <div className="flex flex-col w-full">
+              <label htmlFor="sender_email" className="sr-only">
+                Your email address
+              </label>
               <div className="mailIcon relative mb-6">
                 <div
                   id="icon"
                   className="absolute inset-y-0 left-0 flex items-center text-xl pl-3 pointer-events-none"
+                  aria-hidden="true"
                 >
                   <HiMail />
                 </div>
                 <input
+                  id="sender_email"
+                  name="sender_email"
                   type="email"
+                  autoComplete="email"
                   className="input_stylings"
                   placeholder="Email"
                   required
@@ -197,14 +215,20 @@ export default function ContactClient({
             </div>
 
             <div className="flex flex-col w-full">
+              <label htmlFor="message" className="sr-only">
+                Your message
+              </label>
               <div className="textIcon relative mb-6">
                 <div
                   id="icon"
                   className="absolute top-3 left-0 flex items-center text-lg pl-3 pointer-events-none"
+                  aria-hidden="true"
                 >
                   <BsChatTextFill />
                 </div>
                 <textarea
+                  id="message"
+                  name="message"
                   rows={6}
                   cols={50}
                   className="input_stylings"

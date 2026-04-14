@@ -102,6 +102,51 @@ button:disabled,
   opacity: 0.5;
 }
 
+/* ===== Focus-visible accessibility — minimal 1px outline for keyboard users ===== */
+*:focus {
+  outline: none;
+}
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 1px solid var(--color-Green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== Skip-to-content link (WCAG 2.4.1) ===== */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.625rem 1.25rem;
+  background: var(--color-Green);
+  color: var(--color-DeepNightBlack);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 0 2px var(--color-DeepNightBlack);
+  outline: none;
+}
+
 /* ===== Custom Utility Classes ===== */
 @utility card_stylings {
   background-color: rgb(17 34 64 / 0.95);

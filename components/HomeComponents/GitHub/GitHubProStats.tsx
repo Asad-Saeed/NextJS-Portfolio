@@ -1,9 +1,9 @@
-import { getGithubStats, getGithubContributions, getCurrentYear } from "@/lib/github";
+import { getMergedGithubStats, getMergedGithubContributions } from "@/lib/github";
 import { FaStar, FaCodeBranch, FaUsers, FaBookOpen, FaRegStar } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
 
 interface GitHubProStatsProps {
-  username: string;
+  usernames: string[];
 }
 
 const languageDot: Record<string, string> = {
@@ -33,10 +33,10 @@ function langColor(lang: string | null): string {
   return languageDot[lang] || "#00e5ff";
 }
 
-export default async function GitHubProStats({ username }: GitHubProStatsProps) {
+export default async function GitHubProStats({ usernames }: GitHubProStatsProps) {
   const [stats, contributions] = await Promise.all([
-    getGithubStats(username),
-    getGithubContributions(username, getCurrentYear()),
+    getMergedGithubStats(usernames),
+    getMergedGithubContributions(usernames, "last"),
   ]);
 
   if (!stats) return null;

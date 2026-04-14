@@ -71,7 +71,8 @@ const Banner = ({ data, heading }: BannerProps) => {
                   alt="banner character"
                   width={192}
                   height={208}
-                  unoptimized
+                  sizes="(min-width: 768px) 176px, (min-width: 640px) 144px, (min-width: 400px) 112px, 80px"
+                  priority
                 />
               </div>
             </div>

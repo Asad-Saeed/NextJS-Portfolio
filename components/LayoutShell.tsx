@@ -37,6 +37,11 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
 
   return (
     <div className="h-screen lg:p-[0.8rem] flex flex-col font-circular">
+      {/* Skip-to-content link — visible only when keyboard-focused */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       {/* ===== MOBILE LAYOUT ===== */}
       <div className="lg:hidden flex flex-col h-screen">
         {/* Mobile content area */}
@@ -112,9 +117,13 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
         </div>
 
         {/* Main content */}
-        <div className="w-full lg:w-9/12 shadow-2xl bg-DeepNightBlack relative overflow-auto overflow-x-hidden no-scrollbar">
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="w-full lg:w-9/12 shadow-2xl bg-DeepNightBlack relative overflow-auto overflow-x-hidden no-scrollbar focus:outline-none"
+        >
           {children}
-        </div>
+        </main>
 
         {/* Right nav icons */}
         <div className="lg:w-16 bg-DeepNightBlack shadow-2xl rounded-xl flex flex-col items-center justify-center gap-y-3 py-4 overflow-visible z-[60]">

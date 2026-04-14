@@ -33,7 +33,7 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
   return (
     <ContactClient
       profile={profileData}
-      userId={userId}
+      slug={slug}
       footerData={footerData}
       bannerData={bannerData}
     />

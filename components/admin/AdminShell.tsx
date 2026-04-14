@@ -19,6 +19,7 @@ import {
   FiInbox,
   FiMenu,
   FiX,
+  FiShield,
 } from "react-icons/fi";
 
 const navItems = [
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/admin/skills", label: "Skills", icon: FiStar },
   { href: "/admin/recommendations", label: "Recommendations", icon: FiThumbsUp },
   { href: "/admin/reviews", label: "Reviews", icon: FiMessageCircle },
+  { href: "/admin/certifications", label: "Certifications", icon: FiShield },
   { href: "/admin/sidebar", label: "Sidebar Data", icon: FiSidebar },
   { href: "/admin/messages", label: "Messages", icon: FiInbox },
 ];

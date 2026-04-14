@@ -31,6 +31,7 @@ const sections = [
     title: "Social Links",
     fields: [
       { key: "github_url", label: "GitHub URL" },
+      { key: "secondary_github_url", label: "Secondary GitHub URL (optional)" },
       { key: "linkedin_url", label: "LinkedIn URL" },
       { key: "upwork_url", label: "Upwork URL" },
     ],
@@ -214,6 +215,11 @@ export default function ProfileClient({ profile }: { profile: Profile | null }) 
                 key: "show_expertise_section",
                 label: "My Expertise",
                 desc: "Show expertise cards on the home page.",
+              },
+              {
+                key: "show_certifications_section",
+                label: "Certifications",
+                desc: "Show your professional certifications and badges on the home page.",
               },
               {
                 key: "show_recommendations_section",
