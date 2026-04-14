@@ -33,12 +33,7 @@ const Languages = ({ data }: { data?: Language[] }) => {
         <span className="text-Snow text-xs font-bold">Languages</span>
         <div className="flex flex-row items-center justify-center space-x-6">
           {data.map((lang, i) => (
-            <div
-              key={lang.name}
-              className="flex flex-col items-center justify-center gap-y-2"
-              role="group"
-              aria-label={`${lang.name} proficiency ${lang.proficiency} percent`}
-            >
+            <div key={lang.name} className="flex flex-col items-center justify-center gap-y-2">
               <Progress
                 strokeColor="#00e5ff"
                 railColor="#1d3461"
