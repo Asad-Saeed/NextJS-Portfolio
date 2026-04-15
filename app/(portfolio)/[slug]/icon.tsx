@@ -17,16 +17,19 @@ export default async function Icon({ params }: { params: Promise<{ slug: string 
 
   return new ImageResponse(
     imageUrl ? (
-      <div
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: "50%",
-          overflow: "hidden",
-          display: "flex",
-        }}
-      >
-        <img src={imageUrl} width={32} height={32} style={{ objectFit: "cover" }} alt="" />
+      <div style={{ display: "flex", width: 32, height: 32 }}>
+        <img
+          src={imageUrl}
+          width={32}
+          height={32}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
+          alt="Fav Icon"
+        />
       </div>
     ) : (
       <div

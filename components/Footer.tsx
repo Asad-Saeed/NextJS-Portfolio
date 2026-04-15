@@ -24,7 +24,7 @@ const Footer = ({ data }: FooterProps) => {
         </div>
         <div className="flex items-center">
           {upworkUrl ? (
-            <Link href={upworkUrl} target="_blank" rel="noreferrer">
+            <Link href={upworkUrl} target="_blank" rel="noreferrer noopener">
               {footerText}
             </Link>
           ) : (

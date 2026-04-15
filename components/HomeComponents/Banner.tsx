@@ -1,9 +1,7 @@
-"use client";
-
-import Typewriter from "typewriter-effect";
 import BannerLayout from "../Common/BannerLayout";
 import Link from "next/link";
 import Image from "next/image";
+import TypewriterText from "./TypewriterText";
 import { BannerData } from "@/lib/queries/profile";
 
 interface BannerProps {
@@ -38,13 +36,7 @@ const Banner = ({ data, heading }: BannerProps) => {
                     <span className="text-Snow text-[8px] min-[400px]:text-[10px] sm:text-lg md:text-xl xl:text-2xl font-bold whitespace-nowrap">
                       I am a{" "}
                       <span className="inline-block">
-                        <Typewriter
-                          options={{
-                            strings: data?.banner_subheadings,
-                            autoStart: true,
-                            loop: true,
-                          }}
-                        />
+                        <TypewriterText strings={data?.banner_subheadings} />
                       </span>
                     </span>
                     <span>
@@ -56,7 +48,12 @@ const Banner = ({ data, heading }: BannerProps) => {
                 </div>
                 {buttonUrl && (
                   <div className="mt-3 sm:mt-5">
-                    <Link className="button" target="_blank" href={buttonUrl}>
+                    <Link
+                      className="button"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      href={buttonUrl}
+                    >
                       {buttonText}
                     </Link>
                   </div>
@@ -72,7 +69,6 @@ const Banner = ({ data, heading }: BannerProps) => {
                   width={192}
                   height={208}
                   sizes="(min-width: 768px) 176px, (min-width: 640px) 144px, (min-width: 400px) 112px, 80px"
-                  priority
                 />
               </div>
             </div>

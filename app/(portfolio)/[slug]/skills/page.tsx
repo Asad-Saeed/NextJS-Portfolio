@@ -17,10 +17,27 @@ export async function generateMetadata({
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
+  const description = `Technical skills and expertise of ${name}.`;
+  const url = `/${slug}/skills`;
+  const profileImage = profileData.profile_image_url || undefined;
   return {
     title: "Skills",
-    description: `Technical skills and expertise of ${name}.`,
-    alternates: { canonical: `/${slug}/skills` },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `Skills | ${name}`,
+      description,
+      url,
+      type: "profile",
+      siteName: `${name} — Portfolio`,
+      ...(profileImage && { images: [{ url: profileImage, alt: name }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Skills | ${name}`,
+      description,
+      ...(profileImage && { images: [profileImage] }),
+    },
   };
 }
 

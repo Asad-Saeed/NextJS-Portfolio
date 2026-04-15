@@ -8,7 +8,7 @@ const Exp_Card = ({ data }: { data: Experience }) => {
         <div className="flex-initial text-[17px] text-Snow font-medium">{data.title}</div>
         <div className="text-sm text-LightGray font-normal italic mt-1 ">{data.role}</div>
         <div className="text-LightGray text-xs font-normal italic">
-          <a href={`${data.url}`} target="_blank" rel="noreferrer">
+          <a href={`${data.url}`} target="_blank" rel="noreferrer noopener">
             {data.url}
           </a>
         </div>

@@ -1,5 +1,6 @@
 export const revalidate = 3600;
 
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Banner from "@/components/HomeComponents/Banner";
@@ -33,6 +34,14 @@ export async function generateMetadata({
   };
 }
 
+function SectionSkeleton({ heightClass = "h-32" }: { heightClass?: string }) {
+  return (
+    <div className="px-4 sm:px-6 py-4">
+      <div className={`card_stylings ${heightClass} animate-pulse`} />
+    </div>
+  );
+}
+
 export default async function HomePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const profileData = await getProfileBySlug(slug);
@@ -40,15 +49,8 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
 
   const userId = profileData.user_id;
 
-  const [bannerData, expertise, recommendations, reviews, certifications, footerData] =
-    await Promise.all([
-      getBannerData(userId),
-      getExpertise(userId),
-      getRecommendations(userId),
-      getReviews(userId),
-      getCertifications(userId),
-      getFooterData(userId),
-    ]);
+  // Only the banner data blocks the initial render. Everything else streams.
+  const bannerData = await getBannerData(userId);
 
   const githubUsernames = profileData.show_github_section
     ? [
@@ -67,18 +69,73 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   return (
     <div>
       <Banner data={bannerData} />
+
       {showGithub && (
         <div className="flex flex-col gap-4 px-4 sm:px-6 pt-6 pb-4">
-          <GitHubActivity usernames={githubUsernames} heading={githubHeading} />
-          <GitHubProStats usernames={githubUsernames} />
-          <GitHubAchievements usernames={githubUsernames} />
+          <Suspense fallback={<div className="card_stylings h-40 animate-pulse" />}>
+            <GitHubActivity usernames={githubUsernames} heading={githubHeading} />
+          </Suspense>
+          <Suspense fallback={<div className="card_stylings h-32 animate-pulse" />}>
+            <GitHubProStats usernames={githubUsernames} />
+          </Suspense>
+          <Suspense fallback={<div className="card_stylings h-24 animate-pulse" />}>
+            <GitHubAchievements usernames={githubUsernames} />
+          </Suspense>
         </div>
       )}
-      {showExpertise && <MyExpertise data={expertise} />}
-      {showCertifications && <Certifications data={certifications} />}
-      {showRecommendations && <Recommendations data={recommendations} />}
-      {showReviews && <ClientReviews data={reviews} />}
-      <Footer data={footerData} />
+
+      {showExpertise && (
+        <Suspense fallback={<SectionSkeleton heightClass="h-40" />}>
+          <ExpertiseSection userId={userId} />
+        </Suspense>
+      )}
+
+      {showCertifications && (
+        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
+          <CertificationsSection userId={userId} />
+        </Suspense>
+      )}
+
+      {showRecommendations && (
+        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
+          <RecommendationsSection userId={userId} />
+        </Suspense>
+      )}
+
+      {showReviews && (
+        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
+          <ReviewsSection userId={userId} />
+        </Suspense>
+      )}
+
+      <Suspense fallback={null}>
+        <FooterSection userId={userId} />
+      </Suspense>
     </div>
   );
+}
+
+async function ExpertiseSection({ userId }: { userId: string }) {
+  const data = await getExpertise(userId);
+  return <MyExpertise data={data} />;
+}
+
+async function CertificationsSection({ userId }: { userId: string }) {
+  const data = await getCertifications(userId);
+  return <Certifications data={data} />;
+}
+
+async function RecommendationsSection({ userId }: { userId: string }) {
+  const data = await getRecommendations(userId);
+  return <Recommendations data={data} />;
+}
+
+async function ReviewsSection({ userId }: { userId: string }) {
+  const data = await getReviews(userId);
+  return <ClientReviews data={data} />;
+}
+
+async function FooterSection({ userId }: { userId: string }) {
+  const data = await getFooterData(userId);
+  return <Footer data={data} />;
 }
