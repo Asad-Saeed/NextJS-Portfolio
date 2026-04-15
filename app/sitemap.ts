@@ -1,4 +1,4 @@
-export const revalidate = 86400;
+export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
