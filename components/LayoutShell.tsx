@@ -37,15 +37,23 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
 
   return (
     <div className="h-screen lg:p-[0.8rem] flex flex-col font-circular">
-      {/* Skip-to-content link — visible only when keyboard-focused */}
-      <a href="#main-content" className="skip-link">
+      {/* Skip-to-content link — visible only when keyboard-focused. One per layout
+          because mobile and desktop render separate <main> elements. */}
+      <a href="#main-content-mobile" className="skip-link lg:hidden">
+        Skip to main content
+      </a>
+      <a href="#main-content" className="skip-link hidden lg:block">
         Skip to main content
       </a>
 
       {/* ===== MOBILE LAYOUT ===== */}
       <div className="lg:hidden flex flex-col h-screen">
         {/* Mobile content area */}
-        <main id="main-content-mobile" className="flex-1 overflow-auto no-scrollbar">
+        <main
+          id="main-content-mobile"
+          tabIndex={-1}
+          className="flex-1 overflow-auto no-scrollbar focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#00e5ff]"
+        >
           {showProfile ? (
             <div className="h-full bg-DeepNightBlack">
               <Intro isOpen={false} setIsOpen={() => {}} sidebarData={sidebarData} slug={slug} />
@@ -122,7 +130,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
         <main
           id="main-content"
           tabIndex={-1}
-          className="w-full lg:w-9/12 shadow-2xl bg-DeepNightBlack relative overflow-auto overflow-x-hidden no-scrollbar focus:outline-none"
+          className="w-full lg:w-9/12 shadow-2xl bg-DeepNightBlack relative overflow-auto overflow-x-hidden no-scrollbar focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#00e5ff]"
         >
           {children}
         </main>

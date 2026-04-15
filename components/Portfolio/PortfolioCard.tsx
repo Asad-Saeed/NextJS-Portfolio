@@ -40,7 +40,7 @@ const PortfolioCard = ({ data, slug }: PortfolioCardProps) => {
             <a
               href={data.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer noopener"
               className="text-LightGray hover:text-Green transition-colors duration-300 ml-3 shrink-0"
             >
               <FiExternalLink className="text-lg sm:text-xl" />

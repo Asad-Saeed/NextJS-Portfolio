@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import PortfolioCard from "@/components/Portfolio/PortfolioCard";
 import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
 import { getPortfolio } from "@/lib/queries/portfolio";
+import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -17,10 +18,27 @@ export async function generateMetadata({
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
+  const description = `Selected projects and case studies by ${name}.`;
+  const url = `/${slug}/portfolio`;
+  const profileImage = profileData.profile_image_url || undefined;
   return {
     title: "Projects",
-    description: `Selected projects and case studies by ${name}.`,
-    alternates: { canonical: `/${slug}/portfolio` },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `Projects | ${name}`,
+      description,
+      url,
+      type: "website",
+      siteName: `${name} — Portfolio`,
+      ...(profileImage && { images: [{ url: profileImage, alt: name }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Projects | ${name}`,
+      description,
+      ...(profileImage && { images: [profileImage] }),
+    },
   };
 }
 
@@ -36,8 +54,27 @@ export default async function PortfolioPage({ params }: { params: Promise<{ slug
     getFooterData(userId),
   ]);
 
+  const siteUrl = getSiteUrl();
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `Projects by ${profileData.name || "Portfolio"}`,
+    itemListElement: projects
+      .filter((p) => p.project_slug)
+      .map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${siteUrl}/${slug}/portfolio/${p.project_slug}`,
+        name: p.project_name,
+      })),
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       <Banner data={bannerData} heading={bannerData?.portfolio_banner_heading} />
       <div className="px-4 sm:px-6 py-4 text-lg font-semibold text-Green">My Projects</div>
       <div className="grid grid-flow-row md:grid-cols-2 gap-4 px-4 sm:px-6 mb-6">

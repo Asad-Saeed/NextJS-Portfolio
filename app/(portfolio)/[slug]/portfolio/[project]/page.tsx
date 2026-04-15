@@ -52,6 +52,7 @@ export default async function CaseStudyPage({
   const techs = projectData.project_technologies || [];
 
   const siteUrl = getSiteUrl();
+  const projectUrl = `${siteUrl}/${slug}/portfolio/${project}`;
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -72,9 +73,31 @@ export default async function CaseStudyPage({
         "@type": "ListItem",
         position: 3,
         name: projectData.project_name,
-        item: `${siteUrl}/${slug}/portfolio/${project}`,
+        item: projectUrl,
       },
     ],
+  };
+
+  const creativeWorkJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: projectData.project_name,
+    ...(projectData.project_detail || projectData.challenge
+      ? { description: projectData.project_detail || projectData.challenge }
+      : {}),
+    ...(projectData.image_url && { image: projectData.image_url }),
+    ...(projectData.url && { url: projectData.url }),
+    mainEntityOfPage: projectUrl,
+    author: {
+      "@type": "Person",
+      name: profileData.name || "Portfolio",
+      url: `${siteUrl}/${slug}`,
+    },
+    ...(techs.length > 0 && {
+      keywords: techs.map((t: ProjectTechnology) => t.tech_name).join(", "),
+    }),
+    ...(projectData.created_at && { dateCreated: projectData.created_at }),
+    ...(projectData.updated_at && { dateModified: projectData.updated_at }),
   };
 
   return (
@@ -82,6 +105,10 @@ export default async function CaseStudyPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkJsonLd) }}
       />
       <Banner data={bannerData} heading={bannerData?.portfolio_banner_heading} />
 
@@ -111,12 +138,12 @@ export default async function CaseStudyPage({
           )}
 
           <div className="flex items-start justify-between gap-4 mb-4">
-            <h1 className="text-Snow text-xl sm:text-3xl font-bold">{projectData.project_name}</h1>
+            <h2 className="text-Snow text-xl sm:text-3xl font-bold">{projectData.project_name}</h2>
             {projectData.url && (
               <a
                 href={projectData.url}
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
                 className="button flex items-center gap-2 shrink-0"
               >
                 Visit Project <FiExternalLink />

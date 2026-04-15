@@ -123,7 +123,7 @@ export default async function GitHubProStats({ usernames }: GitHubProStatsProps)
                 key={repo.name}
                 href={repo.url}
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
                 className="card_stylings p-4 flex flex-col gap-3 hover:border-Green/50 transition-colors group"
               >
                 <div className="flex items-start justify-between gap-2">

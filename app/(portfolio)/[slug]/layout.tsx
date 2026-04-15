@@ -22,7 +22,6 @@ export async function generateMetadata({
   const name = profileData.name || "Portfolio";
   const designation = profileData.designation || "A personal portfolio platform";
   const portfolioUrl = `/${slug}`;
-  const profileImage = profileData.profile_image_url || undefined;
 
   return {
     title: {
@@ -39,20 +38,11 @@ export async function generateMetadata({
       url: portfolioUrl,
       type: "profile",
       siteName: `${name} — Portfolio`,
-      ...(profileImage && {
-        images: [
-          {
-            url: profileImage,
-            alt: name,
-          },
-        ],
-      }),
     },
     twitter: {
       card: "summary_large_image",
       title: `${name} — Portfolio`,
       description: designation,
-      ...(profileImage && { images: [profileImage] }),
     },
     robots: {
       index: true,

@@ -48,7 +48,7 @@ const Certifications = ({ data }: CertificationsProps) => {
                 <Link
                   href={cert.credential_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                   className="inline-flex items-center gap-1 text-[10px] text-Green hover:underline mt-2"
                 >
                   Verify <FiExternalLink className="text-[10px]" />

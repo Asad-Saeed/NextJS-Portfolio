@@ -21,7 +21,7 @@ const RecommendationCard = ({ data }: { data: Recommendation }) => {
           />
         )}
         <div className=" text-Snow underline italic">
-          <a href={linkedinUrl} target="_blank" rel="noreferrer">
+          <a href={linkedinUrl} target="_blank" rel="noreferrer noopener">
             {data?.name}
           </a>
         </div>

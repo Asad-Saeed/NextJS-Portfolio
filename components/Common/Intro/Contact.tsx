@@ -33,6 +33,7 @@ const Contact = ({ profile }: { profile?: Partial<Profile> }) => {
                 <Link
                   href={`https://wa.me/${p.replace(/[^0-9]/g, "")}`}
                   target="_blank"
+                  rel="noreferrer noopener"
                   className="hover:text-Green transition-colors"
                 >
                   {p}
