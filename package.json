@@ -9,8 +9,10 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "seed": "tsx scripts/seed.ts",
-    "seed:banner": "tsx scripts/seed-banner.ts"
+    "seed": "tsx scripts/v1-seed.ts",
+    "seed:legacy": "tsx scripts/seed.ts",
+    "seed:banner": "tsx scripts/seed-banner.ts",
+    "export": "tsx scripts/export-data.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0",
