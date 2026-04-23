@@ -42,7 +42,7 @@ const profileData = {
     "https://xyufrjjbhqndxfxbxcut.supabase.co/storage/v1/object/public/documents/1775244061835-3xykg6hij9h.pdf",
   banner_image_url:
     "https://xyufrjjbhqndxfxbxcut.supabase.co/storage/v1/object/public/profile/background.png",
-  banner_heading: "Hi, I'm Asad Saeed — Senior Frontend & MERN Developer",
+  banner_heading: "Hi, I'm Asad Saeed 👋",
   banner_subheadings: [
     "Senior Frontend Engineer",
     "MERN Stack Developer",
