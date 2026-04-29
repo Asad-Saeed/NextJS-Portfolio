@@ -11,26 +11,24 @@ import { SidebarData } from "@/types";
 interface LayoutShellProps {
   children: React.ReactNode;
   sidebarData?: SidebarData;
-  slug?: string;
 }
 
-export default function LayoutShell({ children, sidebarData, slug }: LayoutShellProps) {
+export default function LayoutShell({ children, sidebarData }: LayoutShellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [intro, setIntro] = useState(false);
   const [showProfile, setShowProfile] = useState(true);
   const pathname = usePathname();
-  const base = slug ? `/${slug}` : "";
 
   const bottomNavItems = [
-    { href: `${base}`, icon: FiHome, label: "Home" },
-    { href: `${base}/skills`, icon: FiCode, label: "Skills" },
-    { href: `${base}/background`, icon: FiBriefcase, label: "Background" },
-    { href: `${base}/portfolio`, icon: FiGrid, label: "Portfolio" },
-    { href: `${base}/contact`, icon: FiMail, label: "Contact" },
+    { href: "/", icon: FiHome, label: "Home" },
+    { href: "/skills", icon: FiCode, label: "Skills" },
+    { href: "/background", icon: FiBriefcase, label: "Background" },
+    { href: "/portfolio", icon: FiGrid, label: "Portfolio" },
+    { href: "/contact", icon: FiMail, label: "Contact" },
   ];
 
   const isActiveRoute = (href: string) => {
-    if (href === base) return pathname === base || pathname === `${base}/`;
+    if (href === "/") return pathname === "/";
     return pathname === href;
   };
 
@@ -54,7 +52,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
         >
           {showProfile ? (
             <div className="relative h-full">
-              <Intro isOpen={false} setIsOpen={() => {}} sidebarData={sidebarData} slug={slug} />
+              <Intro isOpen={false} setIsOpen={() => {}} sidebarData={sidebarData} />
             </div>
           ) : (
             <div className="h-full overflow-auto no-scrollbar">{children}</div>
@@ -120,7 +118,7 @@ export default function LayoutShell({ children, sidebarData, slug }: LayoutShell
             boxShadow: "var(--ds-shadow-border)",
           }}
         >
-          <Intro isOpen={intro} setIsOpen={setIntro} sidebarData={sidebarData} slug={slug} />
+          <Intro isOpen={intro} setIsOpen={setIntro} sidebarData={sidebarData} />
         </aside>
 
         {/* Main content */}

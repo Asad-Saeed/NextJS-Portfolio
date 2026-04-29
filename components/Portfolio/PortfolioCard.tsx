@@ -9,11 +9,10 @@ const ACCENTS = ["#3291ff", "#ff4d8d", "#ff5b4f"];
 
 interface PortfolioCardProps {
   data: PortfolioProject;
-  slug: string;
   index?: number;
 }
 
-const PortfolioCard = ({ data, slug, index = 0 }: PortfolioCardProps) => {
+const PortfolioCard = ({ data, index = 0 }: PortfolioCardProps) => {
   const imageUrl = data?.image_url || "";
   const projectName = data?.project_name;
   const projectDetail = data?.project_detail;
@@ -134,7 +133,7 @@ const PortfolioCard = ({ data, slug, index = 0 }: PortfolioCardProps) => {
               Case study
             </span>
             <Link
-              href={`/${slug}/portfolio/${data.project_slug}`}
+              href={`/portfolio/${data.project_slug}`}
               className="inline-flex items-center gap-1 text-[13px] font-medium transition-colors hover:underline"
               style={{ color: "var(--ds-link)", letterSpacing: "-0.01em" }}
             >

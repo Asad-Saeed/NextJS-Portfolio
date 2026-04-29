@@ -18,14 +18,11 @@ import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
 import { getCertifications } from "@/lib/queries/certifications";
 import { parseGithubUsername } from "@/lib/github";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
@@ -37,12 +34,12 @@ export async function generateMetadata({
   return {
     title: { absolute: `${name} — Portfolio` },
     description: description || undefined,
-    alternates: { canonical: `/${slug}` },
+    alternates: { canonical: "/" },
     openGraph: {
       title: `${name} — Portfolio`,
       description: description || designation,
       type: "profile",
-      url: `/${slug}`,
+      url: "/",
       ...(profileImage && {
         images: [{ url: profileImage, alt: name, width: 800, height: 800 }],
       }),
@@ -176,8 +173,8 @@ function SectionSkeleton({ count = 3 }: { count?: number }) {
   );
 }
 
-export default async function HomePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function HomePage() {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
@@ -214,7 +211,6 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
         data={bannerData}
         name={profileData.name}
         designation={profileData.designation}
-        slug={slug}
         stack={codeCardStack}
         availabilityStatus={profileData.availability_status}
       />

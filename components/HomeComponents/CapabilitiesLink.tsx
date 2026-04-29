@@ -6,22 +6,20 @@ import { MouseEvent } from "react";
 import { scrollToSection, setPendingScroll } from "@/lib/scroll";
 
 interface CapabilitiesLinkProps {
-  slug?: string;
   children: React.ReactNode;
   className?: string;
 }
 
 export default function CapabilitiesLink({
-  slug,
   children,
   className = "ds-btn-ghost",
 }: CapabilitiesLinkProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const homePath = slug ? `/${slug}` : "/";
-  const isOnHome = pathname === homePath || pathname === `${homePath}/`;
-  const href = `${homePath}#expertise`;
+  const homePath = "/";
+  const isOnHome = pathname === "/";
+  const href = "/#expertise";
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
@@ -35,7 +33,7 @@ export default function CapabilitiesLink({
       return;
     }
     setPendingScroll("expertise");
-    router.push(href);
+    router.push("/");
   };
 
   return (

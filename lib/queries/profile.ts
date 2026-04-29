@@ -32,12 +32,6 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   return data as Profile | null;
 }
 
-export async function getBannerData(userId: string): Promise<BannerData | null> {
-  const supabase = getPublicSupabaseClient();
-  const { data } = await supabase.from("profile").select("*").eq("user_id", userId).single();
-  return data as BannerData | null;
-}
-
 export async function getSidebarProfile(userId: string): Promise<Partial<Profile> | null> {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase

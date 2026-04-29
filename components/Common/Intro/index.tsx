@@ -20,13 +20,12 @@ interface IntroProps {
   isOpen?: boolean;
   setIsOpen?: (open: boolean) => void;
   sidebarData?: SidebarData;
-  slug?: string;
 }
 
-const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
+const Intro = ({ isOpen, setIsOpen, sidebarData }: IntroProps) => {
   const router = useRouter();
   const profile = sidebarData?.profile;
-  const homeUrl = slug ? `/${slug}` : "/";
+  const homeUrl = "/";
 
   const longPressHandlers = useLongPress(async () => {
     const supabase = createClient();

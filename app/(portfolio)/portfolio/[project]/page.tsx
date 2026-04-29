@@ -10,15 +10,17 @@ import { FiExternalLink, FiArrowLeft } from "react-icons/fi";
 import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { notFound } from "next/navigation";
 import { ProjectTechnology } from "@/types";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string; project: string }>;
+  params: Promise<{ project: string }>;
 }): Promise<Metadata> {
-  const { slug, project } = await params;
+  const { project } = await params;
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const projectData = await getProjectBySlug(profileData.user_id, project);
@@ -27,16 +29,13 @@ export async function generateMetadata({
     title: projectData.project_name,
     description:
       projectData.challenge || projectData.project_detail || `Project by ${profileData.name}`,
-    alternates: { canonical: `/${slug}/portfolio/${project}` },
+    alternates: { canonical: `/portfolio/${project}` },
   };
 }
 
-export default async function CaseStudyPage({
-  params,
-}: {
-  params: Promise<{ slug: string; project: string }>;
-}) {
-  const { slug, project } = await params;
+export default async function CaseStudyPage({ params }: { params: Promise<{ project: string }> }) {
+  const { project } = await params;
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
@@ -52,7 +51,7 @@ export default async function CaseStudyPage({
   const techs = projectData.project_technologies || [];
 
   const siteUrl = getSiteUrl();
-  const projectUrl = `${siteUrl}/${slug}/portfolio/${project}`;
+  const projectUrl = `${siteUrl}/portfolio/${project}`;
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -61,13 +60,13 @@ export default async function CaseStudyPage({
         "@type": "ListItem",
         position: 1,
         name: profileData.name || "Portfolio",
-        item: `${siteUrl}/${slug}`,
+        item: siteUrl,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Projects",
-        item: `${siteUrl}/${slug}/portfolio`,
+        item: `${siteUrl}/portfolio`,
       },
       {
         "@type": "ListItem",
@@ -91,7 +90,7 @@ export default async function CaseStudyPage({
     author: {
       "@type": "Person",
       name: profileData.name || "Portfolio",
-      url: `${siteUrl}/${slug}`,
+      url: siteUrl,
     },
     ...(techs.length > 0 && {
       keywords: techs.map((t: ProjectTechnology) => t.tech_name).join(", "),
@@ -113,7 +112,6 @@ export default async function CaseStudyPage({
       <Banner
         data={bannerData}
         heading={bannerData?.portfolio_banner_heading}
-        slug={slug}
         name={profileData.name}
         designation={profileData.designation}
         stack={(profileData.code_card_stack ?? "")
@@ -127,7 +125,7 @@ export default async function CaseStudyPage({
       <div className="px-4 sm:px-6 py-6">
         {/* Back link */}
         <Link
-          href={`/${slug}/portfolio`}
+          href="/portfolio"
           className="inline-flex items-center gap-1.5 text-xs text-LightGray hover:text-Green transition-colors mb-6"
         >
           <FiArrowLeft /> Back to Projects

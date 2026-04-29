@@ -8,8 +8,6 @@ import { scrollToSection, setPendingScroll } from "@/lib/scroll";
 interface HashLinkProps {
   /** Target element id (without the #). */
   targetId: string;
-  /** User slug (e.g. "asad-saeed") — needed to route to the correct home page. */
-  slug?: string;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -25,7 +23,6 @@ interface HashLinkProps {
  */
 export default function HashLink({
   targetId,
-  slug,
   children,
   className,
   style,
@@ -34,9 +31,9 @@ export default function HashLink({
   const pathname = usePathname();
   const router = useRouter();
 
-  const homePath = slug ? `/${slug}` : "/";
-  const isOnHome = pathname === homePath || pathname === `${homePath}/`;
-  const href = `${homePath}#${targetId}`;
+  const homePath = "/";
+  const isOnHome = pathname === "/";
+  const href = `/#${targetId}`;
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
@@ -50,7 +47,7 @@ export default function HashLink({
       return;
     }
     setPendingScroll(targetId);
-    router.push(href);
+    router.push("/");
   };
 
   return (

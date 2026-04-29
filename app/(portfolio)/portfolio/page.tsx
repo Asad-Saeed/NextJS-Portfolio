@@ -8,14 +8,11 @@ import SectionHeader from "@/components/Common/SectionHeader";
 import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getPortfolio } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
@@ -23,7 +20,7 @@ export async function generateMetadata({
     profileData.portfolio_heading || profileData.portfolio_banner_heading || "Projects";
   const description =
     profileData.portfolio_description || `Selected projects and case studies by ${name}.`;
-  const url = `/${slug}/portfolio`;
+  const url = "/portfolio";
   const profileImage = profileData.profile_image_url || undefined;
   return {
     title: heading,
@@ -46,8 +43,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function PortfolioPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function PortfolioPage() {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
@@ -65,7 +62,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ slug
       .map((p, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        url: `${siteUrl}/${slug}/portfolio/${p.project_slug}`,
+        url: `${siteUrl}/portfolio/${p.project_slug}`,
         name: p.project_name,
       })),
   };
@@ -79,7 +76,6 @@ export default async function PortfolioPage({ params }: { params: Promise<{ slug
       <Banner
         data={bannerData}
         heading={bannerData?.portfolio_banner_heading}
-        slug={slug}
         name={profileData.name}
         designation={profileData.designation}
         stack={(profileData.code_card_stack ?? "")
@@ -101,7 +97,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ slug
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
           {projects.map((item, idx) => (
-            <PortfolioCard key={item.id} data={item} slug={slug} index={idx} />
+            <PortfolioCard key={item.id} data={item} index={idx} />
           ))}
         </div>
       </section>

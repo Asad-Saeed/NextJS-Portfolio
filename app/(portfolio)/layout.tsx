@@ -4,15 +4,12 @@ import type { Metadata } from "next";
 import LayoutShell from "@/components/LayoutShell";
 import { getProfileBySlug, getSidebarProfile } from "@/lib/queries/profile";
 import { getLanguages, getTechStack, getSidebarSkills } from "@/lib/queries/sidebar";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
 
   if (!profileData) {
@@ -21,7 +18,7 @@ export async function generateMetadata({
 
   const name = profileData.name || "Portfolio";
   const designation = profileData.designation || "A personal portfolio platform";
-  const portfolioUrl = `/${slug}`;
+  const portfolioUrl = "/";
   const profileImage = profileData.profile_image_url || undefined;
 
   // Build a richer SEO description using admin-managed content where available.
@@ -81,14 +78,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function PortfolioLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+export default async function PortfolioLayout({ children }: { children: React.ReactNode }) {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
 
   if (!profileData) notFound();
@@ -106,7 +97,7 @@ export default async function PortfolioLayout({
 
   const siteUrl = getSiteUrl();
 
-  const personUrl = `${siteUrl}/${slug}`;
+  const personUrl = siteUrl;
   const knowsAbout: string[] = [
     ...((profileData.designation || "").split(/[|,]/) as string[]).map((s) => s.trim()),
     ...((profileData.banner_subheadings ?? []) as string[]),
@@ -150,7 +141,7 @@ export default async function PortfolioLayout({
   };
 
   return (
-    <LayoutShell sidebarData={sidebarData} slug={slug}>
+    <LayoutShell sidebarData={sidebarData}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

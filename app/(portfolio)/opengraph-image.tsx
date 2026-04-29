@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getProfileBySlug } from "@/lib/queries/profile";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 
 export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
@@ -14,8 +15,8 @@ const ACCENT = "#3291ff";
 const ACCENT_2 = "#ff4d8d";
 const ACCENT_3 = "#ff5b4f";
 
-export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function Image() {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
 
   const name = profileData?.name || "Portfolio";
@@ -189,7 +190,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             display: "flex",
           }}
         >
-          /{slug}
+          /
         </div>
       </div>
     </div>,

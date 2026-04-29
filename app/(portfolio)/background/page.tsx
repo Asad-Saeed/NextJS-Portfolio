@@ -9,16 +9,13 @@ import SectionHeader from "@/components/Common/SectionHeader";
 import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getEducation } from "@/lib/queries/education";
 import { getExperience } from "@/lib/queries/experience";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { notFound } from "next/navigation";
 
 const STEPPER_ACCENTS = ["#3291ff", "#ff4d8d", "#ff5b4f"];
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
@@ -27,7 +24,7 @@ export async function generateMetadata({
     [profileData.experience_description, profileData.education_description]
       .filter(Boolean)
       .join(" — ") || `Education and work experience of ${name}.`;
-  const url = `/${slug}/background`;
+  const url = "/background";
   const profileImage = profileData.profile_image_url || undefined;
   return {
     title: heading,
@@ -50,8 +47,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function BackgroundPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function BackgroundPage() {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
@@ -68,7 +65,6 @@ export default async function BackgroundPage({ params }: { params: Promise<{ slu
       <Banner
         data={bannerData}
         heading={bannerData?.background_banner_heading}
-        slug={slug}
         name={profileData.name}
         designation={profileData.designation}
         stack={(profileData.code_card_stack ?? "")

@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getProfileBySlug } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import type { ProjectTechnology } from "@/types";
 
 export const alt = "Case Study";
@@ -17,12 +18,9 @@ const ACCENT = "#3291ff";
 const BADGE_BG = "#0a1f3d";
 const BADGE_FG = "#7cb8ff";
 
-export default async function Image({
-  params,
-}: {
-  params: Promise<{ slug: string; project: string }>;
-}) {
-  const { slug, project } = await params;
+export default async function Image({ params }: { params: Promise<{ project: string }> }) {
+  const { project } = await params;
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) {
     return new ImageResponse(<div />, { ...size });
@@ -243,7 +241,7 @@ export default async function Image({
             marginLeft: "auto",
           }}
         >
-          /{slug}/portfolio/{project}
+          /portfolio/{project}
         </div>
       </div>
     </div>,

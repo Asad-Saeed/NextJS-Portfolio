@@ -17,42 +17,32 @@ interface BannerProps {
   heading?: string;
   name?: string;
   designation?: string;
-  slug?: string;
   stack?: string[];
   availabilityStatus?: string;
 }
 
-const Banner = ({
-  data,
-  heading,
-  name,
-  designation,
-  slug,
-  stack,
-  availabilityStatus,
-}: BannerProps) => {
+const Banner = ({ data, heading, name, designation, stack, availabilityStatus }: BannerProps) => {
   const buttonText = data?.explore_button_text ?? "";
   const buttonUrl = data?.explore_button_url || data?.upwork_url;
 
-  const base = slug ? `/${slug}` : "";
   const stats = [
     {
       label: "Projects",
       value: data?.completed_projects_count,
       accent: "var(--ds-link)",
-      href: `${base}/portfolio`,
+      href: "/portfolio",
     },
     {
       label: "Companies",
       value: data?.freelance_clients_count,
       accent: "var(--ds-console-pink)",
-      href: `${base}/background`,
+      href: "/background",
     },
     {
       label: "Honors",
       value: data?.honors_count,
       accent: "var(--ds-ship)",
-      href: `${base}#certifications`,
+      href: "/#certifications",
     },
   ];
 
@@ -174,7 +164,7 @@ const Banner = ({
                   </span>
                 </Link>
               )}
-              <CapabilitiesLink slug={slug}>See capabilities</CapabilitiesLink>
+              <CapabilitiesLink>See capabilities</CapabilitiesLink>
             </div>
           </div>
 
@@ -236,7 +226,6 @@ const Banner = ({
                 <HashLink
                   key={stat.label}
                   targetId="certifications"
-                  slug={slug}
                   aria-label={`View ${stat.label}`}
                   className={cellClass}
                   style={cellStyle}

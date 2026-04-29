@@ -9,21 +9,18 @@ import Footer from "@/components/Footer";
 import SectionHeader from "@/components/Common/SectionHeader";
 import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getSiteUrl } from "@/lib/site-url";
+import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { notFound } from "next/navigation";
 import ContactForm from "./client";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
   const heading = profileData.contact_heading || "Contact";
   const description = profileData.contact_description || `Get in touch with ${name}.`;
-  const url = `/${slug}/contact`;
+  const url = "/contact";
   const profileImage = profileData.profile_image_url || undefined;
   return {
     title: heading,
@@ -46,8 +43,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ContactPage() {
+  const slug = getPortfolioSlug();
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
@@ -63,7 +60,7 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
     "@context": "https://schema.org",
     "@type": "Person",
     name: profileData.name || undefined,
-    url: `${siteUrl}/${slug}/contact`,
+    url: `${siteUrl}/contact`,
     ...(profileData.profile_image_url && { image: profileData.profile_image_url }),
     ...(profileData.email && { email: profileData.email }),
     ...(profileData.phone && { telephone: profileData.phone }),
@@ -136,7 +133,6 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
         <Banner
           data={bannerData}
           heading={bannerData?.contact_banner_heading}
-          slug={slug}
           name={profileData.name}
           designation={profileData.designation}
           stack={(profileData.code_card_stack ?? "")
