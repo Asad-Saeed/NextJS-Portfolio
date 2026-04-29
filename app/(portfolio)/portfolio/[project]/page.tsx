@@ -7,10 +7,11 @@ import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import Badge from "@/components/Common/Badge";
 import { FiExternalLink, FiArrowLeft } from "react-icons/fi";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 import { ProjectTechnology } from "@/types";
 
@@ -41,10 +42,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ proj
 
   const userId = profileData.user_id;
   const bannerData = profileData;
-  const [projectData, footerData] = await Promise.all([
-    getProjectBySlug(userId, project),
-    getFooterData(userId),
-  ]);
+  const footerData = profileData;
+  const projectData = await getProjectBySlug(userId, project);
 
   if (!projectData) notFound();
 
@@ -114,11 +113,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ proj
         heading={bannerData?.portfolio_banner_heading}
         name={profileData.name}
         designation={profileData.designation}
-        stack={(profileData.code_card_stack ?? "")
-          .split(",")
-          .map((s: string) => s.trim())
-          .filter(Boolean)
-          .slice(0, 3)}
+        stack={parseCodeCardStack(profileData.code_card_stack)}
         availabilityStatus={profileData.availability_status}
       />
 

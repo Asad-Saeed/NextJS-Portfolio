@@ -7,9 +7,10 @@ import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/Common/SectionHeader";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 import ContactForm from "./client";
 
@@ -48,9 +49,8 @@ export default async function ContactPage() {
   const profileData = await getProfileBySlug(slug);
   if (!profileData) notFound();
 
-  const userId = profileData.user_id;
   const bannerData = profileData;
-  const footerData = await getFooterData(userId);
+  const footerData = profileData;
 
   const siteUrl = getSiteUrl();
   const sameAs = [profileData.github_url, profileData.linkedin_url, profileData.upwork_url].filter(
@@ -135,11 +135,7 @@ export default async function ContactPage() {
           heading={bannerData?.contact_banner_heading}
           name={profileData.name}
           designation={profileData.designation}
-          stack={(profileData.code_card_stack ?? "")
-            .split(",")
-            .map((s: string) => s.trim())
-            .filter(Boolean)
-            .slice(0, 3)}
+          stack={parseCodeCardStack(profileData.code_card_stack)}
           availabilityStatus={profileData.availability_status}
         />
 

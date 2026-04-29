@@ -5,10 +5,11 @@ import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import PortfolioCard from "@/components/Portfolio/PortfolioCard";
 import SectionHeader from "@/components/Common/SectionHeader";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getPortfolio } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -50,7 +51,8 @@ export default async function PortfolioPage() {
 
   const userId = profileData.user_id;
   const bannerData = profileData;
-  const [projects, footerData] = await Promise.all([getPortfolio(userId), getFooterData(userId)]);
+  const footerData = profileData;
+  const projects = await getPortfolio(userId);
 
   const siteUrl = getSiteUrl();
   const itemListJsonLd = {
@@ -78,11 +80,7 @@ export default async function PortfolioPage() {
         heading={bannerData?.portfolio_banner_heading}
         name={profileData.name}
         designation={profileData.designation}
-        stack={(profileData.code_card_stack ?? "")
-          .split(",")
-          .map((s: string) => s.trim())
-          .filter(Boolean)
-          .slice(0, 3)}
+        stack={parseCodeCardStack(profileData.code_card_stack)}
         availabilityStatus={profileData.availability_status}
       />
       <section

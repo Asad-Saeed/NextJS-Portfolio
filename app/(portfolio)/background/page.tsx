@@ -6,10 +6,11 @@ import Exp_Card from "@/components/Background/Exp_Card";
 import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/Common/SectionHeader";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getEducation } from "@/lib/queries/education";
 import { getExperience } from "@/lib/queries/experience";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
 const STEPPER_ACCENTS = ["#3291ff", "#ff4d8d", "#ff5b4f"];
@@ -54,11 +55,8 @@ export default async function BackgroundPage() {
 
   const userId = profileData.user_id;
   const bannerData = profileData;
-  const [education, experience, footerData] = await Promise.all([
-    getEducation(userId),
-    getExperience(userId),
-    getFooterData(userId),
-  ]);
+  const footerData = profileData;
+  const [education, experience] = await Promise.all([getEducation(userId), getExperience(userId)]);
 
   return (
     <div>
@@ -67,11 +65,7 @@ export default async function BackgroundPage() {
         heading={bannerData?.background_banner_heading}
         name={profileData.name}
         designation={profileData.designation}
-        stack={(profileData.code_card_stack ?? "")
-          .split(",")
-          .map((s: string) => s.trim())
-          .filter(Boolean)
-          .slice(0, 3)}
+        stack={parseCodeCardStack(profileData.code_card_stack)}
         availabilityStatus={profileData.availability_status}
       />
 

@@ -12,13 +12,14 @@ import GitHubActivity from "@/components/HomeComponents/GitHub/GitHubActivity";
 import GitHubProStats from "@/components/HomeComponents/GitHub/GitHubProStats";
 import GitHubAchievements from "@/components/HomeComponents/GitHub/GitHubAchievements";
 import HashScroller from "@/components/Common/HashScroller";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getExpertise } from "@/lib/queries/expertise";
 import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
 import { getCertifications } from "@/lib/queries/certifications";
 import { parseGithubUsername } from "@/lib/github";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -184,11 +185,7 @@ export default async function HomePage() {
   // so reuse it instead of a second DB round-trip.
   const bannerData = profileData;
   // Stack for the hero code card — admin-edited comma-separated list.
-  const codeCardStack = (profileData.code_card_stack ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .slice(0, 3);
+  const codeCardStack = parseCodeCardStack(profileData.code_card_stack);
 
   const githubUsernames = profileData.show_github_section
     ? [
@@ -293,9 +290,7 @@ export default async function HomePage() {
         </div>
       )}
 
-      <Suspense fallback={null}>
-        <FooterSection userId={userId} />
-      </Suspense>
+      <Footer data={profileData} />
     </div>
   );
 }
@@ -331,9 +326,4 @@ async function ReviewsSection({ userId, eyebrow, heading, description }: Section
   return (
     <ClientReviews data={data} eyebrow={eyebrow} heading={heading} description={description} />
   );
-}
-
-async function FooterSection({ userId }: { userId: string }) {
-  const data = await getFooterData(userId);
-  return <Footer data={data} />;
 }

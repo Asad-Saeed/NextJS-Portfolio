@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
-import type { Profile, FooterData } from "@/types";
+import type { Profile } from "@/types";
 
 export type BannerData = Pick<
   Profile,
@@ -42,16 +42,4 @@ export async function getSidebarProfile(userId: string): Promise<Partial<Profile
     .eq("user_id", userId)
     .single();
   return data as Partial<Profile> | null;
-}
-
-export async function getFooterData(userId: string): Promise<FooterData | null> {
-  const supabase = getPublicSupabaseClient();
-  const { data } = await supabase
-    .from("profile")
-    .select(
-      "footer_text, copyright_year, email, upwork_url, github_url, linkedin_url, fiverr_url, name"
-    )
-    .eq("user_id", userId)
-    .single();
-  return data as FooterData | null;
 }

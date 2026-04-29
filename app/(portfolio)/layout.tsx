@@ -5,6 +5,7 @@ import LayoutShell from "@/components/LayoutShell";
 import { getProfileBySlug, getSidebarProfile } from "@/lib/queries/profile";
 import { getLanguages, getTechStack, getSidebarSkills } from "@/lib/queries/sidebar";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 
@@ -101,7 +102,7 @@ export default async function PortfolioLayout({ children }: { children: React.Re
   const knowsAbout: string[] = [
     ...((profileData.designation || "").split(/[|,]/) as string[]).map((s) => s.trim()),
     ...((profileData.banner_subheadings ?? []) as string[]),
-    ...((profileData.code_card_stack || "").split(",") as string[]).map((s) => s.trim()),
+    ...parseCodeCardStack(profileData.code_card_stack, Infinity),
   ].filter(Boolean);
 
   const jsonLd = {

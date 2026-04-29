@@ -4,9 +4,10 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Banner from "@/components/HomeComponents/Banner";
 import SkillsCards from "@/components/skills/skillsCards";
-import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug } from "@/lib/queries/profile";
 import { getSkills } from "@/lib/queries/skills";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,7 +50,8 @@ export default async function SkillsPage() {
 
   const userId = profileData.user_id;
   const bannerData = profileData;
-  const [skills, footerData] = await Promise.all([getSkills(userId), getFooterData(userId)]);
+  const footerData = profileData;
+  const skills = await getSkills(userId);
 
   return (
     <div>
@@ -58,11 +60,7 @@ export default async function SkillsPage() {
         heading={bannerData?.skills_banner_heading}
         name={profileData.name}
         designation={profileData.designation}
-        stack={(profileData.code_card_stack ?? "")
-          .split(",")
-          .map((s: string) => s.trim())
-          .filter(Boolean)
-          .slice(0, 3)}
+        stack={parseCodeCardStack(profileData.code_card_stack)}
         availabilityStatus={profileData.availability_status}
       />
       <SkillsCards
