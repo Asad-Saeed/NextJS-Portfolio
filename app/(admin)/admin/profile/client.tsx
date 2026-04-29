@@ -34,6 +34,7 @@ const sections = [
       { key: "secondary_github_url", label: "Secondary GitHub URL (optional)" },
       { key: "linkedin_url", label: "LinkedIn URL" },
       { key: "upwork_url", label: "Upwork URL" },
+      { key: "fiverr_url", label: "Fiverr URL (optional)" },
     ],
   },
   {
@@ -61,6 +62,127 @@ const sections = [
     fields: [
       { key: "footer_text", label: "Footer Text" },
       { key: "copyright_year", label: "Copyright Year" },
+    ],
+  },
+  {
+    title: "Hero Code Card",
+    fields: [
+      {
+        key: "code_card_stack",
+        label: "Stack chips (comma-separated, max 3) — e.g. TypeScript, React, Next.js",
+      },
+    ],
+  },
+  {
+    title: "Section: Expertise",
+    fields: [
+      { key: "expertise_eyebrow", label: "Eyebrow (e.g. Capabilities)" },
+      { key: "expertise_heading", label: "Heading (e.g. What I build)" },
+      { key: "expertise_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Certifications",
+    fields: [
+      { key: "certifications_eyebrow", label: "Eyebrow" },
+      { key: "certifications_heading", label: "Heading" },
+      { key: "certifications_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Recommendations",
+    fields: [
+      { key: "recommendations_eyebrow", label: "Eyebrow" },
+      { key: "recommendations_heading", label: "Heading" },
+      { key: "recommendations_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Client Reviews",
+    fields: [
+      { key: "reviews_eyebrow", label: "Eyebrow" },
+      { key: "reviews_heading", label: "Heading" },
+      { key: "reviews_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Skills Page",
+    fields: [
+      { key: "skills_eyebrow", label: "Eyebrow" },
+      { key: "skills_heading", label: "Heading" },
+      { key: "skills_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Background — Experience",
+    fields: [
+      { key: "experience_eyebrow", label: "Eyebrow (e.g. Career)" },
+      { key: "experience_heading", label: "Heading (e.g. Experience)" },
+      { key: "experience_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Background — Education",
+    fields: [
+      { key: "education_eyebrow", label: "Eyebrow (e.g. Studies)" },
+      { key: "education_heading", label: "Heading (e.g. Education)" },
+      { key: "education_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Portfolio Page",
+    fields: [
+      { key: "portfolio_eyebrow", label: "Eyebrow (e.g. Selected work)" },
+      { key: "portfolio_heading", label: "Heading (e.g. Projects)" },
+      { key: "portfolio_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Contact — Info",
+    fields: [
+      { key: "contact_eyebrow", label: "Eyebrow (e.g. Reach out)" },
+      { key: "contact_heading", label: "Heading (e.g. Contact information)" },
+      { key: "contact_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: Contact — Form",
+    fields: [
+      { key: "contact_form_eyebrow", label: "Eyebrow (e.g. Inbox)" },
+      { key: "contact_form_heading", label: "Heading (e.g. Send a message)" },
+      { key: "contact_form_description", label: "Description" },
+    ],
+  },
+  {
+    title: "Section: GitHub — Activity",
+    fields: [{ key: "github_section_heading", label: "Heading (default: GitHub Activity)" }],
+  },
+  {
+    title: "Section: GitHub — Stats",
+    fields: [
+      { key: "github_stats_eyebrow", label: "Eyebrow (default: Profile)" },
+      { key: "github_stats_heading", label: "Heading (default: Stats)" },
+    ],
+  },
+  {
+    title: "Section: GitHub — Top Languages",
+    fields: [
+      { key: "github_languages_eyebrow", label: "Eyebrow (default: Composition)" },
+      { key: "github_languages_heading", label: "Heading (default: Top Languages)" },
+    ],
+  },
+  {
+    title: "Section: GitHub — Featured Repos",
+    fields: [
+      { key: "github_repos_eyebrow", label: "Eyebrow (default: Open source)" },
+      { key: "github_repos_heading", label: "Heading (default: Featured Repositories)" },
+    ],
+  },
+  {
+    title: "Section: GitHub — Achievements",
+    fields: [
+      { key: "github_achievements_eyebrow", label: "Eyebrow (default: Milestones)" },
+      { key: "github_achievements_heading", label: "Heading (default: Achievements)" },
     ],
   },
 ];

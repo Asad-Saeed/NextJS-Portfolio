@@ -1,51 +1,52 @@
 import BannerSkeleton from "@/components/Common/BannerSkeleton";
+import Skeleton from "@/components/Common/Skeleton";
+import CardSkeleton from "@/components/Common/CardSkeleton";
 
 export default function Loading() {
   return (
-    <div className="animate-pulse">
+    <div>
       <BannerSkeleton />
 
-      <div className="px-4 sm:px-6 py-6">
+      <div className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
         {/* Back link */}
-        <div className="h-3 w-28 bg-Green/10 rounded mb-6" />
+        <Skeleton className="h-3 w-28 mb-6" />
 
         {/* Project header card */}
-        <div className="card_stylings p-5 sm:p-8 mb-4">
+        <div
+          className="rounded-xl p-4 sm:p-5 lg:p-6 mb-3"
+          style={{
+            backgroundColor: "var(--ds-surface)",
+            boxShadow: "var(--ds-shadow-border)",
+          }}
+        >
           {/* Image */}
-          <div className="rounded-lg bg-Green/10 h-48 sm:h-64 md:h-80 mb-6" />
+          <Skeleton className="w-full h-48 sm:h-64 md:h-80 mb-5" />
 
-          {/* Title + button row */}
+          {/* Title + CTA */}
           <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="h-7 sm:h-9 bg-Green/10 rounded-lg w-2/3" />
-            <div className="h-10 w-32 bg-Green/10 rounded-lg shrink-0" />
+            <Skeleton className="h-7 sm:h-9 w-2/3" />
+            <Skeleton className="h-9 w-32" pill />
           </div>
 
           {/* Tech badges */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-7 w-20 bg-Green/10 rounded-full" />
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {[44, 56, 36, 52, 40].map((w, i) => (
+              <Skeleton key={i} className="h-5" style={{ width: w }} pill />
             ))}
           </div>
 
-          {/* Description lines */}
-          <div className="space-y-2">
-            <div className="h-3 bg-Green/10 rounded w-full" />
-            <div className="h-3 bg-Green/10 rounded w-5/6" />
-            <div className="h-3 bg-Green/10 rounded w-4/6" />
+          {/* Description */}
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-5/6" />
+            <Skeleton className="h-3 w-4/6" />
           </div>
         </div>
 
-        {/* Case study cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Case study cards (Challenge / Solution / Impact / Role) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="card_stylings p-5 sm:p-6">
-              <div className="h-3 w-24 bg-Green/10 rounded mb-4" />
-              <div className="space-y-2">
-                <div className="h-3 bg-Green/10 rounded w-full" />
-                <div className="h-3 bg-Green/10 rounded w-5/6" />
-                <div className="h-3 bg-Green/10 rounded w-3/4" />
-              </div>
-            </div>
+            <CardSkeleton key={i} lines={3} />
           ))}
         </div>
       </div>

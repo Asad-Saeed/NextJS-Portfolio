@@ -7,7 +7,7 @@ import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
 import Badge from "@/components/Common/Badge";
 import { FiExternalLink, FiArrowLeft } from "react-icons/fi";
-import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
@@ -41,9 +41,9 @@ export default async function CaseStudyPage({
   if (!profileData) notFound();
 
   const userId = profileData.user_id;
-  const [projectData, bannerData, footerData] = await Promise.all([
+  const bannerData = profileData;
+  const [projectData, footerData] = await Promise.all([
     getProjectBySlug(userId, project),
-    getBannerData(userId),
     getFooterData(userId),
   ]);
 
@@ -110,7 +110,19 @@ export default async function CaseStudyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkJsonLd) }}
       />
-      <Banner data={bannerData} heading={bannerData?.portfolio_banner_heading} />
+      <Banner
+        data={bannerData}
+        heading={bannerData?.portfolio_banner_heading}
+        slug={slug}
+        name={profileData.name}
+        designation={profileData.designation}
+        stack={(profileData.code_card_stack ?? "")
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean)
+          .slice(0, 3)}
+        availabilityStatus={profileData.availability_status}
+      />
 
       <div className="px-4 sm:px-6 py-6">
         {/* Back link */}

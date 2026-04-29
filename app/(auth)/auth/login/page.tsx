@@ -36,20 +36,28 @@ export default function LoginPage() {
 
           <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-LightGray text-xs mb-1 block">Email</label>
+              <label htmlFor="login-email" className="text-LightGray text-xs mb-1 block">
+                Email
+              </label>
               <input
+                id="login-email"
                 name="email"
                 type="email"
+                autoComplete="email"
                 required
                 className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 placeholder="admin@email.com"
               />
             </div>
             <div>
-              <label className="text-LightGray text-xs mb-1 block">Password</label>
+              <label htmlFor="login-password" className="text-LightGray text-xs mb-1 block">
+                Password
+              </label>
               <input
+                id="login-password"
                 name="password"
                 type="password"
+                autoComplete="current-password"
                 required
                 className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 placeholder="Enter password"

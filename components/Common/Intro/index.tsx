@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaDownload, FaGithub, FaLinkedin, FaUser } from "react-icons/fa";
+import { FaDownload, FaUser } from "react-icons/fa";
 import Contact from "./Contact";
 import Download from "./Download";
 import Languages from "./Languages";
@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useLongPress } from "@/lib/hooks/useLongPress";
 import { createClient } from "@/lib/supabase/client";
 import AvailabilityBadge from "@/components/Common/AvailabilityBadge";
+import SidebarSkeleton from "./SidebarSkeleton";
 import { SidebarData } from "@/types";
 
 interface IntroProps {
@@ -39,45 +40,103 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
     }
   }, 5000);
 
+  // Show skeleton until the layout has resolved sidebar data.
+  if (!profile) return <SidebarSkeleton />;
+
   const profileImage = profile?.profile_image_url;
   const name = profile?.name || "";
   const designation = profile?.designation || "";
-  const githubUrl = profile?.github_url || "";
-  const linkedinUrl = profile?.linkedin_url || "";
 
   return (
-    <>
-      {/* fixed at top */}
-      <div className="headerr z-50 absolute bg-MidNightBlack backdrop-blur-sm inset-y-0 h-48 top-0 flex items-center justify-center w-full flex-col px-4 gap-y-1 card_stylings">
-        <div {...longPressHandlers} className="cursor-pointer select-none">
+    <div className="h-full flex flex-col overflow-y-auto overflow-x-hidden no-scrollbar">
+      {/* Sticky header — identity card */}
+      <header
+        className="sticky top-0 z-30 flex flex-col items-center px-4 sm:px-5 pt-8 pb-5 gap-y-2.5"
+        style={{
+          backgroundColor: "var(--ds-surface)",
+          boxShadow: "inset 0 -1px 0 0 var(--ds-border-shadow)",
+        }}
+      >
+        {/* Top mono fingerprint row */}
+        <div
+          className="absolute top-3 inset-x-0 flex items-center justify-between px-4"
+          aria-hidden
+        >
+          <span className="text-mono-label truncate" style={{ color: "var(--ds-fg-muted)" }}>
+            ~/profile
+          </span>
+          <span
+            className="inline-flex items-center gap-1.5 text-mono-label"
+            style={{ color: "var(--ds-fg-tertiary)" }}
+          >
+            <span
+              className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ backgroundColor: "var(--ds-develop)" }}
+            />
+            LIVE
+          </span>
+        </div>
+
+        {/* Avatar with conic-gradient ring */}
+        <div {...longPressHandlers} className="relative cursor-pointer select-none group">
+          <span
+            aria-hidden
+            className="absolute -inset-1 rounded-full opacity-50 blur-md transition-opacity duration-300 group-hover:opacity-80"
+            style={{
+              background:
+                "conic-gradient(from 180deg, var(--ds-develop), var(--ds-preview), var(--ds-ship), var(--ds-develop))",
+            }}
+          />
           {profileImage ? (
             <Image
-              className="w-20 h-20 rounded-full border border-Green object-cover object-[center_30%]"
+              className="relative w-[72px] h-[72px] sm:w-[76px] sm:h-[76px] rounded-full object-cover object-[center_30%] transition-transform duration-300 group-hover:scale-105"
+              style={{ boxShadow: "0 0 0 2px var(--ds-surface), var(--ds-shadow-border-light)" }}
               src={profileImage}
               alt={name || "Profile"}
               width={160}
               height={160}
-              sizes="80px"
+              sizes="76px"
               priority
+              fetchPriority="high"
               draggable={false}
             />
           ) : (
-            <div className="w-20 h-20 rounded-full border bottom-1 p-1 border-Green flex items-center justify-center bg-DeepNightBlack">
-              <FaUser className="text-LightGray text-3xl" />
+            <div
+              className="relative w-[72px] h-[72px] sm:w-[76px] sm:h-[76px] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+              style={{
+                backgroundColor: "var(--ds-surface-subtle)",
+                boxShadow: "0 0 0 2px var(--ds-surface), var(--ds-shadow-border-light)",
+                color: "var(--ds-fg-muted)",
+              }}
+            >
+              <FaUser className="text-2xl" />
             </div>
           )}
         </div>
-        <span className="text-Snow text-base font-bold break-normal">
-          <Link href={homeUrl} rel="noreferrer">
-            {name}
-          </Link>
-        </span>
-        <AvailabilityBadge status={profile?.availability_status} />
-        {designation && <span className="text-sm text-LightGray text-center">{designation}</span>}
-      </div>
 
-      {/* middle components */}
-      <div className="beech z-20 flex flex-col overflow-y-scroll pt-48 top-48 overflow-x-hidden no-scrollbar px-4">
+        <Link
+          href={homeUrl}
+          rel="noreferrer"
+          className="text-[15px] sm:text-[16px] font-semibold leading-tight text-center break-words max-w-full"
+          style={{ color: "var(--ds-fg)", letterSpacing: "-0.025em" }}
+        >
+          {name}
+        </Link>
+
+        <AvailabilityBadge status={profile?.availability_status} />
+
+        {designation && (
+          <span
+            className="text-[12px] text-center leading-snug max-w-[14rem] break-words"
+            style={{ color: "var(--ds-fg-secondary)", letterSpacing: "-0.005em" }}
+          >
+            {designation}
+          </span>
+        )}
+      </header>
+
+      {/* Scrollable content */}
+      <div className="flex flex-col px-4 sm:px-5 pb-3">
         <Location profile={profile ?? undefined} />
         <Languages data={sidebarData?.languages} />
         <Skills data={sidebarData?.sidebarSkills} />
@@ -85,35 +144,7 @@ const Intro = ({ isOpen, setIsOpen, sidebarData, slug }: IntroProps) => {
         <Contact profile={profile ?? undefined} />
         <Download icon={<FaDownload />} resumeUrl={profile?.resume_url} />
       </div>
-
-      {/* fixed at bottom */}
-      {(githubUrl || linkedinUrl) && (
-        <div className="footer absolute flex justify-center space-x-6 text-xl items-center bottom-0 z-50 h-10 w-full bg-MidNightBlack text-Snow">
-          {githubUrl && (
-            <Link
-              href={githubUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="hover:text-Green transition-colors"
-              aria-label="Visit GitHub profile"
-            >
-              <FaGithub aria-hidden="true" />
-            </Link>
-          )}
-          {linkedinUrl && (
-            <Link
-              href={linkedinUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="hover:text-Green transition-colors"
-              aria-label="Visit LinkedIn profile"
-            >
-              <FaLinkedin aria-hidden="true" />
-            </Link>
-          )}
-        </div>
-      )}
-    </>
+    </div>
   );
 };
 

@@ -5,6 +5,15 @@ export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const BG = "#0a0a0a";
+const FG = "#ededed";
+const FG_2 = "#a1a1a1";
+const FG_3 = "#5a5a5a";
+const BORDER = "rgba(255,255,255,0.10)";
+const ACCENT = "#3291ff";
+const ACCENT_2 = "#ff4d8d";
+const ACCENT_3 = "#ff5b4f";
+
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const profileData = await getProfileBySlug(slug);
@@ -19,142 +28,170 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         width: "100%",
         height: "100%",
         display: "flex",
-        background: "linear-gradient(135deg, #060d16 0%, #0b1726 40%, #0f1e33 80%, #142440 100%)",
-        padding: "80px 100px",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: "column",
+        background: BG,
+        padding: "72px 88px",
         fontFamily: "sans-serif",
         position: "relative",
       }}
     >
-      {/* Decorative accent dots */}
+      {/* Atmospheric gradient mesh */}
       <div
         style={{
           position: "absolute",
-          top: 60,
-          right: 80,
-          width: 8,
-          height: 8,
-          borderRadius: "50%",
-          background: "#00e5ff",
+          inset: 0,
           display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 80,
-          right: 110,
-          width: 4,
-          height: 4,
-          borderRadius: "50%",
-          background: "#00e5ff",
-          opacity: 0.6,
-          display: "flex",
+          background:
+            "radial-gradient(900px 500px at 12% 10%, rgba(10,114,239,0.18), transparent 60%), radial-gradient(700px 400px at 88% 18%, rgba(222,29,141,0.10), transparent 65%), radial-gradient(600px 400px at 60% 100%, rgba(255,91,79,0.08), transparent 60%)",
         }}
       />
 
-      {/* Left: text content */}
+      {/* Top eyebrow row */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          gap: 24,
-          flex: 1,
-          maxWidth: 700,
+          alignItems: "center",
+          gap: 12,
+          fontSize: 18,
+          color: FG_2,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          fontWeight: 500,
         }}
       >
         <div
           style={{
-            fontSize: 22,
-            color: "#00e5ff",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            fontWeight: 700,
+            width: 10,
+            height: 10,
+            borderRadius: 9999,
+            background: ACCENT,
             display: "flex",
-            alignItems: "center",
-            gap: 16,
+            boxShadow: `0 0 12px -2px ${ACCENT}`,
           }}
-        >
-          <div
-            style={{
-              width: 40,
-              height: 2,
-              background: "#00e5ff",
-              display: "flex",
-            }}
-          />
-          Portfolio
-        </div>
-
-        <div
-          style={{
-            fontSize: 80,
-            fontWeight: 800,
-            color: "#e8ecf1",
-            lineHeight: 1.05,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {name}
-        </div>
-
-        <div
-          style={{
-            fontSize: 30,
-            color: "#9aacbe",
-            lineHeight: 1.3,
-            fontWeight: 400,
-          }}
-        >
-          {designation}
-        </div>
+        />
+        Portfolio
+        <span style={{ color: FG_3, display: "flex" }}>·</span>
+        <span style={{ color: FG_3, display: "flex" }}>v1 · 2026</span>
       </div>
 
-      {/* Right: profile image */}
-      {profileImage ? (
+      {/* Main row: text left, avatar right */}
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 60,
+          marginTop: 36,
+        }}
+      >
+        {/* Left — name + designation */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, flex: 1 }}>
+          <div
+            style={{
+              fontSize: 96,
+              fontWeight: 700,
+              color: FG,
+              lineHeight: 0.95,
+              letterSpacing: "-0.055em",
+            }}
+          >
+            {name}
+          </div>
+          <div
+            style={{
+              fontSize: 32,
+              color: FG_2,
+              lineHeight: 1.25,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {designation}
+          </div>
+        </div>
+
+        {/* Right — avatar in shadow-bordered card */}
+        {profileImage ? (
+          <div
+            style={{
+              width: 280,
+              height: 280,
+              borderRadius: 20,
+              background: "#171717",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              boxShadow: `0 0 0 1px ${BORDER}`,
+              flexShrink: 0,
+            }}
+          >
+            <img
+              src={profileImage}
+              width={280}
+              height={280}
+              alt={name}
+              style={{ objectFit: "cover", objectPosition: "center 30%" }}
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              width: 280,
+              height: 280,
+              borderRadius: 20,
+              background: "#171717",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              fontSize: 130,
+              color: FG_2,
+              fontWeight: 700,
+              boxShadow: `0 0 0 1px ${BORDER}`,
+            }}
+          >
+            {(name[0] || "?").toUpperCase()}
+          </div>
+        )}
+      </div>
+
+      {/* Bottom row: workflow accent dots + URL */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 36,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {[ACCENT, ACCENT_2, ACCENT_3].map((c, i) => (
+            <div
+              key={i}
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: 9999,
+                background: c,
+                display: "flex",
+              }}
+            />
+          ))}
+        </div>
         <div
           style={{
-            width: 360,
-            height: 360,
-            borderRadius: "50%",
-            border: "8px solid #00e5ff",
-            overflow: "hidden",
+            fontSize: 18,
+            color: FG_3,
+            letterSpacing: "0.05em",
+            fontWeight: 500,
             display: "flex",
-            flexShrink: 0,
-            boxShadow: "0 0 60px rgba(0, 229, 255, 0.3)",
           }}
         >
-          {/* next/og uses Satori which only supports plain <img>, not next/image */}
-          <img
-            src={profileImage}
-            width={360}
-            height={360}
-            alt={name}
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
-          />
+          /{slug}
         </div>
-      ) : (
-        <div
-          style={{
-            width: 360,
-            height: 360,
-            borderRadius: "50%",
-            border: "8px solid #00e5ff",
-            background: "#0b1726",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-            fontSize: 140,
-            color: "#9aacbe",
-            fontWeight: 700,
-            boxShadow: "0 0 60px rgba(0, 229, 255, 0.3)",
-          }}
-        >
-          {(name[0] || "?").toUpperCase()}
-        </div>
-      )}
+      </div>
     </div>,
     { ...size }
   );

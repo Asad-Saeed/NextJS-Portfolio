@@ -1,43 +1,85 @@
 import BannerSkeleton from "@/components/Common/BannerSkeleton";
-import ParagraphSkeleton from "@/components/Common/ParagraphSkeleton";
+import SectionHeaderSkeleton from "@/components/Common/SectionHeaderSkeleton";
+import CardSkeleton from "@/components/Common/CardSkeleton";
 
 export default function Loading() {
   return (
-    <div className="animate-pulse">
+    <div>
       <BannerSkeleton />
 
-      {/* Expertise section */}
-      <div className="px-2 md:px-8 py-4">
-        <div className="h-5 w-32 bg-Green/10 rounded mb-4" />
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 px-2 md:px-8">
-        {[1, 2, 3, 4].map((i) => (
-          <ParagraphSkeleton key={i} className="p-8" />
-        ))}
-      </div>
-
-      {/* Recommendations section */}
-      <div className="px-2 md:px-8 py-4 mt-4">
-        <div className="h-5 w-40 bg-Green/10 rounded mb-4" />
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 px-2 md:px-8">
-        {[1, 2].map((i) => (
-          <ParagraphSkeleton key={i} className="p-8 h-full" />
-        ))}
-      </div>
-
-      {/* Reviews section */}
-      <div className="px-2 md:px-8 py-4 mt-4">
-        <div className="h-5 w-36 bg-Green/10 rounded mb-4" />
-      </div>
-      <div className="flex gap-4 px-2 md:px-8 pb-4 overflow-hidden">
-        {[1, 2, 3].map((i) => (
+      {/* GitHub block */}
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto flex flex-col gap-8 sm:gap-10">
+        <div>
+          <SectionHeaderSkeleton withDescription={false} />
           <div
-            key={i}
-            className="w-80 shrink-0 h-40 bg-EveningBlack rounded-xl border border-DarkGray/30"
+            className="rounded-xl p-4 sm:p-5 lg:p-6 h-48 sm:h-56"
+            style={{
+              backgroundColor: "var(--ds-surface)",
+              boxShadow: "var(--ds-shadow-border)",
+            }}
           />
-        ))}
-      </div>
+        </div>
+        <div>
+          <SectionHeaderSkeleton withDescription={false} />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="p-4 rounded-lg flex flex-col gap-2"
+                style={{
+                  backgroundColor: "var(--ds-surface)",
+                  boxShadow: "var(--ds-shadow-border)",
+                }}
+              >
+                <div className="h-3 w-16 ds-skeleton" />
+                <div className="h-7 w-12 ds-skeleton" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Expertise */}
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+        <SectionHeaderSkeleton />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <CardSkeleton key={i} lines={2} />
+          ))}
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+        <SectionHeaderSkeleton />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          {[1, 2, 3].map((i) => (
+            <CardSkeleton key={i} lines={2} />
+          ))}
+        </div>
+      </section>
+
+      {/* Recommendations */}
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+        <SectionHeaderSkeleton />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+          {[1, 2].map((i) => (
+            <CardSkeleton key={i} lines={4} withFooter />
+          ))}
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+        <SectionHeaderSkeleton />
+        <div className="flex gap-2.5 overflow-hidden">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="w-[320px] sm:w-[360px] shrink-0">
+              <CardSkeleton lines={4} withFooter />
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

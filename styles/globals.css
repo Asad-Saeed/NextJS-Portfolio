@@ -1,33 +1,151 @@
 @import "tailwindcss";
 
-/* ===== Cyan Luxe Theme ===== */
-@theme {
-  /* Old colors (commented out — kept for reference)
-  --color-Green: #1fdf64;
-  --color-Black: #000;
-  --color-DeepNightBlack: #121212;
-  --color-MidNightBlack: #181818;
-  --color-EveningBlack: #1a1a1a;
-  --color-DarkGray: #282828;
-  --color-SlateGray: #404040;
-  --color-LightGray: #959595;
-  --color-SilverGray: #b3b3b3;
-  --color-Snow: #ffffff;
-  */
+/* ===== Vercel Geist Design System (Step 1 — additive tokens only) =====
+   New `--ds-*` tokens coexist with legacy Cyan Luxe tokens.
+   Themes flip via `data-theme` attribute on <html>.
+   Default (no attribute) = dark. No legacy token modified yet.
+*/
+:root,
+[data-theme="dark"] {
+  /* Surfaces */
+  --ds-bg: #0a0a0a;
+  --ds-surface: #0a0a0a;
+  --ds-surface-subtle: #171717;
+  --ds-overlay-backdrop: hsla(0, 0%, 4%, 0.8);
 
-  /* Cyan Luxe — improved readability */
-  --color-Green: #00e5ff;
-  --color-Magenta: #06b6d4;
-  --color-Black: #060d16;
-  --color-DeepNightBlack: #0b1726;
-  --color-MidNightBlack: #0f1e33;
-  --color-EveningBlack: #142440;
-  --color-DarkGray: #1e3355;
-  --color-SlateGray: #2d4a6e;
-  --color-LightGray: #9aacbe;
-  --color-SilverGray: #c4ced9;
-  --color-Snow: #e8ecf1;
-  --color-White: #f5f7fa;
+  /* Text — contrast ratios against #0a0a0a bg:
+     fg #ededed → 16.4:1 (AAA), secondary #a1a1a1 → 7.0:1 (AAA),
+     tertiary #8d8d8d → 5.5:1 (AA), muted #707070 → 3.6:1 (AA large only). */
+  --ds-fg: #ededed;
+  --ds-fg-secondary: #a1a1a1;
+  --ds-fg-tertiary: #8d8d8d;
+  --ds-fg-muted: #707070;
+
+  /* Neutrals */
+  --ds-gray-50: #171717;
+  --ds-gray-100: #2a2a2a;
+  --ds-gray-400: #5a5a5a;
+  --ds-gray-500: #7d7d7d;
+  --ds-gray-600: #a1a1a1;
+  --ds-gray-900: #ededed;
+  --ds-gray-1000: #ffffff;
+
+  /* Borders / rings */
+  --ds-border-shadow: rgba(255, 255, 255, 0.1);
+  --ds-border-light: #2a2a2a;
+  --ds-inner-ring: #1f1f1f;
+
+  /* Interactive */
+  --ds-link: #3291ff;
+  --ds-focus: hsla(212, 100%, 60%, 1);
+  --ds-ring: rgba(50, 145, 255, 0.4);
+
+  /* Workflow accents (functional, identical across themes) */
+  --ds-ship: #ff5b4f;
+  --ds-preview: #de1d8d;
+  --ds-develop: #0a72ef;
+
+  /* Console / code */
+  --ds-console-blue: #3291ff;
+  --ds-console-purple: #c372fc;
+  --ds-console-pink: #ff4d8d;
+
+  /* Badge (tinted blue pill) */
+  --ds-badge-bg: #0a1f3d;
+  --ds-badge-fg: #7cb8ff;
+
+  /* Selection */
+  --ds-selection-bg: hsla(212, 100%, 60%, 0.3);
+  --ds-selection-fg: #ededed;
+
+  /* Shadow stacks */
+  --ds-shadow-border: 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
+  --ds-shadow-border-light: 0px 0px 0px 1px rgba(255, 255, 255, 0.06);
+  --ds-shadow-elevation: 0px 2px 2px rgba(0, 0, 0, 0.4);
+  --ds-shadow-card:
+    0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.4),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.6), inset 0px 0px 0px 1px #1f1f1f;
+  --ds-focus-ring: 0 0 0 4px rgba(50, 145, 255, 0.3);
+}
+
+[data-theme="light"] {
+  /* Surfaces */
+  --ds-bg: #ffffff;
+  --ds-surface: #ffffff;
+  --ds-surface-subtle: #fafafa;
+  --ds-overlay-backdrop: hsla(0, 0%, 98%, 1);
+
+  /* Text */
+  --ds-fg: #171717;
+  --ds-fg-secondary: #4d4d4d;
+  --ds-fg-tertiary: #666666;
+  --ds-fg-muted: #808080;
+
+  /* Neutrals */
+  --ds-gray-50: #fafafa;
+  --ds-gray-100: #ebebeb;
+  --ds-gray-400: #808080;
+  --ds-gray-500: #666666;
+  --ds-gray-600: #4d4d4d;
+  --ds-gray-900: #171717;
+  --ds-gray-1000: #0a0a0a;
+
+  /* Borders / rings */
+  --ds-border-shadow: rgba(0, 0, 0, 0.08);
+  --ds-border-light: #ebebeb;
+  --ds-inner-ring: #fafafa;
+
+  /* Interactive */
+  --ds-link: #0072f5;
+  --ds-focus: hsla(212, 100%, 48%, 1);
+  --ds-ring: rgba(147, 197, 253, 0.5);
+
+  /* Workflow accents (identical) */
+  --ds-ship: #ff5b4f;
+  --ds-preview: #de1d8d;
+  --ds-develop: #0a72ef;
+
+  /* Console / code */
+  --ds-console-blue: #0070f3;
+  --ds-console-purple: #7928ca;
+  --ds-console-pink: #eb367f;
+
+  /* Badge */
+  --ds-badge-bg: #ebf5ff;
+  --ds-badge-fg: #0068d6;
+
+  /* Selection */
+  --ds-selection-bg: hsla(212, 100%, 48%, 0.2);
+  --ds-selection-fg: #171717;
+
+  /* Shadow stacks */
+  --ds-shadow-border: 0px 0px 0px 1px rgba(0, 0, 0, 0.08);
+  --ds-shadow-border-light: 0px 0px 0px 1px rgb(235, 235, 235);
+  --ds-shadow-elevation: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  --ds-shadow-card:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.04),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.04), inset 0px 0px 0px 1px #fafafa;
+  --ds-focus-ring: 0 0 0 4px rgba(0, 114, 245, 0.25);
+}
+
+/* ===== Tailwind theme — legacy `--color-*` names retained as semantic
+   aliases of the Vercel `--ds-*` tokens. Defaults below are dark-mode;
+   the `[data-theme="light"]` block at the end overrides for light. =====
+*/
+@theme {
+  /* Legacy names mapped to Vercel Geist (dark default) */
+  --color-Green: #3291ff;
+  --color-Magenta: #de1d8d;
+  --color-Black: #000000;
+  --color-DeepNightBlack: #0a0a0a;
+  --color-MidNightBlack: #0a0a0a;
+  --color-EveningBlack: #171717;
+  --color-DarkGray: #2a2a2a;
+  --color-SlateGray: #3a3a3a;
+  --color-LightGray: #7d7d7d;
+  --color-SilverGray: #a1a1a1;
+  --color-Snow: #ededed;
+  --color-White: #ffffff;
 
   /* Old fonts (commented out — kept for reference)
   --font-cascadia-normal: "cascadia-normal", monospace;
@@ -49,6 +167,22 @@
   --font-circular-medium: var(--font-inter), sans-serif;
   --font-circular-bold: var(--font-inter), sans-serif;
   --font-cascadia-normal: var(--font-fira-code), "Fira Mono", monospace;
+}
+
+/* Legacy `--color-*` overrides for light mode */
+[data-theme="light"] {
+  --color-Green: #0072f5;
+  --color-Magenta: #de1d8d;
+  --color-Black: #171717;
+  --color-DeepNightBlack: #ffffff;
+  --color-MidNightBlack: #ffffff;
+  --color-EveningBlack: #fafafa;
+  --color-DarkGray: #ebebeb;
+  --color-SlateGray: #dcdcdc;
+  --color-LightGray: #666666;
+  --color-SilverGray: #4d4d4d;
+  --color-Snow: #171717;
+  --color-White: #0a0a0a;
 }
 
 /* ===== Old Font Faces (commented out — kept for reference) =====
@@ -75,19 +209,44 @@
 ===== */
 
 /* ===== Base Styles ===== */
+html,
 body {
-  background-color: #050b14 !important;
+  font-feature-settings: "liga", "calt", "ss01", "cv11";
+  font-variant-ligatures: contextual common-ligatures;
+}
+
+body {
+  background-color: var(--ds-bg);
+  color: var(--ds-fg);
   overflow: hidden;
   height: 100vh;
   font-family:
     var(--font-inter),
-    "San Francisco",
-    "SF Pro Text",
+    "Geist",
+    "Geist Sans",
     -apple-system,
+    "SF Pro Text",
     system-ui,
+    "Segoe UI",
+    Arial,
     sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+code,
+pre,
+kbd,
+samp,
+.font-mono {
+  font-family:
+    var(--font-fira-code), "Geist Mono", ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco,
+    "Liberation Mono", "Courier New", monospace;
+  font-feature-settings: "liga", "calt", "tnum";
 }
 
 /* ===== Global button cursor ===== */
@@ -112,7 +271,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 1px solid var(--color-Green);
+  outline: 2px solid var(--ds-focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -134,78 +293,450 @@ select:focus-visible {
   top: 1rem;
   width: auto;
   height: auto;
-  padding: 0.625rem 1.25rem;
-  background: var(--color-Green);
-  color: var(--color-DeepNightBlack);
-  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--ds-fg);
+  color: var(--ds-bg);
+  border-radius: 6px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    0 0 0 2px var(--color-DeepNightBlack);
+  box-shadow: var(--ds-shadow-border);
   outline: none;
 }
 
-/* ===== Custom Utility Classes ===== */
+/* ===== Custom Utility Classes (Vercel Geist) ===== */
 @utility card_stylings {
-  background-color: rgb(17 34 64 / 0.95);
-  border-radius: var(--radius-xl, 0.75rem);
-  border: 1px solid rgb(29 52 97 / 0.3);
+  background-color: var(--ds-surface);
+  border-radius: 8px;
+  border: none;
+  box-shadow: var(--ds-shadow-border);
+  transition:
+    box-shadow 200ms ease,
+    background-color 200ms ease;
   &:hover {
-    background-image: linear-gradient(
-      to bottom right,
-      rgb(0 229 255 / 0.07),
-      rgb(255 0 255 / 0.04)
-    );
-    border-color: rgb(0 229 255 / 0.2);
+    box-shadow: var(--ds-shadow-border), var(--ds-shadow-elevation);
+    background-color: var(--ds-surface-subtle);
   }
 }
 
 @utility button {
-  background-color: transparent;
-  border: 1px solid var(--color-Green);
-  border-radius: var(--radius-lg, 0.5rem);
-  color: var(--color-Green);
-  font-family: var(--font-fira-code), monospace;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  background-color: var(--ds-fg);
+  border: none;
+  border-radius: 6px;
+  color: var(--ds-bg);
+  font-family:
+    var(--font-inter),
+    "San Francisco",
+    "SF Pro Text",
+    -apple-system,
+    system-ui,
+    sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.43;
   font-weight: 500;
-  padding: 0.5rem 1.25rem;
-  transition-property: all;
-  transition-duration: 300ms;
+  letter-spacing: -0.01em;
+  padding: 0.5rem 1rem;
+  transition: opacity 150ms ease;
   text-align: center;
   justify-content: center;
   &:hover {
-    background-color: rgb(0 229 255 / 0.1);
-  }
-  @media (min-width: 640px) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    padding: 0.625rem 1.75rem;
+    opacity: 0.9;
   }
 }
 
 @utility input_stylings {
-  background-color: var(--color-DeepNightBlack);
-  color: var(--color-SilverGray);
+  background-color: var(--ds-surface);
+  color: var(--ds-fg);
   font-size: 0.875rem;
-  line-height: 1.25rem;
-  border-radius: var(--radius-lg, 0.5rem);
-  border: 1px solid rgb(29 52 97 / 0.5);
+  line-height: 1.43;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--ds-shadow-border);
   outline: none;
   display: block;
   width: 100%;
-  padding: 0.625rem 0.625rem 0.625rem 2.5rem;
+  padding: 0.5rem 0.625rem 0.5rem 2.5rem;
+  transition: box-shadow 150ms ease;
+  &::placeholder {
+    color: var(--ds-fg-muted);
+  }
   &:focus {
-    border-color: var(--color-Green);
-    box-shadow: 0 0 0 1px rgb(0 229 255 / 0.3);
+    box-shadow: var(--ds-shadow-border), var(--ds-focus-ring);
   }
 }
 
 @utility transition {
   transition-property: all;
   transition-duration: 300ms;
+}
+
+/* ===== Vercel Geist Typography Utilities ===== */
+@utility tracking-display {
+  letter-spacing: -0.05em;
+}
+@utility tracking-heading {
+  letter-spacing: -0.04em;
+}
+@utility tracking-card {
+  letter-spacing: -0.04em;
+}
+@utility tracking-tight-md {
+  letter-spacing: -0.02em;
+}
+@utility tracking-tight-sm {
+  letter-spacing: -0.01em;
+}
+
+@utility text-display {
+  font-size: 3rem;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+}
+@utility text-section {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+}
+@utility text-subhead {
+  font-size: 2rem;
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+@utility text-card-title {
+  font-size: 1.5rem;
+  line-height: 1.33;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+@utility text-body-lg {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+@utility text-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+@utility text-ui {
+  font-size: 0.875rem;
+  line-height: 1.43;
+  font-weight: 500;
+}
+@utility text-caption {
+  font-size: 0.75rem;
+  line-height: 1.33;
+  font-weight: 500;
+}
+@utility text-mono-label {
+  font-family: var(--font-fira-code), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Vercel Component Surfaces ===== */
+@utility ds-card {
+  background-color: var(--ds-surface);
+  border-radius: 8px;
+  box-shadow:
+    var(--ds-shadow-border),
+    var(--ds-shadow-elevation),
+    0 0 0 1px var(--ds-inner-ring) inset;
+  transition:
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+@utility ds-card-elevated {
+  background-color: var(--ds-surface);
+  border-radius: 12px;
+  box-shadow: var(--ds-shadow-card);
+}
+@utility ds-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  background-color: var(--ds-badge-bg);
+  color: var(--ds-badge-fg);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  box-shadow: var(--ds-shadow-border);
+}
+@utility ds-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 6px;
+  background-color: var(--ds-surface-subtle);
+  color: var(--ds-fg-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  box-shadow: var(--ds-shadow-border-light);
+  transition:
+    color 150ms ease,
+    box-shadow 150ms ease;
+  &:hover {
+    color: var(--ds-fg);
+    box-shadow: var(--ds-shadow-border);
+  }
+}
+@utility ds-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: var(--ds-fg);
+  color: var(--ds-bg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.43;
+  letter-spacing: -0.01em;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+  &:hover {
+    opacity: 0.92;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
+@utility ds-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: var(--ds-surface);
+  color: var(--ds-fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.43;
+  letter-spacing: -0.01em;
+  box-shadow: var(--ds-shadow-border);
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+  &:hover {
+    background-color: var(--ds-surface-subtle);
+  }
+}
+@utility ds-divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--ds-border-light);
+}
+
+/* ===== Vercel-grade entrance + signature animations =====
+   Designed to showcase animation craft without being noisy.
+   All animations are gated via prefers-reduced-motion below.
+*/
+@keyframes ds-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ds-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ds-wave {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(-12deg);
+  }
+  20% {
+    transform: rotate(14deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(12deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(8deg);
+  }
+  70% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes ds-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes ds-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+@keyframes ds-arrow-bounce {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+/* Cascade utilities — apply with `ds-rise` and a delay class */
+@utility ds-rise {
+  opacity: 0;
+  animation: ds-fade-up 700ms cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
+}
+@utility ds-fade {
+  opacity: 0;
+  animation: ds-fade-in 700ms ease forwards;
+}
+@utility ds-delay-1 {
+  animation-delay: 50ms;
+}
+@utility ds-delay-2 {
+  animation-delay: 130ms;
+}
+@utility ds-delay-3 {
+  animation-delay: 220ms;
+}
+@utility ds-delay-4 {
+  animation-delay: 320ms;
+}
+@utility ds-delay-5 {
+  animation-delay: 430ms;
+}
+@utility ds-delay-6 {
+  animation-delay: 540ms;
+}
+
+@utility ds-wave {
+  transform-origin: 70% 80%;
+  animation: ds-wave 2.6s ease-in-out 1.2s infinite;
+  /* Wave runs every ~7s with a long idle gap for tasteful rhythm */
+  animation-iteration-count: infinite;
+  animation-delay: 1s;
+}
+@utility ds-float {
+  animation: ds-float 5.5s ease-in-out infinite;
+}
+@utility ds-text-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--ds-fg) 0%,
+    var(--ds-fg) 40%,
+    var(--ds-link) 50%,
+    var(--ds-fg) 60%,
+    var(--ds-fg) 100%
+  );
+  background-size: 250% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ds-shimmer 3.5s ease-in-out 0.4s 1 forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-rise,
+  .ds-fade,
+  .ds-wave,
+  .ds-float,
+  .ds-text-shimmer {
+    animation: none !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: var(--ds-fg);
+    background: none;
+  }
+  /* Disable all spinning / pulsing / shimmer effects globally for users
+     who prefer reduced motion (WCAG 2.3.3). */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Skeleton shimmer =====
+   Opacity-based pulse — composited on the GPU, no per-frame repaint
+   (a gradient `background-position` animation would kill mobile perf).
+*/
+@keyframes ds-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@utility ds-skeleton {
+  background-color: var(--ds-surface-subtle);
+  border-radius: 4px;
+  animation: ds-skeleton-pulse 1.5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@utility ds-skeleton-card {
+  background-color: var(--ds-surface);
+  border-radius: 8px;
+  box-shadow: var(--ds-shadow-border);
+}
+
+/* Lets the browser skip layout / paint for off-screen sections, then
+   recompute when they enter the viewport. Use on below-the-fold content
+   only (never the hero/LCP region). */
+@utility ds-cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* ===== Hero / decorative gradient (subtle pastel atmospheric wash) ===== */
+@utility ds-hero-gradient {
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(50, 145, 255, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 82% 18%, rgba(222, 29, 141, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(255, 91, 79, 0.1) 0%, transparent 55%);
 }
 
 /* ===== Scrollbar Styles ===== */
@@ -218,19 +749,24 @@ select:focus-visible {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a192f;
-  border-radius: 10px;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #00e5ff;
-  border-radius: 8px;
+  background: var(--ds-gray-100);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00b8d4;
+  background: var(--ds-gray-400);
+}
+
+/* Native selection */
+::selection {
+  background: var(--ds-selection-bg);
+  color: var(--ds-selection-fg);
 }
 
 /* ===== Animations ===== */
@@ -252,11 +788,11 @@ select:focus-visible {
 
 /* ===== Ant Design Overrides ===== */
 .ant-progress-text {
-  color: #00e5ff !important;
+  color: var(--ds-link) !important;
   font-weight: 500;
 }
 .ant-progress-circle-trail {
-  stroke: #1d3461 !important;
+  stroke: var(--ds-border-light) !important;
 }
 .ant-modal .ant-modal-content {
   display: flex;
@@ -269,14 +805,12 @@ select:focus-visible {
 
 /* ===== Box Shadow Hover ===== */
 .boxShodow:hover {
-  box-shadow:
-    rgba(0, 229, 255, 0.4) 0px 2px 5px -1px,
-    rgba(0, 229, 255, 0.2) 0px 1px 3px -1px;
+  box-shadow: var(--ds-shadow-border), var(--ds-shadow-elevation);
 }
 
 /* ===== Contact Form Focus Styles ===== */
 .userIcon:focus-within #icon,
 .mailIcon:focus-within #icon,
 .textIcon:focus-within #icon {
-  color: #00e5ff;
+  color: var(--ds-link);
 }

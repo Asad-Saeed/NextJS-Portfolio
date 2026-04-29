@@ -7,6 +7,16 @@ export const alt = "Case Study";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const BG = "#0a0a0a";
+const SURFACE = "#171717";
+const FG = "#ededed";
+const FG_2 = "#a1a1a1";
+const FG_3 = "#5a5a5a";
+const BORDER = "rgba(255,255,255,0.10)";
+const ACCENT = "#3291ff";
+const BADGE_BG = "#0a1f3d";
+const BADGE_FG = "#7cb8ff";
+
 export default async function Image({
   params,
 }: {
@@ -35,32 +45,45 @@ export default async function Image({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: "linear-gradient(135deg, #060d16 0%, #0b1726 40%, #0f1e33 80%, #142440 100%)",
+        background: BG,
         padding: "60px 80px",
         fontFamily: "sans-serif",
         position: "relative",
       }}
     >
-      {/* Top label */}
+      {/* Atmospheric gradient mesh */}
       <div
         style={{
-          fontSize: 20,
-          color: "#00e5ff",
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          fontWeight: 700,
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          background:
+            "radial-gradient(900px 500px at 12% 10%, rgba(10,114,239,0.18), transparent 60%), radial-gradient(700px 400px at 88% 18%, rgba(222,29,141,0.10), transparent 65%), radial-gradient(600px 400px at 60% 100%, rgba(255,91,79,0.08), transparent 60%)",
+        }}
+      />
+
+      {/* Top eyebrow row */}
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
-          gap: 16,
+          gap: 12,
+          fontSize: 18,
+          color: FG_2,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          fontWeight: 500,
           marginBottom: 24,
         }}
       >
         <div
           style={{
-            width: 40,
-            height: 2,
-            background: "#00e5ff",
+            width: 10,
+            height: 10,
+            borderRadius: 9999,
+            background: ACCENT,
             display: "flex",
+            boxShadow: `0 0 12px -2px ${ACCENT}`,
           }}
         />
         Case Study
@@ -70,7 +93,7 @@ export default async function Image({
       <div
         style={{
           display: "flex",
-          gap: 50,
+          gap: 48,
           flex: 1,
           alignItems: "center",
         }}
@@ -80,15 +103,14 @@ export default async function Image({
             style={{
               width: 380,
               height: 280,
-              borderRadius: 16,
+              borderRadius: 14,
               overflow: "hidden",
               display: "flex",
               flexShrink: 0,
-              border: "2px solid rgba(0, 229, 255, 0.3)",
-              boxShadow: "0 0 60px rgba(0, 229, 255, 0.2)",
+              background: SURFACE,
+              boxShadow: `0 0 0 1px ${BORDER}`,
             }}
           >
-            {/* next/og uses Satori which only supports plain <img>, not next/image */}
             <img
               src={projectImage}
               width={380}
@@ -103,17 +125,17 @@ export default async function Image({
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 20,
+            gap: 18,
             flex: 1,
           }}
         >
           <div
             style={{
               fontSize: projectName.length > 20 ? 56 : 68,
-              fontWeight: 800,
-              color: "#e8ecf1",
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
+              fontWeight: 700,
+              color: FG,
+              lineHeight: 1,
+              letterSpacing: "-0.04em",
             }}
           >
             {projectName}
@@ -123,8 +145,9 @@ export default async function Image({
             <div
               style={{
                 fontSize: 22,
-                color: "#9aacbe",
+                color: FG_2,
                 lineHeight: 1.4,
+                letterSpacing: "-0.005em",
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: "vertical",
@@ -140,21 +163,23 @@ export default async function Image({
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 10,
-                marginTop: 4,
+                gap: 8,
+                marginTop: 6,
               }}
             >
               {techs.map((tech) => (
                 <div
                   key={tech}
                   style={{
-                    fontSize: 18,
-                    color: "#00e5ff",
-                    background: "rgba(0, 229, 255, 0.08)",
-                    border: "1px solid rgba(0, 229, 255, 0.3)",
-                    borderRadius: 999,
-                    padding: "6px 16px",
+                    fontSize: 16,
+                    color: BADGE_FG,
+                    background: BADGE_BG,
+                    borderRadius: 9999,
+                    padding: "5px 14px",
                     display: "flex",
+                    letterSpacing: "-0.005em",
+                    fontWeight: 500,
+                    boxShadow: `0 0 0 1px ${BORDER}`,
                   }}
                 >
                   {tech}
@@ -171,28 +196,28 @@ export default async function Image({
           display: "flex",
           alignItems: "center",
           gap: 14,
-          marginTop: 30,
-          paddingTop: 24,
-          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+          marginTop: 28,
+          paddingTop: 22,
+          borderTop: `1px solid ${BORDER}`,
         }}
       >
         {authorImage ? (
           <div
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              border: "2px solid #00e5ff",
+              width: 44,
+              height: 44,
+              borderRadius: 9999,
               overflow: "hidden",
               display: "flex",
               flexShrink: 0,
+              background: SURFACE,
+              boxShadow: `0 0 0 1px ${BORDER}`,
             }}
           >
-            {/* next/og uses Satori which only supports plain <img>, not next/image */}
             <img
               src={authorImage}
-              width={48}
-              height={48}
+              width={44}
+              height={44}
               alt={authorName}
               style={{ objectFit: "cover", objectPosition: "center 30%" }}
             />
@@ -201,21 +226,24 @@ export default async function Image({
         <div
           style={{
             fontSize: 22,
-            color: "#e8ecf1",
+            color: FG,
             fontWeight: 600,
             display: "flex",
+            letterSpacing: "-0.015em",
           }}
         >
           {authorName}
         </div>
         <div
           style={{
-            fontSize: 22,
-            color: "#9aacbe",
+            fontSize: 18,
+            color: FG_3,
             display: "flex",
+            letterSpacing: "0.05em",
+            marginLeft: "auto",
           }}
         >
-          • Portfolio
+          /{slug}/portfolio/{project}
         </div>
       </div>
     </div>,

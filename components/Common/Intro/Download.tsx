@@ -9,17 +9,17 @@ const Download = ({ icon, resumeUrl }: DownloadProps) => {
   if (!resumeUrl) return null;
 
   return (
-    <>
-      <Link
-        href={resumeUrl}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="flex flex-row justify-between text-LightGray hover:text-Green transition-colors items-center gap-x-4 py-5 pb-14"
-      >
-        <span className="text-Snow">Download Resume</span>
-        <span>{icon}</span>
-      </Link>
-    </>
+    <Link
+      href={resumeUrl}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="ds-btn-ghost mt-4 mb-2 w-full"
+    >
+      <span>Download Resume</span>
+      <span aria-hidden className="opacity-60">
+        {icon}
+      </span>
+    </Link>
   );
 };
 

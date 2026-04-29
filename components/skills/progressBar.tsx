@@ -1,20 +1,36 @@
-import React from "react";
-
 interface ProgressBarProps {
   title: string;
   percent: string;
-  bgColor: string;
+  /** Optional accent color for the fill; defaults to neutral foreground. */
+  accent?: string;
+  /** @deprecated kept for backward compatibility with old call sites */
+  bgColor?: string;
 }
 
-const ProgressBar = ({ title, percent, bgColor }: ProgressBarProps) => {
+const ProgressBar = ({ title, percent, accent }: ProgressBarProps) => {
+  const fill = accent || "var(--ds-fg)";
+
   return (
-    <div className="">
-      <div className="flex justify-between mb-1">
-        <span className="text-sm sm:text-md text-LightGray">{title}</span>
-        <span className="text-sm sm:text-md text-LightGray">{percent}</span>
+    <div>
+      <div className="flex items-baseline justify-between mb-1.5">
+        <span
+          className="text-[12.5px] font-medium"
+          style={{ color: "var(--ds-fg)", letterSpacing: "-0.01em" }}
+        >
+          {title}
+        </span>
+        <span className="text-mono-label tabular-nums" style={{ color: "var(--ds-fg-tertiary)" }}>
+          {percent}
+        </span>
       </div>
-      <div className="w-full bg-DarkGray rounded-full h-2">
-        <div className={`${bgColor} h-2 rounded-full w-16 `} style={{ width: `${percent}` }}></div>
+      <div
+        className="relative h-[3px] w-full overflow-hidden rounded-full"
+        style={{ backgroundColor: "var(--ds-surface-subtle)" }}
+      >
+        <div
+          className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-500 ease-out"
+          style={{ width: percent, backgroundColor: fill }}
+        />
       </div>
     </div>
   );

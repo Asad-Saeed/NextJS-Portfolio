@@ -1,89 +1,108 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import SidebarSection from "./SidebarSection";
 import { Language } from "@/types";
 
-const SIZE = 75;
-const STROKE = 6;
-const RADIUS = (SIZE - STROKE) / 2;
-const CIRC = 2 * Math.PI * RADIUS;
-const CENTER = SIZE / 2;
+const ACCENT_GRADIENTS = [
+  "linear-gradient(90deg, var(--ds-develop), var(--ds-link))",
+  "linear-gradient(90deg, var(--ds-preview), var(--ds-console-pink))",
+];
 
 const Languages = ({ data }: { data?: Language[] }) => {
   const [counts, setCounts] = useState<number[]>(() => (data ?? []).map(() => 0));
+  const ref = useRef<HTMLUListElement>(null);
+  const startedRef = useRef(false);
 
   useEffect(() => {
     if (!data?.length) return;
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setCounts(data.map((d) => d.proficiency));
+      return;
+    }
 
-    const timer = setInterval(() => {
-      setCounts((prev) => {
-        const base = data.map((_, i) => prev[i] ?? 0);
-        const next = base.map((c, i) => (c < data[i].proficiency ? c + 1 : c));
-        if (next.every((c, i) => c >= data[i].proficiency)) {
-          clearInterval(timer);
+    const el = ref.current;
+    if (!el) return;
+
+    let raf = 0;
+    let startTs = 0;
+    const duration = 1200;
+
+    const animate = (ts: number) => {
+      if (!startTs) startTs = ts;
+      const elapsed = ts - startTs;
+      const t = Math.min(1, elapsed / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setCounts(data.map((d) => Math.round(eased * d.proficiency)));
+      if (t < 1) raf = requestAnimationFrame(animate);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !startedRef.current) {
+            startedRef.current = true;
+            raf = requestAnimationFrame(animate);
+            observer.disconnect();
+          }
         }
-        return next;
-      });
-    }, 30);
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
 
-    return () => clearInterval(timer);
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, [data]);
 
   if (!data?.length) return null;
 
   return (
-    <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">
-      <div className="flex flex-col gap-y-4">
-        <span className="text-Snow text-xs font-bold">Languages</span>
-        <div className="flex flex-row items-center justify-center space-x-6">
-          {data.map((lang, i) => {
-            const pct = counts[i] || 0;
-            const offset = CIRC * (1 - pct / 100);
-            return (
-              <div key={lang.name} className="flex flex-col items-center justify-center gap-y-2">
-                <div className="relative" style={{ width: SIZE, height: SIZE }}>
-                  <svg
-                    width={SIZE}
-                    height={SIZE}
-                    viewBox={`0 0 ${SIZE} ${SIZE}`}
-                    role="img"
-                    aria-label={`${lang.name} proficiency ${lang.proficiency}%`}
-                  >
-                    <circle
-                      cx={CENTER}
-                      cy={CENTER}
-                      r={RADIUS}
-                      fill="none"
-                      stroke="#1d3461"
-                      strokeWidth={STROKE}
-                    />
-                    <circle
-                      cx={CENTER}
-                      cy={CENTER}
-                      r={RADIUS}
-                      fill="none"
-                      stroke="#00e5ff"
-                      strokeWidth={STROKE}
-                      strokeLinecap="round"
-                      strokeDasharray={CIRC}
-                      strokeDashoffset={offset}
-                      transform={`rotate(-90 ${CENTER} ${CENTER})`}
-                    />
-                  </svg>
-                  <span
-                    className="absolute inset-0 flex items-center justify-center text-xs font-bold"
-                    style={{ color: "#00e5ff" }}
-                  >
-                    {pct}%
-                  </span>
-                </div>
-                <span className="text-xs font-bold text-Snow">{lang.name}</span>
+    <SidebarSection index={2} label="Languages">
+      <ul ref={ref} className="flex flex-col gap-3">
+        {data.map((lang, i) => {
+          const target = lang.proficiency;
+          const pct = Math.min(counts[i] ?? 0, target);
+          const accent = ACCENT_GRADIENTS[i % ACCENT_GRADIENTS.length];
+          return (
+            <li key={lang.name}>
+              <div className="flex items-baseline justify-between mb-1.5">
+                <span
+                  className="text-[12.5px] font-medium"
+                  style={{ color: "var(--ds-fg)", letterSpacing: "-0.01em" }}
+                >
+                  {lang.name}
+                </span>
+                <span
+                  className="text-mono-label tabular-nums"
+                  style={{ color: "var(--ds-fg-tertiary)" }}
+                  aria-label={`${target} percent proficiency`}
+                >
+                  {pct}%
+                </span>
               </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+              <div
+                className="relative h-[3px] w-full overflow-hidden rounded-full"
+                style={{ backgroundColor: "var(--ds-surface-subtle)" }}
+              >
+                <div
+                  className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-200 ease-out"
+                  style={{
+                    width: `${pct}%`,
+                    background: accent,
+                  }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </SidebarSection>
   );
 };
 

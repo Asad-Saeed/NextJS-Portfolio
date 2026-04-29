@@ -1,101 +1,265 @@
-import BannerLayout from "../Common/BannerLayout";
 import Link from "next/link";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import TypewriterText from "./TypewriterText";
+import CapabilitiesLink from "./CapabilitiesLink";
+import HashLink from "@/components/Common/HashLink";
+import AnimatedCounter from "./AnimatedCounter";
 import { BannerData } from "@/lib/queries/profile";
+
+// Code card is xl-only (hidden < 1280px) and below the LCP — defer its
+// JS so mobile gets a smaller initial bundle.
+const DeveloperCodeCard = dynamic(() => import("./DeveloperCodeCard"), {
+  loading: () => null,
+});
 
 interface BannerProps {
   data: BannerData | null;
   heading?: string;
+  name?: string;
+  designation?: string;
+  slug?: string;
+  stack?: string[];
+  availabilityStatus?: string;
 }
 
-const Banner = ({ data, heading }: BannerProps) => {
-  const emojiSrc = data?.banner_emoji_url || "/images/emoji.png";
-  const bgImage = data?.banner_image_url || "/images/background.png";
-  const buttonText = data?.explore_button_text || "Explore";
+const Banner = ({
+  data,
+  heading,
+  name,
+  designation,
+  slug,
+  stack,
+  availabilityStatus,
+}: BannerProps) => {
+  const buttonText = data?.explore_button_text ?? "";
   const buttonUrl = data?.explore_button_url || data?.upwork_url;
 
-  return (
-    <BannerLayout backgroundImage={bgImage}>
-      <div className="absolute inset-0 z-20 flex flex-col justify-between py-3 sm:py-5 w-full h-full bg-linear-to-t from-MidNightBlack">
-        {/* Main content */}
-        <div className="flex-1 flex flex-col justify-center px-3 sm:px-6">
-          <div className="bg-LightGray/10 w-full p-6 sm:p-8 rounded-xl overflow-visible relative">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-lg sm:text-3xl md:text-4xl xl:text-5xl text-Snow font-bold leading-tight">
-                  {heading || data?.banner_heading}
-                </h1>
-                <div className="mt-1.5 sm:mt-3 font-cascadia-normal text-Snow text-[10px] sm:text-sm">
-                  <span className="flex flex-wrap items-center gap-x-1">
-                    <span>
-                      {"<"}
-                      <span className="text-Green font-bold">🫣</span>
-                      {">"}
-                    </span>
-                    <span className="text-Snow text-[8px] min-[400px]:text-[10px] sm:text-lg md:text-xl xl:text-2xl font-bold whitespace-nowrap">
-                      I am a{" "}
-                      <span className="inline-block">
-                        <TypewriterText strings={data?.banner_subheadings} />
-                      </span>
-                    </span>
-                    <span>
-                      {"</"}
-                      <span className="text-Green font-bold">😎</span>
-                      {">"}
-                    </span>
-                  </span>
-                </div>
-                {buttonUrl && (
-                  <div className="mt-3 sm:mt-5">
-                    <Link
-                      className="button"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      href={buttonUrl}
-                    >
-                      {buttonText}
-                    </Link>
-                  </div>
-                )}
-              </div>
+  const base = slug ? `/${slug}` : "";
+  const stats = [
+    {
+      label: "Projects",
+      value: data?.completed_projects_count,
+      accent: "var(--ds-link)",
+      href: `${base}/portfolio`,
+    },
+    {
+      label: "Companies",
+      value: data?.freelance_clients_count,
+      accent: "var(--ds-console-pink)",
+      href: `${base}/background`,
+    },
+    {
+      label: "Honors",
+      value: data?.honors_count,
+      accent: "var(--ds-ship)",
+      href: `${base}#certifications`,
+    },
+  ];
 
-              {/* Emoji — hidden on very small, shown from 400px+ */}
-              <div className="w-20 h-24 min-[400px]:w-28 min-[400px]:h-32 sm:w-36 sm:h-40 md:w-44 md:h-48 absolute right-3 sm:right-6 bottom-0 shrink-0">
-                <Image
-                  className="w-full h-full object-contain"
-                  src={emojiSrc}
-                  alt="banner character"
-                  width={192}
-                  height={208}
-                  sizes="(min-width: 768px) 176px, (min-width: 640px) 144px, (min-width: 400px) 112px, 80px"
-                />
-              </div>
+  const displayName = name || heading || data?.banner_heading || "";
+
+  return (
+    <section
+      aria-label="Hero"
+      className="relative w-full overflow-hidden"
+      style={{ backgroundColor: "var(--ds-bg)" }}
+    >
+      {/* Atmospheric gradient mesh — slow drift for living feel */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 ds-fade"
+        style={{
+          backgroundImage: `
+            radial-gradient(900px 500px at 12% 10%, rgba(10, 114, 239, 0.18), transparent 60%),
+            radial-gradient(700px 400px at 88% 18%, rgba(222, 29, 141, 0.10), transparent 65%),
+            radial-gradient(600px 400px at 60% 100%, rgba(255, 91, 79, 0.08), transparent 60%)
+          `,
+        }}
+      />
+
+      {/* Dotted grid micro-texture */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.35] ds-fade"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+          maskImage: "radial-gradient(ellipse 80% 60% at 50% 30%, black 50%, transparent 90%)",
+        }}
+      />
+
+      <div className="relative max-w-6xl mx-auto px-5 sm:px-8 lg:px-10 pt-6 pb-8 sm:pt-8 sm:pb-10">
+        {/* Eyebrow row */}
+        <div className="ds-rise flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-4 min-w-0">
+          <span
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-mono-label"
+            style={{
+              backgroundColor: "var(--ds-badge-bg)",
+              color: "var(--ds-badge-fg)",
+              boxShadow: "var(--ds-shadow-border)",
+            }}
+          >
+            <span
+              className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ backgroundColor: "var(--ds-develop)" }}
+            />
+            Available for work
+          </span>
+          <span
+            className="text-mono-label hidden sm:inline-block"
+            style={{ color: "var(--ds-fg-muted)" }}
+          >
+            ·
+          </span>
+          <span className="text-mono-label" style={{ color: "var(--ds-fg-tertiary)" }}>
+            v1 · 2026
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_auto] gap-8 xl:gap-10 items-center">
+          <div className="min-w-0">
+            {/* Display name — shimmer sweep on first paint */}
+            <h1
+              className="ds-rise ds-delay-1 ds-text-shimmer font-semibold leading-[1] break-words"
+              style={{
+                fontSize: "clamp(2rem, 5vw, 3.75rem)",
+                letterSpacing: "-0.05em",
+              }}
+            >
+              {displayName}
+            </h1>
+
+            {/* Designation */}
+            {designation && (
+              <p
+                className="ds-rise ds-delay-2 mt-3 sm:mt-4 font-medium leading-[1.2] break-words"
+                style={{
+                  color: "var(--ds-fg-secondary)",
+                  fontSize: "clamp(1rem, 2vw, 1.625rem)",
+                  letterSpacing: "-0.025em",
+                }}
+              >
+                {designation}
+              </p>
+            )}
+
+            {/* Mono typewriter line */}
+            <div
+              className="ds-rise ds-delay-3 mt-4 sm:mt-5 font-mono text-[12px] sm:text-[13px] leading-relaxed flex flex-wrap items-center gap-x-2 gap-y-1"
+              style={{ color: "var(--ds-fg-tertiary)" }}
+            >
+              <span style={{ color: "var(--ds-develop)" }}>{"→"}</span>
+              <span>I am a</span>
+              <span className="inline-block font-medium min-w-0" style={{ color: "var(--ds-fg)" }}>
+                <TypewriterText strings={data?.banner_subheadings} />
+              </span>
+            </div>
+
+            {/* CTAs */}
+            <div className="ds-rise ds-delay-4 mt-6 sm:mt-8 flex flex-wrap items-center gap-2.5">
+              {buttonUrl && (
+                <Link
+                  className="ds-btn-primary group"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href={buttonUrl}
+                >
+                  {buttonText}
+                  <span
+                    aria-hidden
+                    className="-mr-0.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                  >
+                    →
+                  </span>
+                </Link>
+              )}
+              <CapabilitiesLink slug={slug}>See capabilities</CapabilitiesLink>
             </div>
           </div>
+
+          {/* Developer code-card — admin-managed via Profile + tech_stack */}
+          <DeveloperCodeCard
+            name={name}
+            designation={designation}
+            stack={stack}
+            availabilityStatus={availabilityStatus}
+          />
         </div>
 
-        {/* Stats row */}
-        <div className="flex items-center justify-around w-full px-3 sm:px-6 pt-2">
-          <div className="flex flex-col items-center text-center">
-            <span className="text-sm sm:text-xl text-Green font-bold">
-              {data?.completed_projects_count}
-            </span>
-            <span className="text-[8px] sm:text-xs text-Snow">Completed Projects</span>
-          </div>
-          <div className="flex flex-col items-center text-center">
-            <span className="text-sm sm:text-xl text-Green font-bold">
-              {data?.freelance_clients_count}
-            </span>
-            <span className="text-[8px] sm:text-xs text-Snow">Companies Worked</span>
-          </div>
-          <div className="flex flex-col items-center text-center">
-            <span className="text-sm sm:text-xl text-Green font-bold">{data?.honors_count}</span>
-            <span className="text-[8px] sm:text-xs text-Snow">Honors & Awards</span>
-          </div>
+        {/* Stats — animated counters with workflow accent dots */}
+        <div
+          className="ds-rise ds-delay-5 mt-8 sm:mt-12 lg:mt-14 grid grid-cols-3 rounded-xl overflow-hidden"
+          style={{
+            backgroundColor: "var(--ds-surface)",
+            boxShadow: "var(--ds-shadow-border)",
+          }}
+        >
+          {stats.map((stat, i) => {
+            const cellClass =
+              "group relative px-3 py-4 sm:px-6 sm:py-6 lg:px-7 lg:py-7 transition-colors duration-200 min-w-0 hover:[background-color:var(--ds-surface-subtle)]";
+            const cellStyle: React.CSSProperties = {
+              boxShadow: i > 0 ? "inset 1px 0 0 0 var(--ds-border-shadow)" : undefined,
+            };
+            const cellInner = (
+              <>
+                {/* Accent fill that rises on hover */}
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 bottom-0 h-[2px] origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                  style={{ backgroundColor: stat.accent }}
+                />
+
+                <div
+                  className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 min-w-0"
+                  style={{ color: "var(--ds-fg-tertiary)" }}
+                >
+                  <span
+                    className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: stat.accent }}
+                    aria-hidden
+                  />
+                  <span className="text-[10px] sm:text-[12px] font-mono font-medium uppercase tracking-wider truncate">
+                    {stat.label}
+                  </span>
+                </div>
+                <div
+                  className="text-[clamp(1.25rem,3.2vw,2.5rem)] font-semibold leading-none"
+                  style={{ color: "var(--ds-fg)", letterSpacing: "-0.04em" }}
+                >
+                  <AnimatedCounter value={stat.value} delay={i * 120} />
+                </div>
+              </>
+            );
+            if (stat.label === "Honors") {
+              return (
+                <HashLink
+                  key={stat.label}
+                  targetId="certifications"
+                  slug={slug}
+                  aria-label={`View ${stat.label}`}
+                  className={cellClass}
+                  style={cellStyle}
+                >
+                  {cellInner}
+                </HashLink>
+              );
+            }
+            return (
+              <Link
+                key={stat.label}
+                href={stat.href}
+                aria-label={`View ${stat.label}`}
+                className={cellClass}
+                style={cellStyle}
+              >
+                {cellInner}
+              </Link>
+            );
+          })}
         </div>
       </div>
-    </BannerLayout>
+    </section>
   );
 };
 

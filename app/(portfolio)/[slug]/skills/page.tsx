@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Banner from "@/components/HomeComponents/Banner";
 import SkillsCards from "@/components/skills/skillsCards";
-import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
+import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getSkills } from "@/lib/queries/skills";
 import { notFound } from "next/navigation";
 
@@ -17,15 +17,19 @@ export async function generateMetadata({
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
-  const description = `Technical skills and expertise of ${name}.`;
+  const description =
+    profileData.skills_description ||
+    profileData.skills_banner_heading ||
+    `Technical skills and expertise of ${name}.`;
+  const heading = profileData.skills_heading || "Skills";
   const url = `/${slug}/skills`;
   const profileImage = profileData.profile_image_url || undefined;
   return {
-    title: "Skills",
+    title: heading,
     description,
     alternates: { canonical: url },
     openGraph: {
-      title: `Skills | ${name}`,
+      title: `${heading} | ${name}`,
       description,
       url,
       type: "profile",
@@ -34,7 +38,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `Skills | ${name}`,
+      title: `${heading} | ${name}`,
       description,
       ...(profileImage && { images: [profileImage] }),
     },
@@ -47,16 +51,30 @@ export default async function SkillsPage({ params }: { params: Promise<{ slug: s
   if (!profileData) notFound();
 
   const userId = profileData.user_id;
-  const [bannerData, skills, footerData] = await Promise.all([
-    getBannerData(userId),
-    getSkills(userId),
-    getFooterData(userId),
-  ]);
+  const bannerData = profileData;
+  const [skills, footerData] = await Promise.all([getSkills(userId), getFooterData(userId)]);
 
   return (
     <div>
-      <Banner data={bannerData} heading={bannerData?.skills_banner_heading} />
-      <SkillsCards data={skills} />
+      <Banner
+        data={bannerData}
+        heading={bannerData?.skills_banner_heading}
+        slug={slug}
+        name={profileData.name}
+        designation={profileData.designation}
+        stack={(profileData.code_card_stack ?? "")
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean)
+          .slice(0, 3)}
+        availabilityStatus={profileData.availability_status}
+      />
+      <SkillsCards
+        data={skills}
+        eyebrow={profileData.skills_eyebrow}
+        heading={profileData.skills_heading}
+        description={profileData.skills_description}
+      />
       <Footer data={footerData} />
     </div>
   );

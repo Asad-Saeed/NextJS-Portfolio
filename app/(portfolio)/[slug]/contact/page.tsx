@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { SiUpwork } from "react-icons/si";
-import { HiMail } from "react-icons/hi";
+import FiverrFIcon from "@/components/Common/FiverrFIcon";
+import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import Banner from "@/components/HomeComponents/Banner";
 import Footer from "@/components/Footer";
-import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
+import SectionHeader from "@/components/Common/SectionHeader";
+import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getSiteUrl } from "@/lib/site-url";
 import { notFound } from "next/navigation";
 import ContactForm from "./client";
@@ -19,15 +21,16 @@ export async function generateMetadata({
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
-  const description = `Get in touch with ${name}.`;
+  const heading = profileData.contact_heading || "Contact";
+  const description = profileData.contact_description || `Get in touch with ${name}.`;
   const url = `/${slug}/contact`;
   const profileImage = profileData.profile_image_url || undefined;
   return {
-    title: "Contact",
+    title: heading,
     description,
     alternates: { canonical: url },
     openGraph: {
-      title: `Contact | ${name}`,
+      title: `${heading} | ${name}`,
       description,
       url,
       type: "profile",
@@ -36,7 +39,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `Contact | ${name}`,
+      title: `${heading} | ${name}`,
       description,
       ...(profileImage && { images: [profileImage] }),
     },
@@ -49,10 +52,8 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
   if (!profileData) notFound();
 
   const userId = profileData.user_id;
-  const [bannerData, footerData] = await Promise.all([
-    getBannerData(userId),
-    getFooterData(userId),
-  ]);
+  const bannerData = profileData;
+  const footerData = await getFooterData(userId);
 
   const siteUrl = getSiteUrl();
   const sameAs = [profileData.github_url, profileData.linkedin_url, profileData.upwork_url].filter(
@@ -80,9 +81,50 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
   const github = profileData.github_url || "";
   const linkedin = profileData.linkedin_url || "";
   const upwork = profileData.upwork_url || "";
+  const fiverr = profileData.fiverr_url || "";
   const phone = profileData.phone || "";
+  const phones = phone
+    .split(/[/|]/)
+    .map((p) => p.trim())
+    .filter(Boolean);
   const city = profileData.city || "";
   const residence = profileData.residence || "";
+  const location = [city, residence].filter(Boolean).join(", ");
+
+  type ContactItem = {
+    label: string;
+    value: string;
+    href?: string;
+    Icon: typeof FiMail;
+  };
+
+  const contactItems: ContactItem[] = [];
+  if (email)
+    contactItems.push({
+      label: "Email",
+      value: email,
+      href: `mailto:${email}`,
+      Icon: FiMail,
+    });
+  if (phones.length > 0)
+    contactItems.push({
+      label: "Phone",
+      value: phones.join(" · "),
+      href: `https://wa.me/${phones[0].replace(/[^0-9]/g, "")}`,
+      Icon: FiPhone,
+    });
+  if (location)
+    contactItems.push({
+      label: "Based in",
+      value: location,
+      Icon: FiMapPin,
+    });
+
+  const socials: { label: string; href: string; Icon: typeof FaGithub }[] = [];
+  if (github) socials.push({ label: "GitHub", href: github, Icon: FaGithub });
+  if (linkedin) socials.push({ label: "LinkedIn", href: linkedin, Icon: FaLinkedin });
+  if (upwork) socials.push({ label: "Upwork", href: upwork, Icon: SiUpwork });
+  if (fiverr) socials.push({ label: "Fiverr", href: fiverr, Icon: FiverrFIcon });
 
   return (
     <>
@@ -91,102 +133,133 @@ export default async function ContactPage({ params }: { params: Promise<{ slug: 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
       />
       <div>
-        <Banner data={bannerData} heading={bannerData?.contact_banner_heading} />
-        <div className="px-4 sm:px-6">
-          <div className="my-6 text-Snow flex flex-col gap-y-5">
-            <h2 className="text-lg font-semibold text-Green">Contact Information</h2>
-            <div className="flex flex-col md:flex-row items-center gap-5 text-xs">
-              <div className="card_stylings w-full md:w-1/2 p-5 md:p-6 lg:p-8 flex flex-col gap-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="md:text-base">Country:</span>
-                  <span className="text-LightGray md:text-sm">{residence}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="md:text-base">City:</span>
-                  <span className="text-LightGray md:text-sm">{city}</span>
-                </div>
-              </div>
-              <div className="card_stylings rounded-xl w-full md:w-1/2 p-5 md:p-6 lg:p-8 flex flex-col gap-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="md:text-base">Email:</span>
-                  <a
-                    href={`mailto:${email}`}
-                    className="text-LightGray text-sm hover:text-Green transition-colors"
+        <Banner
+          data={bannerData}
+          heading={bannerData?.contact_banner_heading}
+          slug={slug}
+          name={profileData.name}
+          designation={profileData.designation}
+          stack={(profileData.code_card_stack ?? "")
+            .split(",")
+            .map((s: string) => s.trim())
+            .filter(Boolean)
+            .slice(0, 3)}
+          availabilityStatus={profileData.availability_status}
+        />
+
+        {/* Contact info + socials */}
+        <section
+          aria-labelledby="contact-info-heading"
+          className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
+        >
+          <SectionHeader
+            id="contact-info-heading"
+            eyebrow={profileData.contact_eyebrow ?? ""}
+            title={profileData.contact_heading ?? ""}
+            description={profileData.contact_description}
+          />
+
+          {contactItems.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+              {contactItems.map((item) => {
+                const Inner = (
+                  <>
+                    <div
+                      className="flex items-center gap-2 text-mono-label mb-3"
+                      style={{ color: "var(--ds-fg-tertiary)" }}
+                    >
+                      <item.Icon size={11} />
+                      {item.label}
+                    </div>
+                    <div
+                      className="text-[14px] font-medium break-words"
+                      style={{ color: "var(--ds-fg)", letterSpacing: "-0.015em" }}
+                    >
+                      {item.value}
+                    </div>
+                  </>
+                );
+                const cardClass =
+                  "group relative p-4 sm:p-5 rounded-lg transition-all duration-200 min-w-0";
+                const cardStyle: React.CSSProperties = {
+                  backgroundColor: "var(--ds-surface)",
+                  boxShadow: "var(--ds-shadow-border)",
+                };
+                return item.href ? (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noreferrer noopener" : undefined}
+                    className={`${cardClass} hover:[background-color:var(--ds-surface-subtle)]`}
+                    style={cardStyle}
                   >
-                    {email}
-                  </a>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="md:text-base">Phone:</span>
-                  <span className="text-sm flex flex-wrap items-center gap-1">
-                    {phone.split(/[/|]/).map((p: string, i: number) => (
-                      <span key={i} className="flex items-center gap-1">
-                        {i > 0 && <span className="text-SlateGray">/</span>}
-                        <a
-                          href={`https://wa.me/${p.trim().replace(/[^0-9]/g, "")}`}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          className="text-LightGray hover:text-Green transition-colors"
-                        >
-                          {p.trim()}
-                        </a>
-                      </span>
-                    ))}
-                  </span>
-                </div>
+                    {Inner}
+                  </Link>
+                ) : (
+                  <div key={item.label} className={cardClass} style={cardStyle}>
+                    {Inner}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Social rail */}
+          {socials.length > 0 && (
+            <div
+              className="mt-3 flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+              style={{
+                backgroundColor: "var(--ds-surface)",
+                boxShadow: "var(--ds-shadow-border)",
+              }}
+            >
+              <span
+                className="text-mono-label hidden sm:inline-block"
+                style={{ color: "var(--ds-fg-tertiary)" }}
+              >
+                Find me online
+              </span>
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                {socials.map(({ label, href, Icon }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label={label}
+                    className="group flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:[color:var(--ds-fg)]"
+                    style={{
+                      color: "var(--ds-fg-secondary)",
+                      boxShadow: "var(--ds-shadow-border-light)",
+                    }}
+                  >
+                    <Icon
+                      size={14}
+                      aria-hidden
+                      className="transition-transform duration-150 group-hover:scale-110"
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
-          </div>
+          )}
+        </section>
 
-          <div className="h-16 w-full card_stylings text-xl sm:text-3xl flex gap-x-8 sm:gap-x-16 items-center justify-center text-Snow">
-            {email && (
-              <Link
-                className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
-                href={`mailto:${email}`}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Send an email"
-              >
-                <HiMail aria-hidden="true" />
-              </Link>
-            )}
-            {github && (
-              <Link
-                className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
-                href={github}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Visit GitHub profile"
-              >
-                <FaGithub aria-hidden="true" />
-              </Link>
-            )}
-            {linkedin && (
-              <Link
-                className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors"
-                href={linkedin}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Visit LinkedIn profile"
-              >
-                <FaLinkedin aria-hidden="true" />
-              </Link>
-            )}
-            {upwork && (
-              <Link
-                className="hover:scale-125 hover:text-Green ease-in-out duration-700 transition-colors text-2xl sm:text-4xl mt-1"
-                href={upwork}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Visit Upwork profile"
-              >
-                <SiUpwork aria-hidden="true" />
-              </Link>
-            )}
-          </div>
-
+        {/* Form */}
+        <section
+          aria-labelledby="contact-form-heading"
+          className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
+        >
+          <SectionHeader
+            id="contact-form-heading"
+            eyebrow={profileData.contact_form_eyebrow ?? ""}
+            title={profileData.contact_form_heading ?? ""}
+            description={profileData.contact_form_description}
+          />
           <ContactForm slug={slug} />
-        </div>
+        </section>
+
         <Footer data={footerData} />
       </div>
     </>

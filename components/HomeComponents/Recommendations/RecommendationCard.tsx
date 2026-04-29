@@ -1,34 +1,94 @@
-import React from "react";
 import Image from "next/image";
-import CardLayout from "../../Common/CardLayout";
+import Link from "next/link";
+import { FaQuoteLeft, FaLinkedin } from "react-icons/fa";
 import { Recommendation } from "@/types";
 
 const RecommendationCard = ({ data }: { data: Recommendation }) => {
   const imageUrl = data?.image_url || "";
-  const linkedinUrl = data?.linkedin_url || "#";
+  const linkedinUrl = data?.linkedin_url || "";
 
   return (
-    <CardLayout>
-      <div className="p-4 sm:p-6 h-full relative card_stylings transition">
-        {imageUrl && (
+    <article
+      className="group relative h-full p-4 sm:p-5 lg:p-6 rounded-lg flex flex-col gap-3 sm:gap-4 transition-all duration-200 min-w-0"
+      style={{
+        backgroundColor: "var(--ds-surface)",
+        boxShadow: "var(--ds-shadow-border)",
+      }}
+    >
+      <FaQuoteLeft
+        size={14}
+        className="opacity-50"
+        style={{ color: "var(--ds-fg-muted)" }}
+        aria-hidden
+      />
+
+      <p
+        className="text-[13px] sm:text-[14px] leading-relaxed flex-1 break-words"
+        style={{
+          color: "var(--ds-fg-secondary)",
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {data?.view}
+      </p>
+
+      <footer
+        className="flex items-center gap-3 pt-4"
+        style={{ boxShadow: "inset 0 1px 0 0 var(--ds-border-shadow)" }}
+      >
+        {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={data?.name}
-            width={64}
-            height={64}
-            sizes="64px"
-            className="absolute z-10 right-10 -top-5 border-Green w-16 h-16 border-[3px] rounded-full m-0"
+            alt={data?.name || ""}
+            width={36}
+            height={36}
+            sizes="36px"
+            className="w-9 h-9 rounded-full object-cover shrink-0"
+            style={{ boxShadow: "var(--ds-shadow-border-light)" }}
+          />
+        ) : (
+          <div
+            className="w-9 h-9 rounded-full shrink-0"
+            style={{
+              backgroundColor: "var(--ds-surface-subtle)",
+              boxShadow: "var(--ds-shadow-border-light)",
+            }}
           />
         )}
-        <div className=" text-Snow underline italic">
-          <a href={linkedinUrl} target="_blank" rel="noreferrer noopener">
-            {data?.name}
-          </a>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            {linkedinUrl ? (
+              <Link
+                href={linkedinUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-[13px] font-semibold truncate hover:underline"
+                style={{ color: "var(--ds-fg)", letterSpacing: "-0.015em" }}
+              >
+                {data?.name}
+              </Link>
+            ) : (
+              <span
+                className="text-[13px] font-semibold truncate"
+                style={{ color: "var(--ds-fg)", letterSpacing: "-0.015em" }}
+              >
+                {data?.name}
+              </span>
+            )}
+            {linkedinUrl && (
+              <FaLinkedin size={11} style={{ color: "var(--ds-fg-muted)" }} aria-hidden />
+            )}
+          </div>
+          <div
+            className="text-[11.5px] truncate"
+            style={{ color: "var(--ds-fg-tertiary)", letterSpacing: "-0.005em" }}
+          >
+            {data?.designation}
+          </div>
         </div>
-        <div className="text-xs text-LightGray italic mt-1">{data?.designation}</div>
-        <div className="text-sm mt-2 text-LightGray font-normal ">{data?.view}</div>
-      </div>
-    </CardLayout>
+      </footer>
+    </article>
   );
 };
 

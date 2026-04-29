@@ -36,6 +36,7 @@ const profileData = {
   github_url: "https://github.com/Asad-Saeed",
   linkedin_url: "https://www.linkedin.com/in/asad-saeed-dev/",
   upwork_url: "https://www.upwork.com/freelancers/~01c9dc528b3e2edcde",
+  fiverr_url: "https://www.fiverr.com/asad_saeed_dev",
   profile_image_url:
     "https://xyufrjjbhqndxfxbxcut.supabase.co/storage/v1/object/public/profile/1775886906895-5qmrw6jvorb.png",
   resume_url:
@@ -71,6 +72,78 @@ const profileData = {
   availability_status: "open_to_work",
   show_certifications_section: true,
   secondary_github_url: "https://github.com/Asad-gsoft-consulting",
+
+  // ===== Hero code card =====
+  // Comma-separated stack chips for the developer.ts code window.
+  code_card_stack: "TypeScript, React, Next.js",
+
+  // ===== Section meta — Expertise =====
+  expertise_eyebrow: "Capabilities",
+  expertise_heading: "What I build",
+  expertise_description:
+    "Areas where I bring senior-level depth across architecture, performance, and developer experience.",
+
+  // ===== Section meta — Certifications =====
+  certifications_eyebrow: "Credentials",
+  certifications_heading: "Certifications",
+  certifications_description:
+    "Verified credentials and recognized accomplishments across modern web stacks.",
+
+  // ===== Section meta — Recommendations =====
+  recommendations_eyebrow: "Endorsements",
+  recommendations_heading: "Recommendations",
+  recommendations_description:
+    "Words from collaborators and engineers I've shipped production work with.",
+
+  // ===== Section meta — Client Reviews =====
+  reviews_eyebrow: "Trust",
+  reviews_heading: "Client Reviews",
+  reviews_description:
+    "Direct feedback from clients across freelance, agency, and full-time engagements.",
+
+  // ===== Section meta — Skills page =====
+  skills_eyebrow: "Toolkit",
+  skills_heading: "Skills & proficiency",
+  skills_description: "Stack-level depth across the technologies I ship with day-to-day.",
+
+  // ===== Section meta — Background (Experience) =====
+  experience_eyebrow: "Career",
+  experience_heading: "Experience",
+  experience_description:
+    "Roles and engagements where I shipped production work across product, agency, and freelance contexts.",
+
+  // ===== Section meta — Background (Education) =====
+  education_eyebrow: "Studies",
+  education_heading: "Education",
+  education_description: "Academic foundation in software engineering and computer science.",
+
+  // ===== Section meta — Portfolio page =====
+  portfolio_eyebrow: "Selected work",
+  portfolio_heading: "Projects",
+  portfolio_description:
+    "Production case studies across product, agency, and freelance — shipped, scaled, and battle-tested.",
+
+  // ===== Section meta — Contact page =====
+  contact_eyebrow: "Reach out",
+  contact_heading: "Contact information",
+  contact_description:
+    "Open to freelance, contracts, and collaboration. Pick whichever channel works for you.",
+  contact_form_eyebrow: "Inbox",
+  contact_form_heading: "Send a message",
+  contact_form_description:
+    "I read every message. For freelance, contracts, or collaboration — drop a line.",
+
+  // ===== Section meta — GitHub block =====
+  github_eyebrow: "Open Source",
+  github_description: "Live activity, contributions, and featured repositories from GitHub.",
+  github_stats_eyebrow: "Profile",
+  github_stats_heading: "Stats",
+  github_languages_eyebrow: "Composition",
+  github_languages_heading: "Top Languages",
+  github_repos_eyebrow: "Open source",
+  github_repos_heading: "Featured Repositories",
+  github_achievements_eyebrow: "Milestones",
+  github_achievements_heading: "Achievements",
 };
 
 // ============================================

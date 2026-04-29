@@ -1,0 +1,36 @@
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { FiMoon, FiSun } from "react-icons/fi";
+
+export default function ThemeToggle({ className = "" }: { className?: string }) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const isDark = mounted ? resolvedTheme === "dark" : true;
+  const next = isDark ? "light" : "dark";
+
+  return (
+    <button
+      type="button"
+      aria-label={`Switch to ${next} mode`}
+      title={`Switch to ${next} mode`}
+      onClick={() => setTheme(next)}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--ds-fg-secondary)] transition-colors hover:text-[var(--ds-fg)] ${className}`}
+      style={{ boxShadow: "var(--ds-shadow-border)" }}
+    >
+      {mounted ? (
+        isDark ? (
+          <FiSun size={14} />
+        ) : (
+          <FiMoon size={14} />
+        )
+      ) : (
+        <span className="h-3.5 w-3.5" aria-hidden />
+      )}
+    </button>
+  );
+}

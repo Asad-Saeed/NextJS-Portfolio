@@ -36,38 +36,55 @@ export default function SignupPage() {
 
           <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-LightGray text-xs mb-1 block">Full Name</label>
+              <label htmlFor="signup-name" className="text-LightGray text-xs mb-1 block">
+                Full Name
+              </label>
               <input
+                id="signup-name"
                 name="name"
                 type="text"
+                autoComplete="name"
                 required
+                aria-describedby="signup-name-help"
                 className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 placeholder="John Doe"
               />
-              <span className="text-LightGray text-[10px] mt-1 block">
+              <span id="signup-name-help" className="text-LightGray text-[10px] mt-1 block">
                 Your portfolio URL will be: domain.com/john-doe
               </span>
             </div>
             <div>
-              <label className="text-LightGray text-xs mb-1 block">Email</label>
+              <label htmlFor="signup-email" className="text-LightGray text-xs mb-1 block">
+                Email
+              </label>
               <input
+                id="signup-email"
                 name="email"
                 type="email"
+                autoComplete="email"
                 required
                 className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 placeholder="you@email.com"
               />
             </div>
             <div>
-              <label className="text-LightGray text-xs mb-1 block">Password</label>
+              <label htmlFor="signup-password" className="text-LightGray text-xs mb-1 block">
+                Password
+              </label>
               <input
+                id="signup-password"
                 name="password"
                 type="password"
+                autoComplete="new-password"
                 required
                 minLength={6}
+                aria-describedby="signup-password-help"
                 className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                 placeholder="Min 6 characters"
               />
+              <span id="signup-password-help" className="sr-only">
+                Password must be at least 6 characters
+              </span>
             </div>
 
             {error && (

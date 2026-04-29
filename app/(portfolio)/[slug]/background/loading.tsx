@@ -1,26 +1,37 @@
 import BannerSkeleton from "@/components/Common/BannerSkeleton";
-import ParagraphSkeleton from "@/components/Common/ParagraphSkeleton";
+import SectionHeaderSkeleton from "@/components/Common/SectionHeaderSkeleton";
+import CardSkeleton from "@/components/Common/CardSkeleton";
 
 export default function Loading() {
   return (
-    <div className="animate-pulse">
+    <div>
       <BannerSkeleton />
-      <div className="grid md:grid-cols-2 gap-x-10 px-4 pb-2 pt-6">
-        <div className="flex flex-col gap-y-4 order-2 md:order-1">
-          <div className="h-5 w-24 bg-Green/10 rounded mt-6 md:mt-0" />
-          {[1, 2, 3].map((i) => (
-            <ParagraphSkeleton key={i} className="p-8 h-full w-full" />
-          ))}
-        </div>
-        <div className="order-1 md:order-2">
-          <div className="flex flex-col gap-y-4">
-            <div className="h-5 w-28 bg-Green/10 rounded" />
+      <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-8 md:gap-y-0">
+          {/* Center vertical timeline rail */}
+          <div
+            aria-hidden
+            className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px"
+            style={{ backgroundColor: "var(--ds-border-light)" }}
+          />
+
+          {/* Experience column */}
+          <div className="flex flex-col gap-2.5 self-start min-w-0">
+            <SectionHeaderSkeleton />
             {[1, 2, 3].map((i) => (
-              <ParagraphSkeleton key={i} className="p-8 h-full w-full" />
+              <CardSkeleton key={i} lines={3} withFooter />
+            ))}
+          </div>
+
+          {/* Education column */}
+          <div className="flex flex-col gap-2.5 self-start min-w-0">
+            <SectionHeaderSkeleton />
+            {[1, 2, 3].map((i) => (
+              <CardSkeleton key={i} lines={3} withFooter />
             ))}
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -54,7 +54,9 @@ export async function getFooterData(userId: string): Promise<FooterData | null> 
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase
     .from("profile")
-    .select("footer_text, copyright_year, email, upwork_url")
+    .select(
+      "footer_text, copyright_year, email, upwork_url, github_url, linkedin_url, fiverr_url, name"
+    )
     .eq("user_id", userId)
     .single();
   return data as FooterData | null;

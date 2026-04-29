@@ -16,6 +16,7 @@ export interface Profile {
   secondary_github_url: string;
   linkedin_url: string;
   upwork_url: string;
+  fiverr_url?: string;
   profile_image_url: string;
   resume_url: string;
   banner_image_url: string;
@@ -40,6 +41,52 @@ export interface Profile {
   show_reviews_section: boolean;
   show_certifications_section: boolean;
   availability_status: string;
+  // ===== Admin-editable section meta (eyebrow + heading + description) =====
+  expertise_eyebrow?: string;
+  expertise_heading?: string;
+  expertise_description?: string;
+  certifications_eyebrow?: string;
+  certifications_heading?: string;
+  certifications_description?: string;
+  recommendations_eyebrow?: string;
+  recommendations_heading?: string;
+  recommendations_description?: string;
+  reviews_eyebrow?: string;
+  reviews_heading?: string;
+  reviews_description?: string;
+  skills_eyebrow?: string;
+  skills_heading?: string;
+  skills_description?: string;
+  github_eyebrow?: string;
+  github_description?: string;
+  github_stats_eyebrow?: string;
+  github_stats_heading?: string;
+  github_languages_eyebrow?: string;
+  github_languages_heading?: string;
+  github_repos_eyebrow?: string;
+  github_repos_heading?: string;
+  github_achievements_eyebrow?: string;
+  github_achievements_heading?: string;
+  // Background page (Education + Experience)
+  education_eyebrow?: string;
+  education_heading?: string;
+  education_description?: string;
+  experience_eyebrow?: string;
+  experience_heading?: string;
+  experience_description?: string;
+  // Portfolio (Projects) page
+  portfolio_eyebrow?: string;
+  portfolio_heading?: string;
+  portfolio_description?: string;
+  // Contact page
+  contact_eyebrow?: string;
+  contact_heading?: string;
+  contact_description?: string;
+  contact_form_eyebrow?: string;
+  contact_form_heading?: string;
+  contact_form_description?: string;
+  /** Comma-separated stack names for the hero code card (e.g. "TypeScript, React, Next.js"). */
+  code_card_stack?: string;
   created_at: string;
   updated_at: string;
 }
@@ -212,4 +259,8 @@ export interface FooterData {
   copyright_year: string;
   email: string;
   upwork_url: string;
+  github_url?: string;
+  linkedin_url?: string;
+  fiverr_url?: string;
+  name?: string;
 }

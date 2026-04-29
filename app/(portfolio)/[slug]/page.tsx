@@ -11,7 +11,8 @@ import Certifications from "@/components/HomeComponents/Certifications/Certifica
 import GitHubActivity from "@/components/HomeComponents/GitHub/GitHubActivity";
 import GitHubProStats from "@/components/HomeComponents/GitHub/GitHubProStats";
 import GitHubAchievements from "@/components/HomeComponents/GitHub/GitHubAchievements";
-import { getProfileBySlug, getBannerData, getFooterData } from "@/lib/queries/profile";
+import HashScroller from "@/components/Common/HashScroller";
+import { getProfileBySlug, getFooterData } from "@/lib/queries/profile";
 import { getExpertise } from "@/lib/queries/expertise";
 import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
@@ -28,17 +29,150 @@ export async function generateMetadata({
   const profileData = await getProfileBySlug(slug);
   if (!profileData) return {};
   const name = profileData.name || "Portfolio";
+  const designation = profileData.designation || "";
+  const expertise = profileData.expertise_description || "";
+  // Prefer the admin-edited expertise description if available, else fall back to designation.
+  const description = expertise || designation;
+  const profileImage = profileData.profile_image_url || undefined;
   return {
     title: { absolute: `${name} — Portfolio` },
+    description: description || undefined,
     alternates: { canonical: `/${slug}` },
+    openGraph: {
+      title: `${name} — Portfolio`,
+      description: description || designation,
+      type: "profile",
+      url: `/${slug}`,
+      ...(profileImage && {
+        images: [{ url: profileImage, alt: name, width: 800, height: 800 }],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} — Portfolio`,
+      description: description || designation,
+      ...(profileImage && { images: [profileImage] }),
+    },
   };
 }
 
-function SectionSkeleton({ heightClass = "h-32" }: { heightClass?: string }) {
+function GitHubBlockSkeleton() {
   return (
-    <div className="px-4 sm:px-6 py-4">
-      <div className={`card_stylings ${heightClass} animate-pulse`} />
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3 sm:mb-4">
+        <div>
+          <div className="ds-skeleton h-3 w-16 mb-2.5 rounded-full" />
+          <div className="ds-skeleton h-7 sm:h-8 w-48" />
+        </div>
+        <div className="ds-skeleton h-3 w-44" />
+      </div>
+      <div
+        className="rounded-xl p-4 sm:p-5 lg:p-6 h-48 sm:h-56"
+        style={{
+          backgroundColor: "var(--ds-surface)",
+          boxShadow: "var(--ds-shadow-border)",
+        }}
+      />
     </div>
+  );
+}
+
+function GitHubStatsSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 sm:gap-8">
+      <div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3 sm:mb-4">
+          <div>
+            <div className="ds-skeleton h-3 w-14 mb-2.5 rounded-full" />
+            <div className="ds-skeleton h-7 sm:h-8 w-32" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="p-4 rounded-lg flex flex-col gap-2"
+              style={{
+                backgroundColor: "var(--ds-surface)",
+                boxShadow: "var(--ds-shadow-border)",
+              }}
+            >
+              <div className="ds-skeleton h-3 w-16" />
+              <div className="ds-skeleton h-7 w-12" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GitHubAchievementsSkeleton() {
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3 sm:mb-4">
+        <div>
+          <div className="ds-skeleton h-3 w-20 mb-2.5 rounded-full" />
+          <div className="ds-skeleton h-7 sm:h-8 w-44" />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="p-3 sm:p-3.5 rounded-lg flex items-center gap-3"
+            style={{
+              backgroundColor: "var(--ds-surface)",
+              boxShadow: "var(--ds-shadow-border)",
+            }}
+          >
+            <div className="ds-skeleton w-8 h-8 rounded-md" />
+            <div className="flex-1 flex flex-col gap-1.5">
+              <div className="ds-skeleton h-3 w-20" />
+              <div className="ds-skeleton h-2.5 w-16" />
+            </div>
+            <div className="ds-skeleton h-3 w-8" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionSkeleton({ count = 3 }: { count?: number }) {
+  return (
+    <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3 sm:mb-4">
+        <div>
+          <div className="ds-skeleton h-3 w-20 mb-2.5 rounded-full" />
+          <div className="ds-skeleton h-7 sm:h-8 w-44 sm:w-64" />
+        </div>
+        <div className="hidden sm:flex flex-col gap-1.5 max-w-sm">
+          <div className="ds-skeleton h-3 w-full" />
+          <div className="ds-skeleton h-3 w-3/4" />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        {Array.from({ length: count }).map((_, i) => (
+          <div
+            key={i}
+            className="p-4 sm:p-5 rounded-lg flex flex-col gap-3"
+            style={{
+              backgroundColor: "var(--ds-surface)",
+              boxShadow: "var(--ds-shadow-border)",
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="ds-skeleton h-3 w-12" />
+              <div className="ds-skeleton h-2 w-2 rounded-full" />
+            </div>
+            <div className="ds-skeleton h-5 w-2/3" />
+            <div className="ds-skeleton h-3 w-full" />
+            <div className="ds-skeleton h-3 w-3/4" />
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -49,8 +183,15 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
 
   const userId = profileData.user_id;
 
-  // Only the banner data blocks the initial render. Everything else streams.
-  const bannerData = await getBannerData(userId);
+  // Profile already contains every banner field (select * earlier),
+  // so reuse it instead of a second DB round-trip.
+  const bannerData = profileData;
+  // Stack for the hero code card — admin-edited comma-separated list.
+  const codeCardStack = (profileData.code_card_stack ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 3);
 
   const githubUsernames = profileData.show_github_section
     ? [
@@ -59,7 +200,7 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
       ].filter((u): u is string => Boolean(u))
     : [];
   const showGithub = githubUsernames.length > 0;
-  const githubHeading = profileData.github_section_heading || "GitHub Activity";
+  const githubHeading = profileData.github_section_heading ?? "";
 
   const showExpertise = profileData.show_expertise_section !== false;
   const showRecommendations = profileData.show_recommendations_section !== false;
@@ -68,44 +209,92 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
 
   return (
     <div>
-      <Banner data={bannerData} />
+      <HashScroller />
+      <Banner
+        data={bannerData}
+        name={profileData.name}
+        designation={profileData.designation}
+        slug={slug}
+        stack={codeCardStack}
+        availabilityStatus={profileData.availability_status}
+      />
 
       {showGithub && (
-        <div className="flex flex-col gap-4 px-4 sm:px-6 pt-6 pb-4">
-          <Suspense fallback={<div className="card_stylings h-40 animate-pulse" />}>
+        <section className="ds-cv-auto px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto flex flex-col gap-8 sm:gap-10">
+          <Suspense fallback={<GitHubBlockSkeleton />}>
             <GitHubActivity usernames={githubUsernames} heading={githubHeading} />
           </Suspense>
-          <Suspense fallback={<div className="card_stylings h-32 animate-pulse" />}>
-            <GitHubProStats usernames={githubUsernames} />
+          <Suspense fallback={<GitHubStatsSkeleton />}>
+            <GitHubProStats
+              usernames={githubUsernames}
+              statsEyebrow={profileData.github_stats_eyebrow}
+              statsHeading={profileData.github_stats_heading}
+              languagesEyebrow={profileData.github_languages_eyebrow}
+              languagesHeading={profileData.github_languages_heading}
+              reposEyebrow={profileData.github_repos_eyebrow}
+              reposHeading={profileData.github_repos_heading}
+            />
           </Suspense>
-          <Suspense fallback={<div className="card_stylings h-24 animate-pulse" />}>
-            <GitHubAchievements usernames={githubUsernames} />
+          <Suspense fallback={<GitHubAchievementsSkeleton />}>
+            <GitHubAchievements
+              usernames={githubUsernames}
+              eyebrow={profileData.github_achievements_eyebrow}
+              heading={profileData.github_achievements_heading}
+            />
+          </Suspense>
+        </section>
+      )}
+
+      {showExpertise && (
+        <div className="ds-cv-auto">
+          <Suspense fallback={<SectionSkeleton count={6} />}>
+            <ExpertiseSection
+              userId={userId}
+              eyebrow={profileData.expertise_eyebrow}
+              heading={profileData.expertise_heading}
+              description={profileData.expertise_description}
+            />
           </Suspense>
         </div>
       )}
 
-      {showExpertise && (
-        <Suspense fallback={<SectionSkeleton heightClass="h-40" />}>
-          <ExpertiseSection userId={userId} />
-        </Suspense>
-      )}
-
       {showCertifications && (
-        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
-          <CertificationsSection userId={userId} />
-        </Suspense>
+        <div className="ds-cv-auto">
+          <Suspense fallback={<SectionSkeleton count={3} />}>
+            <CertificationsSection
+              userId={userId}
+              eyebrow={profileData.certifications_eyebrow}
+              heading={profileData.certifications_heading}
+              description={profileData.certifications_description}
+            />
+          </Suspense>
+        </div>
       )}
 
       {showRecommendations && (
-        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
-          <RecommendationsSection userId={userId} />
-        </Suspense>
+        <div className="ds-cv-auto">
+          <Suspense fallback={<SectionSkeleton count={3} />}>
+            <RecommendationsSection
+              userId={userId}
+              eyebrow={profileData.recommendations_eyebrow}
+              heading={profileData.recommendations_heading}
+              description={profileData.recommendations_description}
+            />
+          </Suspense>
+        </div>
       )}
 
       {showReviews && (
-        <Suspense fallback={<SectionSkeleton heightClass="h-32" />}>
-          <ReviewsSection userId={userId} />
-        </Suspense>
+        <div className="ds-cv-auto">
+          <Suspense fallback={<SectionSkeleton count={3} />}>
+            <ReviewsSection
+              userId={userId}
+              eyebrow={profileData.reviews_eyebrow}
+              heading={profileData.reviews_heading}
+              description={profileData.reviews_description}
+            />
+          </Suspense>
+        </div>
       )}
 
       <Suspense fallback={null}>
@@ -115,24 +304,37 @@ export default async function HomePage({ params }: { params: Promise<{ slug: str
   );
 }
 
-async function ExpertiseSection({ userId }: { userId: string }) {
+interface SectionMeta {
+  userId: string;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+}
+
+async function ExpertiseSection({ userId, eyebrow, heading, description }: SectionMeta) {
   const data = await getExpertise(userId);
-  return <MyExpertise data={data} />;
+  return <MyExpertise data={data} eyebrow={eyebrow} heading={heading} description={description} />;
 }
 
-async function CertificationsSection({ userId }: { userId: string }) {
+async function CertificationsSection({ userId, eyebrow, heading, description }: SectionMeta) {
   const data = await getCertifications(userId);
-  return <Certifications data={data} />;
+  return (
+    <Certifications data={data} eyebrow={eyebrow} heading={heading} description={description} />
+  );
 }
 
-async function RecommendationsSection({ userId }: { userId: string }) {
+async function RecommendationsSection({ userId, eyebrow, heading, description }: SectionMeta) {
   const data = await getRecommendations(userId);
-  return <Recommendations data={data} />;
+  return (
+    <Recommendations data={data} eyebrow={eyebrow} heading={heading} description={description} />
+  );
 }
 
-async function ReviewsSection({ userId }: { userId: string }) {
+async function ReviewsSection({ userId, eyebrow, heading, description }: SectionMeta) {
   const data = await getReviews(userId);
-  return <ClientReviews data={data} />;
+  return (
+    <ClientReviews data={data} eyebrow={eyebrow} heading={heading} description={description} />
+  );
 }
 
 async function FooterSection({ userId }: { userId: string }) {
