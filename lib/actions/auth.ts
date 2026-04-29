@@ -103,5 +103,11 @@ export async function signOut() {
   }
 
   await supabase.auth.signOut();
-  redirect(slug ? `/${slug}` : "/");
+
+  // Env-slug owner → `/`; other multi-tenant users → `/${slug}`.
+  const publicSlug = process.env.PORTFOLIO_SLUG || process.env.NEXT_PUBLIC_DEFAULT_SLUG || "";
+  if (!slug || slug === publicSlug) {
+    redirect("/");
+  }
+  redirect(`/${slug}`);
 }

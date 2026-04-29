@@ -1,18 +1,27 @@
-const STATUS_CONFIG: Record<string, { label: string; dotClass: string; bgClass: string }> = {
+const STATUS_CONFIG: Record<
+  string,
+  { label: string; dot: string; fg: string; bg: string; glow: string }
+> = {
   open_to_work: {
     label: "Open to Work",
-    dotClass: "bg-Green",
-    bgClass: "bg-Green/10 text-Green border-Green/20",
+    dot: "var(--ds-develop)",
+    fg: "var(--ds-badge-fg)",
+    bg: "var(--ds-badge-bg)",
+    glow: "rgba(10, 114, 239, 0.35)",
   },
   freelance: {
     label: "Freelance",
-    dotClass: "bg-amber-400",
-    bgClass: "bg-amber-400/10 text-amber-400 border-amber-400/20",
+    dot: "var(--ds-preview)",
+    fg: "var(--ds-preview)",
+    bg: "color-mix(in srgb, var(--ds-preview) 14%, transparent)",
+    glow: "rgba(222, 29, 141, 0.35)",
   },
   not_available: {
     label: "Not Available",
-    dotClass: "bg-SlateGray",
-    bgClass: "bg-SlateGray/10 text-SlateGray border-SlateGray/20",
+    dot: "var(--ds-fg-muted)",
+    fg: "var(--ds-fg-secondary)",
+    bg: "var(--ds-surface-subtle)",
+    glow: "transparent",
   },
 };
 
@@ -26,9 +35,24 @@ export default function AvailabilityBadge({ status }: AvailabilityBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-[8px] font-semibold tracking-wider uppercase ${config.bgClass}`}
+      className="relative inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium leading-none"
+      style={{
+        backgroundColor: config.bg,
+        color: config.fg,
+        boxShadow: `var(--ds-shadow-border), 0 0 14px -4px ${config.glow}`,
+        letterSpacing: "-0.005em",
+      }}
     >
-      <span className={`w-1 h-1 rounded-full animate-pulse ${config.dotClass}`} />
+      <span aria-hidden className="relative flex w-1.5 h-1.5">
+        <span
+          className="absolute inline-flex h-full w-full rounded-full opacity-75 motion-safe:animate-ping"
+          style={{ backgroundColor: config.dot }}
+        />
+        <span
+          className="relative inline-flex rounded-full h-full w-full"
+          style={{ backgroundColor: config.dot }}
+        />
+      </span>
       {config.label}
     </span>
   );

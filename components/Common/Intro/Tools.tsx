@@ -1,4 +1,5 @@
 import Badge from "../Badge";
+import SidebarSection from "./SidebarSection";
 import { TechStack } from "@/types";
 
 const Tools = ({ data }: { data?: TechStack[] }) => {
@@ -7,16 +8,25 @@ const Tools = ({ data }: { data?: TechStack[] }) => {
   if (items.length === 0) return null;
 
   return (
-    <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">
-      <div className="flex flex-col gap-y-4">
-        <span className="text-Snow text-xs font-bold">Tools</span>
-        <div className="flex flex-wrap gap-2">
-          {items.map((item: string, index: number) => (
-            <Badge key={index} title={item} />
-          ))}
-        </div>
+    <SidebarSection
+      index={4}
+      label="Stack"
+      accessory={
+        <span
+          className="text-mono-label tabular-nums"
+          style={{ color: "var(--ds-fg-muted)" }}
+          aria-label={`${items.length} technologies`}
+        >
+          {items.length}
+        </span>
+      }
+    >
+      <div className="flex flex-wrap gap-1.5">
+        {items.map((item: string, index: number) => (
+          <Badge key={index} title={item} />
+        ))}
       </div>
-    </div>
+    </SidebarSection>
   );
 };
 

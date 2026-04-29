@@ -1,6 +1,5 @@
-import { MdLocationOn } from "react-icons/md";
+import { FiMapPin } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
-import CardLayout from "../../Common/CardLayout";
 import { ClientReview } from "@/types";
 
 const ReviewCard = ({ data }: { data: ClientReview }) => {
@@ -10,28 +9,62 @@ const ReviewCard = ({ data }: { data: ClientReview }) => {
   const review = data?.client_review;
 
   return (
-    <CardLayout>
-      <div className="flex flex-col justify-between card_stylings w-80 md:w-96 h-full p-4 sm:p-6">
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <span className="text-sm text-Snow font-bold">{name}</span>
-            <div className="text-xs text-LightGray flex items-center gap-1 font-light">
-              <MdLocationOn />
-              <em>{location}</em>
-            </div>
+    <article
+      className="flex flex-col justify-between w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] shrink-0 h-full p-4 sm:p-5 lg:p-6 rounded-lg min-w-0"
+      style={{
+        backgroundColor: "var(--ds-surface)",
+        boxShadow: "var(--ds-shadow-border)",
+      }}
+    >
+      <header className="flex items-start justify-between gap-3 mb-3">
+        <div className="min-w-0">
+          <div
+            className="text-[14px] font-semibold truncate"
+            style={{ color: "var(--ds-fg)", letterSpacing: "-0.015em" }}
+          >
+            {name}
           </div>
-          <span className="text-sm text-LightGray font-light">{source}</span>
+          {location && (
+            <div
+              className="flex items-center gap-1 mt-0.5 text-[12px]"
+              style={{ color: "var(--ds-fg-tertiary)", letterSpacing: "-0.005em" }}
+            >
+              <FiMapPin size={11} />
+              <span className="truncate">{location}</span>
+            </div>
+          )}
         </div>
-        <div className="text-sm mt-2 text-LightGray font-normal">{review}</div>
-        <div className="flex gap-2 items-center justify-center bg-MidNightBlack w-6/12 md:w-5/12 text-xs text-Green rounded-full p-2 mt-4 ">
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
-        </div>
+        {source && (
+          <span className="shrink-0 text-mono-label" style={{ color: "var(--ds-fg-muted)" }}>
+            {source}
+          </span>
+        )}
+      </header>
+
+      <p
+        className="text-[13.5px] leading-relaxed flex-1"
+        style={{
+          color: "var(--ds-fg-secondary)",
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {review}
+      </p>
+
+      <div
+        className="inline-flex items-center gap-1 self-start mt-4 px-2 py-1 rounded-full"
+        style={{
+          backgroundColor: "var(--ds-surface-subtle)",
+          boxShadow: "var(--ds-shadow-border-light)",
+          color: "var(--ds-fg)",
+        }}
+        aria-label="5 out of 5 stars"
+      >
+        {[0, 1, 2, 3, 4].map((i) => (
+          <FaStar key={i} size={9} aria-hidden />
+        ))}
       </div>
-    </CardLayout>
+    </article>
   );
 };
 

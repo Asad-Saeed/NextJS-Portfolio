@@ -8,7 +8,13 @@ interface BadgeProps {
 const Badge = ({ title, className }: BadgeProps) => {
   return (
     <span
-      className={`py-1 px-2 md:py-1.5 md:px-3 text-xs text-Green bg-Green/10 border border-Green/20 rounded-full ${className || ""}`}
+      className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium leading-[1.4] transition-colors ${className || ""}`}
+      style={{
+        backgroundColor: "var(--ds-surface-subtle)",
+        color: "var(--ds-fg-secondary)",
+        boxShadow: "var(--ds-shadow-border-light)",
+        letterSpacing: "-0.005em",
+      }}
     >
       {title}
     </span>

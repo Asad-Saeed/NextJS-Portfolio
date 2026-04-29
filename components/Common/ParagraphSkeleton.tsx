@@ -1,26 +1,33 @@
-import React from "react";
-import CardLayout from "./CardLayout";
+import Skeleton from "./Skeleton";
 
 interface ParagraphSkeletonProps {
   className?: string;
 }
 
-const ParagraphSkeleton = ({ className }: ParagraphSkeletonProps) => {
+const ParagraphSkeleton = ({ className = "" }: ParagraphSkeletonProps) => {
   return (
-    <CardLayout>
-      <div
-        role="status"
-        className={`${className} max-w-full card_stylings animate-pulse bg-EveningBlack self-center`}
-      >
-        <div className="h-2.5 rounded-full bg-Green/20 w-48 mb-4"></div>
-        <div className="h-2 rounded-full bg-Green/20 max-w-[365px] mb-2.5"></div>
-        <div className="h-2 rounded-full bg-Green/20 mb-2.5"></div>
-        <div className="h-2 rounded-full bg-Green/20 max-w-[330px] mb-2.5"></div>
-        <div className="h-2 rounded-full bg-Green/20 max-w-[400px] mb-2.5"></div>
-        <div className="h-2 rounded-full bg-Green/20 max-w-[360px]"></div>
-        <span className="sr-only">Loading...</span>
+    <div
+      role="status"
+      aria-label="Loading"
+      aria-busy="true"
+      className={`p-4 sm:p-5 lg:p-6 rounded-lg flex flex-col gap-3 ${className}`}
+      style={{
+        backgroundColor: "var(--ds-surface)",
+        boxShadow: "var(--ds-shadow-border)",
+      }}
+    >
+      <div className="flex items-center justify-between mb-1">
+        <Skeleton className="h-3 w-20" />
+        <Skeleton className="h-2 w-2" pill />
       </div>
-    </CardLayout>
+      <Skeleton className="h-5 w-2/3" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-11/12" />
+        <Skeleton className="h-3 w-3/4" />
+      </div>
+      <span className="sr-only">Loading…</span>
+    </div>
   );
 };
 

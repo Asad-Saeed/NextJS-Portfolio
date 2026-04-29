@@ -3,12 +3,19 @@ import {
   getMergedGithubContributions,
   computeAchievements,
 } from "@/lib/github";
+import SectionHeader from "@/components/Common/SectionHeader";
 
 interface GitHubAchievementsProps {
   usernames: string[];
+  eyebrow?: string;
+  heading?: string;
 }
 
-export default async function GitHubAchievements({ usernames }: GitHubAchievementsProps) {
+export default async function GitHubAchievements({
+  usernames,
+  eyebrow,
+  heading,
+}: GitHubAchievementsProps) {
   const [stats, contributions] = await Promise.all([
     getMergedGithubStats(usernames),
     getMergedGithubContributions(usernames, "last"),
@@ -21,21 +28,38 @@ export default async function GitHubAchievements({ usernames }: GitHubAchievemen
 
   return (
     <div>
-      <h3 className="text-Snow text-base font-semibold mb-3 px-1">Achievements</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <SectionHeader eyebrow={eyebrow ?? ""} title={heading ?? ""} />
+
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5">
         {achievements.map((a) => (
           <div
             key={a.id}
-            className="card_stylings p-4 flex items-center gap-3 hover:border-Green/50 transition-colors"
+            className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-lg min-w-0"
+            style={{
+              backgroundColor: "var(--ds-surface)",
+              boxShadow: "var(--ds-shadow-border)",
+            }}
           >
-            <div className="text-3xl shrink-0" aria-hidden="true">
+            <div className="text-2xl shrink-0 leading-none" aria-hidden="true">
               {a.icon}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-Snow text-sm font-semibold truncate">{a.title}</div>
-              <div className="text-LightGray text-[11px] truncate">{a.description}</div>
+              <div
+                className="text-[13px] font-semibold truncate"
+                style={{ color: "var(--ds-fg)", letterSpacing: "-0.015em" }}
+              >
+                {a.title}
+              </div>
+              <div className="text-[11px] truncate" style={{ color: "var(--ds-fg-tertiary)" }}>
+                {a.description}
+              </div>
             </div>
-            <div className="text-Green text-sm font-bold shrink-0">{a.value}</div>
+            <div
+              className="text-[13px] font-semibold tabular-nums shrink-0"
+              style={{ color: "var(--ds-fg)", letterSpacing: "-0.02em" }}
+            >
+              {a.value}
+            </div>
           </div>
         ))}
       </div>

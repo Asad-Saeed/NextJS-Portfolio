@@ -1,3 +1,4 @@
+import SidebarSection from "./SidebarSection";
 import { Profile } from "@/types";
 
 const Location = ({ profile }: { profile?: Partial<Profile> }) => {
@@ -13,14 +14,26 @@ const Location = ({ profile }: { profile?: Partial<Profile> }) => {
   if (entries.length === 0) return null;
 
   return (
-    <div className="flex flex-col space-y-1 py-5 border-b border-SlateGray">
-      {entries.map(([key, value], index) => (
-        <div key={index} className="flex items-center justify-between">
-          <span className="text-Snow text-xs font-bold">{key}</span>
-          <span className="text-xs text-LightGray">{value as string}</span>
-        </div>
-      ))}
-    </div>
+    <SidebarSection index={1} label="Identity">
+      <dl className="flex flex-col gap-2">
+        {entries.map(([key, value]) => (
+          <div key={key} className="flex items-baseline justify-between gap-3">
+            <dt
+              className="text-[11px] uppercase tracking-wider shrink-0"
+              style={{ color: "var(--ds-fg-tertiary)", letterSpacing: "0.04em" }}
+            >
+              {key}
+            </dt>
+            <dd
+              className="text-[12.5px] font-medium text-right truncate"
+              style={{ color: "var(--ds-fg)", letterSpacing: "-0.01em" }}
+            >
+              {value as string}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </SidebarSection>
   );
 };
 

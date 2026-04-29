@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, Fira_Code } from "next/font/google";
-import QueryProvider from "@/lib/providers/query-provider";
+import { Geist, Geist_Mono } from "next/font/google";
+import ThemeProvider from "@/lib/providers/theme-provider";
 import { getSiteUrl } from "@/lib/site-url";
 import "@/styles/globals.css";
 
-const inter = Inter({
+// Trim font weights to the only ones used by the design system (400/500/600).
+// Drops ~40% of font payload vs loading all weights.
+const geistSans = Geist({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
-const firaCode = Fira_Code({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-fira-code",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -34,9 +40,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${firaCode.variable}`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Preconnect to Supabase storage so profile/banner/project images
+            negotiate TLS in parallel with HTML download — saves ~100-200ms
+            on the LCP image fetch on mobile. */}
+        <link
+          rel="preconnect"
+          href="https://xyufrjjbhqndxfxbxcut.supabase.co"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://xyufrjjbhqndxfxbxcut.supabase.co" />
+      </head>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
