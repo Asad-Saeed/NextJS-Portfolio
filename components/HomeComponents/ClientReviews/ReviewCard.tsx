@@ -10,7 +10,7 @@ const ReviewCard = ({ data }: { data: ClientReview }) => {
 
   return (
     <article
-      className="flex flex-col justify-between w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] shrink-0 h-full p-4 sm:p-5 lg:p-6 rounded-lg min-w-0"
+      className="flex flex-col justify-between w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] shrink-0 p-4 sm:p-5 lg:p-6 rounded-lg min-w-0"
       style={{
         backgroundColor: "var(--ds-surface)",
         boxShadow: "var(--ds-shadow-border)",
@@ -52,13 +52,14 @@ const ReviewCard = ({ data }: { data: ClientReview }) => {
       </p>
 
       <div
+        role="img"
+        aria-label="5 out of 5 stars"
         className="inline-flex items-center gap-1 self-start mt-4 px-2 py-1 rounded-full"
         style={{
           backgroundColor: "var(--ds-surface-subtle)",
           boxShadow: "var(--ds-shadow-border-light)",
           color: "var(--ds-fg)",
         }}
-        aria-label="5 out of 5 stars"
       >
         {[0, 1, 2, 3, 4].map((i) => (
           <FaStar key={i} size={9} aria-hidden />

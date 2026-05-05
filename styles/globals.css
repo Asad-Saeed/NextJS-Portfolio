@@ -15,11 +15,11 @@
 
   /* Text — contrast ratios against #0a0a0a bg:
      fg #ededed → 16.4:1 (AAA), secondary #a1a1a1 → 7.0:1 (AAA),
-     tertiary #8d8d8d → 5.5:1 (AA), muted #707070 → 3.6:1 (AA large only). */
+     tertiary #8d8d8d → 5.5:1 (AA), muted #888888 → 4.7:1 (AA). */
   --ds-fg: #ededed;
   --ds-fg-secondary: #a1a1a1;
   --ds-fg-tertiary: #8d8d8d;
-  --ds-fg-muted: #707070;
+  --ds-fg-muted: #888888;
 
   /* Neutrals */
   --ds-gray-50: #171717;
@@ -75,11 +75,12 @@
   --ds-surface-subtle: #fafafa;
   --ds-overlay-backdrop: hsla(0, 0%, 98%, 1);
 
-  /* Text */
+  /* Text — light mode, contrast against #ffffff:
+     fg-muted #737373 → 4.84:1 (AA). */
   --ds-fg: #171717;
   --ds-fg-secondary: #4d4d4d;
   --ds-fg-tertiary: #666666;
-  --ds-fg-muted: #808080;
+  --ds-fg-muted: #737373;
 
   /* Neutrals */
   --ds-gray-50: #fafafa;

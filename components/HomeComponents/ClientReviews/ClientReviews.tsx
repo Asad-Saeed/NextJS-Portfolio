@@ -25,7 +25,7 @@ const ClientReviews = ({ data, eyebrow, heading, description }: ClientReviewsPro
       />
 
       <div className="overflow-x-auto no-scrollbar -mx-5 sm:-mx-8 px-5 sm:px-8 py-2">
-        <div className="flex gap-2.5 min-w-min">
+        <div className="flex items-stretch gap-2.5 min-w-min">
           {data.map((item: ClientReview) => (
             <ReviewCard key={item.id} data={item} />
           ))}
