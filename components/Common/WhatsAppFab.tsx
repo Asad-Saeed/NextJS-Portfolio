@@ -3,20 +3,33 @@ import { FaWhatsapp } from "react-icons/fa";
 interface WhatsAppFabProps {
   phone?: string | null;
   label?: string;
+  countryCode?: string;
 }
 
-function toWaNumber(raw: string): string | null {
+function toWaNumber(raw: string, countryCode: string): string | null {
   const first = raw.split(/[/|,]/)[0]?.trim() ?? "";
-  const digits = first.replace(/[^0-9]/g, "");
-  if (!digits) return null;
-  // Local PK numbers start with 0; convert to +92 international form.
-  if (digits.startsWith("0")) return `92${digits.slice(1)}`;
-  return digits;
+  const cleaned = first.replace(/[\s\-().]/g, "");
+  let normalized: string;
+  if (cleaned.startsWith("+")) {
+    normalized = cleaned.slice(1);
+  } else if (cleaned.startsWith("00")) {
+    normalized = cleaned.slice(2);
+  } else if (cleaned.startsWith("0")) {
+    normalized = `${countryCode}${cleaned.slice(1)}`;
+  } else {
+    normalized = cleaned;
+  }
+  const digits = normalized.replace(/[^0-9]/g, "");
+  return digits || null;
 }
 
-export default function WhatsAppFab({ phone, label = "Chat with Asad" }: WhatsAppFabProps) {
+export default function WhatsAppFab({
+  phone,
+  label = "Chat with me",
+  countryCode = "92",
+}: WhatsAppFabProps) {
   if (!phone) return null;
-  const waNumber = toWaNumber(phone);
+  const waNumber = toWaNumber(phone, countryCode);
   if (!waNumber) return null;
 
   return (

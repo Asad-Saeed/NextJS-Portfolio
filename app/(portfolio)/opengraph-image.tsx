@@ -5,7 +5,6 @@ import { getPortfolioSlug } from "@/lib/portfolio-slug";
 export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const dynamic = "force-dynamic";
 
 const BG = "#0a0a0a";
 const FG = "#ededed";

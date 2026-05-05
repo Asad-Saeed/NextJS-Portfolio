@@ -187,7 +187,13 @@ export default function LayoutShell({ children, sidebarData, phone }: LayoutShel
         </nav>
       </div>
 
-      <WhatsAppFab phone={phone} />
+      <WhatsAppFab
+        phone={phone}
+        label={(() => {
+          const firstName = sidebarData?.profile?.name?.trim().split(/\s+/)[0];
+          return firstName ? `Chat with ${firstName}` : undefined;
+        })()}
+      />
     </div>
   );
 }
