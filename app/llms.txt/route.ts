@@ -98,8 +98,10 @@ export async function GET() {
     lines.push("## Expertise");
     lines.push("");
     for (const item of expertise) {
+      const title = (item.title || "").trim();
+      if (!title) continue;
       const desc = truncate(stripHtml(item.description), 160);
-      lines.push(`- **${item.title}**${desc ? `: ${desc}` : ""}`);
+      lines.push(`- **${title}**${desc ? `: ${desc}` : ""}`);
     }
     lines.push("");
   }
@@ -123,13 +125,15 @@ export async function GET() {
     lines.push("## Experience");
     lines.push("");
     for (const exp of experience) {
-      const role = exp.role || "";
-      const company = exp.title || "";
-      const year = exp.year || "";
-      const loc = exp.location || "";
+      const role = (exp.role || "").trim();
+      const company = (exp.title || "").trim();
       const headParts = [role, company].filter(Boolean).join(" — ");
+      if (!headParts) continue;
+
+      const year = (exp.year || "").trim();
+      const loc = (exp.location || "").trim();
       const metaParts = [year, loc].filter(Boolean).join(" · ");
-      lines.push(`- **${headParts || company || role}**${metaParts ? ` (${metaParts})` : ""}`);
+      lines.push(`- **${headParts}**${metaParts ? ` (${metaParts})` : ""}`);
     }
     lines.push("");
   }
@@ -139,11 +143,13 @@ export async function GET() {
     lines.push("## Education");
     lines.push("");
     for (const edu of education) {
-      const institution = edu.title || "";
-      const degree = edu.degree || "";
-      const year = edu.year || "";
+      const institution = (edu.title || "").trim();
+      const degree = (edu.degree || "").trim();
       const head = [degree, institution].filter(Boolean).join(" — ");
-      lines.push(`- **${head || institution || degree}**${year ? ` (${year})` : ""}`);
+      if (!head) continue;
+
+      const year = (edu.year || "").trim();
+      lines.push(`- **${head}**${year ? ` (${year})` : ""}`);
     }
     lines.push("");
   }
@@ -166,7 +172,9 @@ export async function GET() {
     lines.push("## Projects");
     lines.push("");
     for (const project of projects) {
-      if (!project.project_slug) continue;
+      const name = (project.project_name || "").trim();
+      if (!project.project_slug || !name) continue;
+
       const techs = (project.project_technologies || [])
         .map((t) => t.tech_name)
         .filter(Boolean)
@@ -175,9 +183,7 @@ export async function GET() {
       const detail = truncate(stripHtml(project.project_detail || project.challenge), 140);
       const meta = [techs && `Stack: ${techs}`, detail].filter(Boolean).join(" — ");
       lines.push(
-        `- [${project.project_name}](${siteUrl}/portfolio/${project.project_slug})${
-          meta ? `: ${meta}` : ""
-        }`
+        `- [${name}](${siteUrl}/portfolio/${project.project_slug})${meta ? `: ${meta}` : ""}`
       );
     }
     lines.push("");
