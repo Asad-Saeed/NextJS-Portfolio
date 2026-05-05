@@ -18,7 +18,7 @@ interface LayoutShellProps {
 export default function LayoutShell({ children, sidebarData, phone }: LayoutShellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [intro, setIntro] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
+  const [showProfile, setShowProfile] = useState(true);
   const pathname = usePathname();
 
   const bottomNavItems = [
@@ -44,7 +44,7 @@ export default function LayoutShell({ children, sidebarData, phone }: LayoutShel
       </a>
 
       {/* ===== MOBILE LAYOUT ===== */}
-      <div className="lg:hidden flex flex-col h-screen">
+      <div className="lg:hidden flex flex-col h-dvh">
         <main
           id="main-content-mobile"
           tabIndex={-1}
@@ -64,8 +64,9 @@ export default function LayoutShell({ children, sidebarData, phone }: LayoutShel
         {/* Mobile bottom nav — pill bar with shadow-as-border */}
         <nav
           aria-label="Primary"
-          className="fixed bottom-3 left-3 right-3 z-50 flex items-center justify-between px-2 py-2 rounded-full"
+          className="fixed left-3 right-3 z-50 flex items-center justify-between px-2 py-2 rounded-full"
           style={{
+            bottom: "max(0.75rem, env(safe-area-inset-bottom))",
             backgroundColor: "var(--ds-surface)",
             boxShadow: "var(--ds-shadow-border), var(--ds-shadow-elevation)",
           }}
@@ -107,7 +108,11 @@ export default function LayoutShell({ children, sidebarData, phone }: LayoutShel
           <ThemeToggle className="!h-9 !w-9 !rounded-full" />
         </nav>
 
-        <div className="mb-20 shrink-0" />
+        <div
+          aria-hidden
+          className="shrink-0"
+          style={{ height: "calc(5rem + env(safe-area-inset-bottom))" }}
+        />
       </div>
 
       {/* ===== DESKTOP LAYOUT ===== */}
