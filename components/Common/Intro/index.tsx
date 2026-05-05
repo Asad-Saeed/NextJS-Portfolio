@@ -50,7 +50,7 @@ const Intro = ({ isOpen, setIsOpen, sidebarData }: IntroProps) => {
     <div className="h-full flex flex-col overflow-y-auto overflow-x-hidden no-scrollbar">
       {/* Sticky header — identity card (sticky only on desktop sidebar) */}
       <header
-        className="lg:sticky lg:top-0 z-30 flex flex-col items-center px-4 sm:px-5 pt-8 pb-5 gap-y-2.5"
+        className="relative lg:sticky lg:top-0 z-30 flex flex-col items-center px-4 sm:px-5 pt-8 pb-5 gap-y-2.5"
         style={{
           backgroundColor: "var(--ds-surface)",
           boxShadow: "inset 0 -1px 0 0 var(--ds-border-shadow)",
