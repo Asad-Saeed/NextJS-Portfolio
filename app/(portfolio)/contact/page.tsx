@@ -10,6 +10,7 @@ import SectionHeader from "@/components/Common/SectionHeader";
 import { getProfileBySlug } from "@/lib/queries/profile";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 import ContactForm from "./client";
@@ -127,7 +128,7 @@ export default async function ContactPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(contactJsonLd) }}
       />
       <div>
         <Banner

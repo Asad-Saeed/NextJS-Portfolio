@@ -11,6 +11,7 @@ import { getProfileBySlug } from "@/lib/queries/profile";
 import { getProjectBySlug } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 import { ProjectTechnology } from "@/types";
@@ -102,11 +103,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ proj
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(creativeWorkJsonLd) }}
       />
       <Banner
         data={bannerData}
