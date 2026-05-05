@@ -8,7 +8,12 @@ import { getPortfolioSlug } from "@/lib/portfolio-slug";
 const portfolioSubpaths = ["/skills", "/background", "/portfolio", "/contact"] as const;
 
 type ProfileRow = { user_id: string; slug: string | null; updated_at: string | null };
-type ProjectRow = { user_id: string; project_slug: string | null; updated_at: string | null };
+type ProjectRow = {
+  user_id: string;
+  project_slug: string | null;
+  updated_at: string | null;
+  image_url: string | null;
+};
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
@@ -22,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     supabase.from("profile").select("user_id, slug, updated_at").eq("slug", slug).maybeSingle(),
     supabase
       .from("portfolio_projects")
-      .select("user_id, project_slug, updated_at")
+      .select("user_id, project_slug, updated_at, image_url")
       .not("project_slug", "is", null),
   ]);
 
@@ -40,6 +45,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: project.updated_at ? new Date(project.updated_at) : profileLastModified,
     changeFrequency: "monthly" as const,
     priority: 0.6,
+    // Image-sitemap extension — surfaces project screenshots in Google Images.
+    ...(project.image_url && { images: [project.image_url] }),
   }));
 
   const baseEntries: MetadataRoute.Sitemap = portfolioSubpaths.map((sub) => ({

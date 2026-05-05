@@ -7,6 +7,8 @@ import SkillsCards from "@/components/skills/skillsCards";
 import { getProfileBySlug } from "@/lib/queries/profile";
 import { getSkills } from "@/lib/queries/skills";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { getSiteUrl } from "@/lib/site-url";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
@@ -53,8 +55,38 @@ export default async function SkillsPage() {
   const footerData = profileData;
   const skills = await getSkills(userId);
 
+  const siteUrl = getSiteUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: profileData.name || "Portfolio", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Skills", item: `${siteUrl}/skills` },
+    ],
+  };
+
+  const skillsItemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: profileData.skills_heading || "Skills",
+    itemListElement: skills.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: s.tech_name,
+      ...(s.url && { url: s.url }),
+    })),
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(skillsItemListJsonLd) }}
+      />
       <Banner
         data={bannerData}
         heading={bannerData?.skills_banner_heading}

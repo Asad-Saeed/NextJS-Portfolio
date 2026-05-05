@@ -4,9 +4,12 @@ import type { Metadata } from "next";
 import LayoutShell from "@/components/LayoutShell";
 import { getProfileBySlug, getSidebarProfile } from "@/lib/queries/profile";
 import { getLanguages, getTechStack, getSidebarSkills } from "@/lib/queries/sidebar";
+import { getExperience } from "@/lib/queries/experience";
+import { getEducation } from "@/lib/queries/education";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { getSiteUrl } from "@/lib/site-url";
+import { safeJsonLd } from "@/lib/json-ld";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -87,11 +90,13 @@ export default async function PortfolioLayout({ children }: { children: React.Re
 
   const userId = profileData.user_id;
 
-  const [profile, languages, techStack, sidebarSkills] = await Promise.all([
+  const [profile, languages, techStack, sidebarSkills, experience, education] = await Promise.all([
     getSidebarProfile(userId),
     getLanguages(userId),
     getTechStack(userId),
     getSidebarSkills(userId),
+    getExperience(userId),
+    getEducation(userId),
   ]);
 
   const sidebarData = { profile, languages, techStack, sidebarSkills };
@@ -105,12 +110,27 @@ export default async function PortfolioLayout({ children }: { children: React.Re
     ...parseCodeCardStack(profileData.code_card_stack, Infinity),
   ].filter(Boolean);
 
+  // Latest job → schema.org "worksFor". Education entries → "alumniOf".
+  const currentJob = experience[0];
+  const alumniOf = education
+    .map((e) => (e.title || "").trim())
+    .filter(Boolean)
+    .map((name) => ({ "@type": "EducationalOrganization" as const, name }));
+
+  // Spoken languages → schema.org "knowsLanguage". Strips proficiency annotations
+  // like "English (Fluent)" so the value matches what Google expects.
+  const knowsLanguage = languages
+    .map((l) => (l.name || "").replace(/\s*\(.*?\)\s*$/, "").trim())
+    .filter(Boolean);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     name: profileData.name ? `${profileData.name} — Portfolio` : undefined,
     description: profileData.designation || undefined,
     url: personUrl,
+    inLanguage: "en",
+    ...(profileData.updated_at && { dateModified: profileData.updated_at }),
     mainEntity: {
       "@type": "Person",
       name: profileData.name || undefined,
@@ -138,14 +158,44 @@ export default async function PortfolioLayout({ children }: { children: React.Re
         profileData.fiverr_url,
       ].filter(Boolean),
       ...(knowsAbout.length > 0 && { knowsAbout: Array.from(new Set(knowsAbout)) }),
+      ...(knowsLanguage.length > 0 && { knowsLanguage }),
+      ...(currentJob?.title && {
+        worksFor: {
+          "@type": "Organization",
+          name: currentJob.title,
+          ...(currentJob.url && { url: currentJob.url }),
+        },
+      }),
+      ...(alumniOf.length > 0 && { alumniOf }),
+      ...(profileData.designation && {
+        hasOccupation: {
+          "@type": "Occupation",
+          name: profileData.designation,
+          ...(knowsAbout.length > 0 && { skills: Array.from(new Set(knowsAbout)).join(", ") }),
+        },
+      }),
     },
+  };
+
+  // Site-level identity — separate from Person, helps Google index the
+  // portfolio domain itself (sitelinks, search-box eligibility).
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: profileData.name ? `${profileData.name} — Portfolio` : "Portfolio",
+    url: siteUrl,
+    ...(profileData.name && {
+      author: { "@type": "Person", name: profileData.name, url: siteUrl },
+    }),
+    inLanguage: "en",
   };
 
   return (
     <LayoutShell sidebarData={sidebarData} phone={profileData.phone}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }}
       />
       {children}
     </LayoutShell>

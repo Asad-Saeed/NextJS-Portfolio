@@ -9,6 +9,7 @@ import { getProfileBySlug } from "@/lib/queries/profile";
 import { getPortfolio } from "@/lib/queries/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
@@ -73,7 +74,7 @@ export default async function PortfolioPage() {
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }}
       />
       <Banner
         data={bannerData}

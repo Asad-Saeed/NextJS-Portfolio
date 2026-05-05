@@ -10,6 +10,8 @@ import { getProfileBySlug } from "@/lib/queries/profile";
 import { getEducation } from "@/lib/queries/education";
 import { getExperience } from "@/lib/queries/experience";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { getSiteUrl } from "@/lib/site-url";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
@@ -58,8 +60,22 @@ export default async function BackgroundPage() {
   const footerData = profileData;
   const [education, experience] = await Promise.all([getEducation(userId), getExperience(userId)]);
 
+  const siteUrl = getSiteUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: profileData.name || "Portfolio", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Background", item: `${siteUrl}/background` },
+    ],
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
+      />
       <Banner
         data={bannerData}
         heading={bannerData?.background_banner_heading}

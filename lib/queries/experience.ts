@@ -1,7 +1,8 @@
+import { cache } from "react";
 import { getPublicSupabaseClient } from "@/lib/supabase/public";
 import type { Experience } from "@/types";
 
-export async function getExperience(userId: string): Promise<Experience[]> {
+export const getExperience = cache(async (userId: string): Promise<Experience[]> => {
   const supabase = getPublicSupabaseClient();
   const { data } = await supabase
     .from("experience")
@@ -9,4 +10,4 @@ export async function getExperience(userId: string): Promise<Experience[]> {
     .eq("user_id", userId)
     .order("sort_order");
   return (data ?? []) as Experience[];
-}
+});
