@@ -5,15 +5,17 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Intro from "@/components/Common/Intro";
 import ThemeToggle from "@/components/Common/ThemeToggle";
+import WhatsAppFab from "@/components/Common/WhatsAppFab";
 import { FiUser, FiHome, FiCode, FiBriefcase, FiGrid, FiMail } from "react-icons/fi";
 import { SidebarData } from "@/types";
 
 interface LayoutShellProps {
   children: React.ReactNode;
   sidebarData?: SidebarData;
+  phone?: string | null;
 }
 
-export default function LayoutShell({ children, sidebarData }: LayoutShellProps) {
+export default function LayoutShell({ children, sidebarData, phone }: LayoutShellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [intro, setIntro] = useState(false);
   const [showProfile, setShowProfile] = useState(true);
@@ -42,7 +44,7 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
       </a>
 
       {/* ===== MOBILE LAYOUT ===== */}
-      <div className="lg:hidden flex flex-col h-screen">
+      <div className="lg:hidden flex flex-col h-dvh">
         <main
           id="main-content-mobile"
           tabIndex={-1}
@@ -62,8 +64,9 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
         {/* Mobile bottom nav — pill bar with shadow-as-border */}
         <nav
           aria-label="Primary"
-          className="fixed bottom-3 left-3 right-3 z-50 flex items-center justify-between px-2 py-2 rounded-full"
+          className="fixed left-3 right-3 z-50 flex items-center justify-between px-2 py-2 rounded-full"
           style={{
+            bottom: "max(0.75rem, env(safe-area-inset-bottom))",
             backgroundColor: "var(--ds-surface)",
             boxShadow: "var(--ds-shadow-border), var(--ds-shadow-elevation)",
           }}
@@ -105,7 +108,11 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
           <ThemeToggle className="!h-9 !w-9 !rounded-full" />
         </nav>
 
-        <div className="mb-20 shrink-0" />
+        <div
+          aria-hidden
+          className="shrink-0"
+          style={{ height: "calc(5rem + env(safe-area-inset-bottom))" }}
+        />
       </div>
 
       {/* ===== DESKTOP LAYOUT ===== */}
@@ -138,13 +145,15 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
         {/* Right rail nav */}
         <nav
           aria-label="Primary"
-          className="w-14 rounded-xl flex flex-col items-center justify-between gap-y-2 py-3"
+          className="w-14 rounded-xl flex flex-col items-center py-3"
           style={{
             backgroundColor: "var(--ds-surface)",
             boxShadow: "var(--ds-shadow-border)",
           }}
         >
-          <div className="flex flex-col items-center gap-y-1">
+          <ThemeToggle />
+
+          <div className="flex-1 flex flex-col items-center justify-center gap-y-1">
             {bottomNavItems.map((item) => {
               const isActive = isActiveRoute(item.href);
               const Icon = item.icon;
@@ -175,10 +184,16 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
               );
             })}
           </div>
-
-          <ThemeToggle />
         </nav>
       </div>
+
+      <WhatsAppFab
+        phone={phone}
+        label={(() => {
+          const firstName = sidebarData?.profile?.name?.trim().split(/\s+/)[0];
+          return firstName ? `Chat with ${firstName}` : undefined;
+        })()}
+      />
     </div>
   );
 }
