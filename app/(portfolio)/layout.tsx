@@ -142,7 +142,7 @@ export default async function PortfolioLayout({ children }: { children: React.Re
   };
 
   return (
-    <LayoutShell sidebarData={sidebarData}>
+    <LayoutShell sidebarData={sidebarData} phone={profileData.phone}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

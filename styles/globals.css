@@ -786,6 +786,74 @@ select:focus-visible {
   }
 }
 
+/* ===== WhatsApp FAB ===== */
+@keyframes wa-halo {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+@keyframes wa-wiggle {
+  0%,
+  88%,
+  100% {
+    transform: rotate(0);
+  }
+  90% {
+    transform: rotate(-14deg);
+  }
+  92% {
+    transform: rotate(12deg);
+  }
+  94% {
+    transform: rotate(-8deg);
+  }
+  96% {
+    transform: rotate(6deg);
+  }
+  98% {
+    transform: rotate(0);
+  }
+}
+@keyframes wa-tip-in {
+  0% {
+    transform: translateY(6px) scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+.wa-halo {
+  animation: wa-halo 2.4s ease-out infinite;
+}
+.wa-halo-delayed {
+  animation-delay: 1.2s;
+}
+.wa-wiggle {
+  animation: wa-wiggle 5s ease-in-out infinite;
+  transform-origin: 50% 60%;
+}
+.wa-fab:hover .wa-tip,
+.wa-fab:focus-visible .wa-tip {
+  animation: wa-tip-in 220ms ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-halo,
+  .wa-wiggle {
+    animation: none;
+  }
+  .wa-fab .wa-tip {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ===== Ant Design Overrides ===== */
 .ant-progress-text {
   color: var(--ds-link) !important;

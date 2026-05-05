@@ -5,18 +5,20 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Intro from "@/components/Common/Intro";
 import ThemeToggle from "@/components/Common/ThemeToggle";
+import WhatsAppFab from "@/components/Common/WhatsAppFab";
 import { FiUser, FiHome, FiCode, FiBriefcase, FiGrid, FiMail } from "react-icons/fi";
 import { SidebarData } from "@/types";
 
 interface LayoutShellProps {
   children: React.ReactNode;
   sidebarData?: SidebarData;
+  phone?: string | null;
 }
 
-export default function LayoutShell({ children, sidebarData }: LayoutShellProps) {
+export default function LayoutShell({ children, sidebarData, phone }: LayoutShellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [intro, setIntro] = useState(false);
-  const [showProfile, setShowProfile] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
   const pathname = usePathname();
 
   const bottomNavItems = [
@@ -138,13 +140,15 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
         {/* Right rail nav */}
         <nav
           aria-label="Primary"
-          className="w-14 rounded-xl flex flex-col items-center justify-between gap-y-2 py-3"
+          className="w-14 rounded-xl flex flex-col items-center py-3"
           style={{
             backgroundColor: "var(--ds-surface)",
             boxShadow: "var(--ds-shadow-border)",
           }}
         >
-          <div className="flex flex-col items-center gap-y-1">
+          <ThemeToggle />
+
+          <div className="flex-1 flex flex-col items-center justify-center gap-y-1">
             {bottomNavItems.map((item) => {
               const isActive = isActiveRoute(item.href);
               const Icon = item.icon;
@@ -175,10 +179,10 @@ export default function LayoutShell({ children, sidebarData }: LayoutShellProps)
               );
             })}
           </div>
-
-          <ThemeToggle />
         </nav>
       </div>
+
+      <WhatsAppFab phone={phone} />
     </div>
   );
 }
