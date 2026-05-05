@@ -81,9 +81,9 @@ const Languages = ({ data }: { data?: Language[] }) => {
                 <span
                   className="text-mono-label tabular-nums"
                   style={{ color: "var(--ds-fg-tertiary)" }}
-                  aria-label={`${target} percent proficiency`}
                 >
-                  {pct}%
+                  <span aria-hidden="true">{pct}%</span>
+                  <span className="sr-only">{target} percent proficiency</span>
                 </span>
               </div>
               <div

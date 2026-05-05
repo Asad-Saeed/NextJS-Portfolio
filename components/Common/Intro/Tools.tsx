@@ -12,12 +12,9 @@ const Tools = ({ data }: { data?: TechStack[] }) => {
       index={4}
       label="Stack"
       accessory={
-        <span
-          className="text-mono-label tabular-nums"
-          style={{ color: "var(--ds-fg-muted)" }}
-          aria-label={`${items.length} technologies`}
-        >
-          {items.length}
+        <span className="text-mono-label tabular-nums" style={{ color: "var(--ds-fg-muted)" }}>
+          <span aria-hidden="true">{items.length}</span>
+          <span className="sr-only">{items.length} technologies</span>
         </span>
       }
     >
