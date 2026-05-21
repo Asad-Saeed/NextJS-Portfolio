@@ -1,7 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { FaDownload, FaUser } from "react-icons/fa";
 import Contact from "./Contact";
 import Download from "./Download";
@@ -9,37 +7,19 @@ import Languages from "./Languages";
 import Location from "./Location";
 import Tools from "./Tools";
 import Skills from "./Skills";
-import Image from "next/image";
-import { useLongPress } from "@/lib/hooks/useLongPress";
-import { createClient } from "@/lib/supabase/client";
 import AvailabilityBadge from "@/components/Common/AvailabilityBadge";
 import SidebarSkeleton from "./SidebarSkeleton";
+import AvatarLongPressTrigger from "./AvatarLongPressTrigger";
 import { SidebarData } from "@/types";
 
 interface IntroProps {
-  isOpen?: boolean;
-  setIsOpen?: (open: boolean) => void;
   sidebarData?: SidebarData;
 }
 
-const Intro = ({ isOpen, setIsOpen, sidebarData }: IntroProps) => {
-  const router = useRouter();
+const Intro = ({ sidebarData }: IntroProps) => {
   const profile = sidebarData?.profile;
   const homeUrl = "/";
 
-  const longPressHandlers = useLongPress(async () => {
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      router.push("/admin");
-    } else {
-      router.push("/auth/login");
-    }
-  }, 5000);
-
-  // Show skeleton until the layout has resolved sidebar data.
   if (!profile) return <SidebarSkeleton />;
 
   const profileImage = profile?.profile_image_url;
@@ -76,8 +56,8 @@ const Intro = ({ isOpen, setIsOpen, sidebarData }: IntroProps) => {
           </span>
         </div>
 
-        {/* Avatar with conic-gradient ring */}
-        <div {...longPressHandlers} className="relative cursor-pointer select-none group">
+        {/* Avatar with conic-gradient ring (long-press → admin via client island) */}
+        <AvatarLongPressTrigger className="relative cursor-pointer select-none group">
           <span
             aria-hidden
             className="absolute -inset-1 rounded-full opacity-50 blur-md transition-opacity duration-300 group-hover:opacity-80"
@@ -111,7 +91,7 @@ const Intro = ({ isOpen, setIsOpen, sidebarData }: IntroProps) => {
               <FaUser className="text-2xl" />
             </div>
           )}
-        </div>
+        </AvatarLongPressTrigger>
 
         <Link
           href={homeUrl}

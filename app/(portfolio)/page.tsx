@@ -19,6 +19,8 @@ import { getReviews } from "@/lib/queries/reviews";
 import { getCertifications } from "@/lib/queries/certifications";
 import { parseGithubUsername } from "@/lib/github";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
+import { getSiteUrl } from "@/lib/site-url";
+import { safeJsonLd } from "@/lib/json-ld";
 import { parseCodeCardStack } from "@/lib/code-card-stack";
 import { notFound } from "next/navigation";
 
@@ -201,8 +203,21 @@ export default async function HomePage() {
   const showReviews = profileData.show_reviews_section !== false;
   const showCertifications = profileData.show_certifications_section !== false;
 
+  const siteUrl = getSiteUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: profileData.name || "Portfolio", item: siteUrl },
+    ],
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
+      />
       <HashScroller />
       <Banner
         data={bannerData}

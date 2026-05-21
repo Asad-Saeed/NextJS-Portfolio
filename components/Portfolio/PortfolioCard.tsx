@@ -14,7 +14,7 @@ interface PortfolioCardProps {
 
 const PortfolioCard = ({ data, index = 0 }: PortfolioCardProps) => {
   const imageUrl = data?.image_url || "";
-  const projectName = data?.project_name;
+  const projectName = data?.project_name || "Project";
   const projectDetail = data?.project_detail;
   const techs = data?.project_technologies || [];
   const hasCaseStudy = !!(data.challenge || data.solution || data.impact);
@@ -134,6 +134,7 @@ const PortfolioCard = ({ data, index = 0 }: PortfolioCardProps) => {
             </span>
             <Link
               href={`/portfolio/${data.project_slug}`}
+              aria-label={`Read more about ${projectName}`}
               className="inline-flex items-center gap-1 text-[13px] font-medium transition-colors hover:underline"
               style={{ color: "var(--ds-link)", letterSpacing: "-0.01em" }}
             >

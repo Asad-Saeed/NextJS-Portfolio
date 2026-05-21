@@ -1,14 +1,19 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
+
+const subscribe = () => () => {};
 
 export default function ThemeToggle({ className = "" }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  // false during SSR + first client render, true after hydration — no Effect needed.
+  const mounted = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false
+  );
 
   const isDark = mounted ? resolvedTheme === "dark" : true;
   const next = isDark ? "light" : "dark";

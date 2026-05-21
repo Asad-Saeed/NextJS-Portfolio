@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
+    optimizePackageImports: ["react-icons", "react-icons/fa", "react-icons/fi", "react-icons/si"],
   },
   async headers() {
     return [

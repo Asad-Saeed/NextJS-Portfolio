@@ -56,6 +56,14 @@ export default async function PortfolioPage() {
   const projects = await getPortfolio(userId);
 
   const siteUrl = getSiteUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: profileData.name || "Portfolio", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Projects", item: `${siteUrl}/portfolio` },
+    ],
+  };
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -72,6 +80,10 @@ export default async function PortfolioPage() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }}

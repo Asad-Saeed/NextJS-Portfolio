@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 
 interface TypewriterTextProps {
@@ -12,9 +12,15 @@ interface TypewriterTextProps {
 // no CLS and the SEO crawl sees real content.
 const TypewriterInner = dynamic(() => import("typewriter-effect"), { ssr: false });
 
+const subscribe = () => () => {};
+
 export default function TypewriterText({ strings }: TypewriterTextProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // false during SSR + first client render, true after hydration — no Effect needed.
+  const mounted = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false
+  );
 
   if (!strings?.length) return null;
 

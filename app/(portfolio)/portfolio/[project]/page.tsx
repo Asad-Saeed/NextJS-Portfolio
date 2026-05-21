@@ -27,11 +27,40 @@ export async function generateMetadata({
   if (!profileData) return {};
   const projectData = await getProjectBySlug(profileData.user_id, project);
   if (!projectData) return {};
+
+  const name = profileData.name || "Portfolio";
+  const projectName = projectData.project_name || "Project";
+  const url = `/portfolio/${project}`;
+  const description = projectData.challenge || projectData.project_detail || `Project by ${name}`;
+  const projectImage = projectData.image_url || profileData.profile_image_url || undefined;
+  const techNames = (projectData.project_technologies ?? [])
+    .map((t: ProjectTechnology) => t.tech_name)
+    .filter((v: unknown): v is string => Boolean(v));
+
   return {
-    title: projectData.project_name,
-    description:
-      projectData.challenge || projectData.project_detail || `Project by ${profileData.name}`,
-    alternates: { canonical: `/portfolio/${project}` },
+    title: projectName,
+    description,
+    alternates: { canonical: url },
+    keywords: techNames.length > 0 ? techNames : undefined,
+    authors: [{ name }],
+    creator: name,
+    publisher: name,
+    openGraph: {
+      title: `${projectName} | ${name}`,
+      description,
+      url,
+      type: "article",
+      siteName: `${name} — Portfolio`,
+      ...(projectImage && {
+        images: [{ url: projectImage, alt: projectName, width: 1200, height: 630 }],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${projectName} | ${name}`,
+      description,
+      ...(projectImage && { images: [projectImage] }),
+    },
   };
 }
 
@@ -133,7 +162,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ proj
             <div className="rounded-lg overflow-hidden mb-6">
               <Image
                 src={projectData.image_url}
-                alt={projectData.project_name}
+                alt={projectData.project_name || "Project image"}
                 width={1200}
                 height={600}
                 sizes="(min-width: 1024px) 75vw, 100vw"

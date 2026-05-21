@@ -619,6 +619,14 @@ select:focus-visible {
     transform: translateX(2px);
   }
 }
+@keyframes ds-bar-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--bar-target, 0%);
+  }
+}
 
 /* Cascade utilities — apply with `ds-rise` and a delay class */
 @utility ds-rise {
@@ -658,6 +666,10 @@ select:focus-visible {
 @utility ds-float {
   animation: ds-float 5.5s ease-in-out infinite;
 }
+@utility ds-bar-fill {
+  width: var(--bar-target, 0%);
+  animation: ds-bar-fill 1.2s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
+}
 @utility ds-text-shimmer {
   background: linear-gradient(
     100deg,
@@ -684,6 +696,10 @@ select:focus-visible {
     opacity: 1 !important;
     -webkit-text-fill-color: var(--ds-fg);
     background: none;
+  }
+  .ds-bar-fill {
+    animation: none !important;
+    width: var(--bar-target, 0%) !important;
   }
   /* Disable all spinning / pulsing / shimmer effects globally for users
      who prefer reduced motion (WCAG 2.3.3). */

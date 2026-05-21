@@ -57,6 +57,14 @@ export default async function ContactPage() {
   const sameAs = [profileData.github_url, profileData.linkedin_url, profileData.upwork_url].filter(
     Boolean
   );
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: profileData.name || "Portfolio", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Contact", item: `${siteUrl}/contact` },
+    ],
+  };
   const contactJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -126,6 +134,10 @@ export default async function ContactPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(contactJsonLd) }}
