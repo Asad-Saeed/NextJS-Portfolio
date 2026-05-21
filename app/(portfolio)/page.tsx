@@ -34,13 +34,41 @@ export async function generateMetadata(): Promise<Metadata> {
   // Prefer the admin-edited expertise description if available, else fall back to designation.
   const description = expertise || designation;
   const profileImage = profileData.profile_image_url || undefined;
+  // Build the title from the designation when available — "Asad Saeed —
+  // Senior Frontend Engineer | MERN Stack Developer" scans much better in
+  // search results than the generic "Asad Saeed — Portfolio".
+  const titleString = designation ? `${name} — ${designation}` : `${name} — Portfolio`;
+  // Compose a richer fallback description that prepends the role and
+  // appends concrete numbers so even an empty expertise_description still
+  // produces a scannable SERP snippet. Counts are stored as strings like
+  // "27+" — extract the leading digits before formatting.
+  const parseCountString = (raw: unknown): string | null => {
+    if (raw == null) return null;
+    const match = String(raw).match(/^(\d+)/);
+    if (!match) return null;
+    const n = parseInt(match[1], 10);
+    return n > 0 ? `${n}+` : null;
+  };
+  const projectsHint = parseCountString(profileData.completed_projects_count)
+    ? `${parseCountString(profileData.completed_projects_count)} shipped projects.`
+    : null;
+  const yearsHint = parseCountString(profileData.freelance_clients_count)
+    ? `${parseCountString(profileData.freelance_clients_count)} companies served.`
+    : null;
+  const composedDescription = [designation, expertise || null, projectsHint, yearsHint]
+    .filter(Boolean)
+    .join(" · ");
+  const finalDescription = composedDescription || description;
+
   return {
-    title: { absolute: `${name} — Portfolio` },
-    description: description || undefined,
+    title: { absolute: titleString },
+    description: finalDescription || undefined,
     alternates: { canonical: "/" },
+    applicationName: `${name} — Portfolio`,
     openGraph: {
-      title: `${name} — Portfolio`,
-      description: description || designation,
+      title: titleString,
+      description: finalDescription || designation,
+      siteName: `${name} — Portfolio`,
       type: "profile",
       url: "/",
       ...(profileImage && {
@@ -49,8 +77,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${name} — Portfolio`,
-      description: description || designation,
+      title: titleString,
+      description: finalDescription || designation,
       ...(profileImage && { images: [profileImage] }),
     },
   };
