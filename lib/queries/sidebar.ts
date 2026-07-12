@@ -3,6 +3,7 @@ import type { Language, TechStack, SidebarSkill } from "@/types";
 
 export async function getLanguages(userId: string): Promise<Language[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("languages")
     .select("*")
@@ -13,6 +14,7 @@ export async function getLanguages(userId: string): Promise<Language[]> {
 
 export async function getTechStack(userId: string): Promise<TechStack[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("tech_stack")
     .select("*")
@@ -23,6 +25,7 @@ export async function getTechStack(userId: string): Promise<TechStack[]> {
 
 export async function getSidebarSkills(userId: string): Promise<SidebarSkill[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("sidebar_skills")
     .select("*")

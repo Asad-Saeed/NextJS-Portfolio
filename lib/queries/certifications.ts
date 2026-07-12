@@ -4,6 +4,7 @@ import type { Certification } from "@/types";
 
 export const getCertifications = cache(async (userId: string): Promise<Certification[]> => {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("certifications")
     .select("*")

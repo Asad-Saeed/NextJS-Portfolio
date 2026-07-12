@@ -3,6 +3,7 @@ import type { PortfolioProject } from "@/types";
 
 export async function getPortfolio(userId: string): Promise<PortfolioProject[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("portfolio_projects")
     .select("*, project_technologies(*)")
@@ -16,6 +17,7 @@ export async function getProjectBySlug(
   projectSlug: string
 ): Promise<PortfolioProject | null> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return null;
   const { data } = await supabase
     .from("portfolio_projects")
     .select("*, project_technologies(*)")

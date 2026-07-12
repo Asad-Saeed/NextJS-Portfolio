@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const slug = getPortfolioSlug();
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
 
   const now = new Date();
 

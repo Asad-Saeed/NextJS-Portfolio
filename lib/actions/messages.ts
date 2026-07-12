@@ -15,6 +15,7 @@ export async function sendMessage(data: {
   }
 
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return { error: "Service unavailable" };
 
   // Resolve user_id server-side from the public slug — never trust a client-provided user_id
   const { data: profile } = (await supabase

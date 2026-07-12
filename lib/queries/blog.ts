@@ -10,6 +10,7 @@ export const getPublishedPosts = cache(
     BlogPost[]
   > => {
     const supabase = getPublicSupabaseClient();
+    if (!supabase) return [];
     const from = (page - 1) * pageSize;
     const { data } = await supabase
       .from("posts")
@@ -23,6 +24,7 @@ export const getPublishedPosts = cache(
 
 export const getLatestPosts = cache(async (limit = 4): Promise<BlogPost[]> => {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("posts")
     .select(LIST_SELECT)
@@ -34,6 +36,7 @@ export const getLatestPosts = cache(async (limit = 4): Promise<BlogPost[]> => {
 
 export const getPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return null;
   const { data } = await supabase
     .from("posts")
     .select("*, post_tags(*)")
@@ -50,6 +53,7 @@ export async function getRelatedPosts(
 ): Promise<BlogPost[]> {
   if (!tags.length) return [];
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   // Get post IDs that share at least one tag with the current post
   const { data: tagRows } = await supabase
     .from("post_tags")
@@ -73,12 +77,14 @@ export async function getRelatedPosts(
 
 export async function getAllPublishedSlugs(): Promise<string[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase.from("posts").select("slug").eq("status", "published");
   return ((data ?? []) as { slug: string }[]).map((p) => p.slug).filter(Boolean);
 }
 
 export async function getPublishedPostCount(): Promise<number> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return 0;
   const { count } = await supabase
     .from("posts")
     .select("id", { count: "exact", head: true })
