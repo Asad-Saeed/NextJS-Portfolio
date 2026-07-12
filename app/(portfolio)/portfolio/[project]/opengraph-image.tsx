@@ -7,6 +7,7 @@ import type { ProjectTechnology } from "@/types";
 export const alt = "Case Study";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 const BG = "#0a0a0a";
 const SURFACE = "#171717";
@@ -20,12 +21,18 @@ const BADGE_FG = "#7cb8ff";
 
 export default async function Image({ params }: { params: Promise<{ project: string }> }) {
   const { project } = await params;
-  const slug = getPortfolioSlug();
-  const profileData = await getProfileBySlug(slug);
-  if (!profileData) {
-    return new ImageResponse(<div />, { ...size });
+  const portfolioSlug = getPortfolioSlug();
+
+  let profileData = null;
+  let projectData = null;
+  try {
+    profileData = await getProfileBySlug(portfolioSlug);
+    if (profileData) {
+      projectData = await getProjectBySlug(profileData.user_id, project);
+    }
+  } catch {
+    // env vars unavailable — render static fallback
   }
-  const projectData = await getProjectBySlug(profileData.user_id, project);
 
   const projectName = projectData?.project_name || "Project";
   const description = projectData?.project_detail || projectData?.challenge || "";
@@ -33,8 +40,8 @@ export default async function Image({ params }: { params: Promise<{ project: str
   const techs = (projectData?.project_technologies || [])
     .slice(0, 5)
     .map((t: ProjectTechnology) => t.tech_name);
-  const authorName = profileData.name || "Portfolio";
-  const authorImage = profileData.profile_image_url;
+  const authorName = profileData?.name || "Portfolio";
+  const authorImage = profileData?.profile_image_url;
 
   return new ImageResponse(
     <div

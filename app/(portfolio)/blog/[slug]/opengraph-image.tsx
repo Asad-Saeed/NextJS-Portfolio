@@ -7,6 +7,7 @@ import type { PostTag } from "@/types";
 export const alt = "Blog Post";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 const BG = "#0a0a0a";
 const SURFACE = "#171717";
@@ -21,16 +22,21 @@ const BADGE_FG = "#7cb8ff";
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const portfolioSlug = getPortfolioSlug();
-  const profileData = await getProfileBySlug(portfolioSlug);
-  if (!profileData) return new ImageResponse(<div />, { ...size });
 
-  const post = await getPostBySlug(slug);
+  let profileData = null;
+  let post = null;
+  try {
+    [profileData, post] = await Promise.all([getProfileBySlug(portfolioSlug), getPostBySlug(slug)]);
+  } catch {
+    // env vars unavailable — render static fallback
+  }
+
   const title = post?.title || "Blog Post";
   const excerpt = post?.excerpt || "";
   const cover = post?.cover_image_url;
   const tags = (post?.post_tags ?? []).slice(0, 4).map((t: PostTag) => t.tag);
-  const authorName = profileData.name || "Portfolio";
-  const authorImage = profileData.profile_image_url;
+  const authorName = profileData?.name || "Portfolio";
+  const authorImage = profileData?.profile_image_url;
 
   return new ImageResponse(
     <div
