@@ -34,3 +34,6 @@ yarn-error.log*
 
 # internal docs / knowledge base
 /docs
+
+# Claude Code project instructions (local only)
+CLAUDE.md
