@@ -4,6 +4,7 @@ import type { Education } from "@/types";
 
 export const getEducation = cache(async (userId: string): Promise<Education[]> => {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("education")
     .select("*")

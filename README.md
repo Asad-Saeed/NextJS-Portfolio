@@ -1,80 +1,83 @@
-# NextJS Portfolio — Multi-Tenant Developer Portfolio Platform
+# Asad Saeed — Developer Portfolio
 
-A production-grade, multi-tenant portfolio platform where developers can sign up, build, and manage their personal portfolio — featuring dynamic GitHub integration, case study project pages, admin-managed content, per-user SEO, and a professional dark UI.
+A production-grade personal portfolio built with Next.js 16 App Router, React 19, and Supabase. All content is admin-managed via a full CRUD dashboard. The public site renders from the database with deep SEO, AEO (AI answer-engine optimization), Core Web Vitals, and accessibility investment.
 
-Built with Next.js 16, React 19, TypeScript, Supabase (Auth, Database, Storage), Tailwind CSS v4, and Ant Design.
+**Live:** [asad-saeed.vercel.app](https://asad-saeed.vercel.app)
+
+---
 
 ## Tech Stack
 
-| Category               | Technologies                                               |
-| ---------------------- | ---------------------------------------------------------- |
-| **Framework**          | Next.js 16 (App Router), React 19, TypeScript 6            |
-| **Database & Auth**    | Supabase (PostgreSQL, Auth, Row-Level Security, Storage)   |
-| **Styling**            | Tailwind CSS v4, PostCSS, SASS                             |
-| **UI Components**      | Ant Design 6, React Icons                                  |
-| **State Management**   | TanStack React Query 5                                     |
-| **HTTP Client**        | Axios                                                      |
-| **GitHub Integration** | GitHub GraphQL API, jogruber Contributions API             |
-| **SEO**                | JSON-LD Structured Data, Dynamic Metadata, Sitemap, Robots |
-| **Animations**         | Typewriter Effect, React Scroll                            |
-| **Fonts**              | Inter (sans), Fira Code (mono) via next/font               |
+| Category               | Technologies                                                   |
+| ---------------------- | -------------------------------------------------------------- |
+| **Framework**          | Next.js 16 (App Router), React 19, TypeScript 6                |
+| **Backend**            | Supabase (PostgreSQL, Auth, Row-Level Security, Storage)       |
+| **Styling**            | Tailwind CSS v4 (CSS-first config), PostCSS, Sass              |
+| **Editor**             | Tiptap v3 (WYSIWYG blog editor)                                |
+| **Data fetching**      | Native `fetch`, React Server Components, Server Actions        |
+| **GitHub Integration** | GitHub GraphQL API, jogruber Contributions API                 |
+| **SEO / AEO**          | JSON-LD, Dynamic Metadata, OG Images, Sitemap, RSS, `llms.txt` |
+| **Animations**         | Typewriter Effect, React Scroll                                |
+| **Fonts**              | Inter (sans), Fira Code (mono) via `next/font`                 |
 
-## Key Features
+> No Ant Design, React Query, Axios, or Redux — deliberately minimal.
 
-- **Multi-Tenant Architecture** — any user signs up and gets their own portfolio at `/{slug}`
-- **Dynamic GitHub Section** — contribution heatmap with year switcher, pro stats (stars, repos, followers), top languages, pinned repositories, and computed achievements — powered by GitHub GraphQL API with automatic jogruber fallback
-- **Case Study Project Pages** — rich project detail pages with challenge, solution, impact metrics, and role at `/{slug}/portfolio/{project}`
-- **Admin Dashboard** — full CRUD management for profile, education, experience, expertise, projects, skills, recommendations, reviews, sidebar, and messages
-- **Section Visibility Toggles** — admin checkboxes to show/hide GitHub, Expertise, Recommendations, and Client Reviews sections on the home page
-- **Availability Status Badge** — "Open to Work" / "Available for Freelance" indicator with animated pulse dot, manageable from admin
-- **Dynamic Per-User Favicons** — profile image rendered as circular favicon via `next/og` ImageResponse, with black-dot fallback
-- **Per-Page SEO** — unique metadata, OpenGraph, Twitter cards, canonical URLs, and JSON-LD `Person` schema for every portfolio page
-- **Dynamic Sitemap & Robots** — auto-generated from all profile slugs, disallows admin/auth/API routes
-- **Contact Form** — with WhatsApp integration, email links, and message storage
-- **Responsive Design** — mobile bottom navigation with animated tab bar, desktop sidebar + right nav layout
-- **Image Upload** — Supabase Storage with presigned URLs, supports profile images, banners, project screenshots, and resume PDFs
-- **Auth System** — signup/login with Supabase Auth, admin route protection via middleware
+---
+
+## Features
+
+- **Admin Dashboard** — full CRUD for profile, education, experience, expertise, projects, skills, recommendations, reviews, certifications, blog posts, and messages
+- **Blog Module** — WYSIWYG editor (Tiptap), tag chips, slug management, draft/publish workflow, RSS feed, per-post OG image, related posts, image lightbox
+- **Dynamic GitHub Section** — contribution heatmap (year switcher), pro stats, top languages, featured repos, computed achievements
+- **Case Study Project Pages** — challenge / solution / impact / role detail pages
+- **Section Visibility Toggles** — show/hide any home-page section from admin
+- **Availability Status Badge** — animated "Open to Work" indicator
+- **Per-Page SEO** — `generateMetadata`, canonical URLs, JSON-LD (`Person`, `BlogPosting`, `BreadcrumbList`), OG + Twitter cards
+- **AEO / GEO** — `llms.txt` machine-readable profile; AI crawlers explicitly allowed (GPTBot, ClaudeBot, PerplexityBot, Google-Extended)
+- **Dynamic Sitemap & Robots** — image-sitemap extension for projects and blog posts
+- **RSS Feed** — `/blog/rss.xml` (RSS 2.0 + `atom:link`, ISR 1h)
+- **Responsive Design** — mobile bottom nav + safe-area insets; desktop sidebar + right nav rail
+- **Image Upload** — Supabase Storage (upload or paste URL); 10 MB cap; bucket-scoped
+- **Contact Form** — message storage + WhatsApp integration
+- **Auth** — Supabase Auth; admin routes protected via Next.js middleware
+
+---
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- npm, yarn, or pnpm
+- npm
 - Supabase project (free tier works)
 
-### Clone the Repository
+### Install
 
 ```bash
 git clone https://github.com/Asad-Saeed/NextJS-Portfolio.git
 cd NextJS-Portfolio
-```
-
-### Install Dependencies
-
-```bash
 npm install
 ```
 
-### Environment Setup
+### Environment Variables
 
-Create `.env.local` with the following variables:
+Create `.env.local`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# Optional — auto-detected on Vercel if not set
+# Auto-detected on Vercel if omitted
 NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 
-# Optional — enables accurate GitHub contribution data including private repos
+# Optional — enables private-repo contribution data
 GITHUB_TOKEN=ghp_your_personal_access_token
 ```
 
 ### Database Setup
 
-Run the migrations in order from `supabase/migrations/` in your Supabase SQL Editor:
+Run migrations in order from `supabase/migrations/` in the Supabase SQL Editor:
 
 ```
 001_initial_schema.sql
@@ -88,103 +91,101 @@ Run the migrations in order from `supabase/migrations/` in your Supabase SQL Edi
 009_availability_status.sql
 010_case_studies.sql
 011_unique_project_slug.sql
+012_certifications.sql
+013_secondary_github.sql
+014_blog.sql
+015_related_posts_settings.sql
 ```
 
-### Run Development Server
+### Run
 
 ```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Build for Production
-
-```bash
+npm run dev       # http://localhost:3000
 npm run build
 npm start
 ```
+
+---
 
 ## Project Structure
 
 ```
 NextJS-Portfolio/
 ├── app/
-│   ├── (auth)/auth/               # Login & signup pages
-│   ├── (admin)/admin/             # Admin dashboard & CRUD pages
-│   │   ├── profile/               # Profile, banner, GitHub, section toggles
-│   │   ├── education/             # Education management
-│   │   ├── experience/            # Experience management
-│   │   ├── expertise/             # Expertise cards management
-│   │   ├── portfolio/             # Projects & case studies management
+│   ├── (auth)/auth/               # Login & signup
+│   ├── (admin)/admin/             # Admin dashboard
+│   │   ├── profile/               # Profile, SEO, section toggles
+│   │   ├── blog/                  # Blog post CRUD + WYSIWYG editor
+│   │   ├── portfolio/             # Projects & case studies
 │   │   ├── skills/                # Skills management
-│   │   ├── recommendations/       # Recommendations management
-│   │   ├── reviews/               # Client reviews management
+│   │   ├── expertise/             # Expertise cards
+│   │   ├── education/             # Education
+│   │   ├── experience/            # Work experience
+│   │   ├── recommendations/       # LinkedIn-style recommendations
+│   │   ├── reviews/               # Client reviews
+│   │   ├── certifications/        # Certifications & badges
 │   │   ├── sidebar/               # Languages, tech stack, sidebar skills
-│   │   └── messages/              # Contact form messages
-│   ├── (portfolio)/[slug]/        # Dynamic portfolio pages
+│   │   └── messages/              # Contact messages
+│   ├── (portfolio)/               # Public portfolio pages
+│   │   ├── page.tsx               # Home — banner, GitHub, expertise, blog…
+│   │   ├── blog/                  # Blog list (paginated) + [slug] detail
 │   │   ├── skills/                # Skills page
 │   │   ├── background/            # Education & experience
-│   │   ├── portfolio/             # Projects listing
-│   │   │   └── [project]/         # Case study detail page
+│   │   ├── portfolio/             # Projects + [project] case study
 │   │   └── contact/               # Contact form
-│   ├── api/                       # API routes
-│   │   └── github/contributions/  # GitHub year-switch endpoint
-│   ├── sitemap.ts                 # Dynamic sitemap
-│   ├── robots.ts                  # Robots.txt
-│   ├── icon.tsx                   # Root favicon (black dot)
-│   └── not-found.tsx              # Custom 404 page
+│   ├── blog/rss.xml/route.ts      # RSS 2.0 feed
+│   ├── llms.txt/route.ts          # Machine-readable profile for AI crawlers
+│   ├── sitemap.ts                 # Dynamic sitemap (image-sitemap ext)
+│   ├── robots.ts                  # Robots rules (AI crawlers allowed)
+│   └── icon.tsx                   # Favicon (profile initials)
 ├── components/
-│   ├── Common/                    # Intro sidebar, badges, skeletons
-│   ├── HomeComponents/            # Banner, expertise, recommendations, reviews
-│   │   └── GitHub/                # Contribution graph, pro stats, achievements
+│   ├── Common/                    # Design-system primitives (Tooltip, ThemeToggle…)
+│   ├── Blog/                      # ArticleContent (lightbox), CoverImage (expand)
+│   ├── HomeComponents/            # Banner, Blog cards, GitHub, Expertise…
 │   ├── Portfolio/                 # Project cards
-│   ├── Background/                # Education & experience cards
-│   ├── admin/                     # Admin shell, CRUD page, image upload
-│   └── Footer.tsx                 # Page footer
+│   ├── admin/                     # AdminShell, CrudPage, RichTextEditor, ImageUpload
+│   └── Footer.tsx
 ├── lib/
-│   ├── actions/                   # Server actions (auth, profile, portfolio, etc.)
+│   ├── actions/                   # Server Actions (auth, profile, blog, portfolio…)
 │   ├── queries/                   # Supabase read queries
-│   ├── supabase/                  # Client, server, admin, public, middleware clients
-│   ├── github.ts                  # GitHub API helpers (GraphQL + REST + jogruber)
-│   └── site-url.ts                # Site URL auto-detection helper
-├── types/                         # TypeScript interfaces
-├── styles/                        # Global CSS & Tailwind theme
-├── supabase/migrations/           # SQL migration files
-├── scripts/                       # Seed scripts
-├── public/                        # Static assets
-├── next.config.ts                 # Next.js config (serverActions bodySizeLimit)
-└── tsconfig.json                  # TypeScript config
+│   ├── supabase/                  # Client variants (public, server, admin, middleware)
+│   ├── markdown.ts                # sanitizeContent, computeReadingTime, generateSlug
+│   ├── json-ld.ts                 # safeJsonLd() — XSS-safe JSON-LD serialiser
+│   └── scroll.ts                  # react-scroll wrapper with Suspense guards
+├── types/index.ts                 # TypeScript interfaces (mirror DB schema)
+├── styles/globals.css             # Tailwind v4 config + ds-* design tokens
+└── supabase/migrations/           # SQL migration files (001–015)
 ```
 
-## Available Scripts
+---
 
-| Command                | Description                    |
-| ---------------------- | ------------------------------ |
-| `npm run dev`          | Start development server       |
-| `npm run build`        | Build for production           |
-| `npm start`            | Start production server        |
-| `npm run lint`         | Run ESLint                     |
-| `npm run format`       | Format code with Prettier      |
-| `npm run format:check` | Check code formatting          |
-| `npm run seed`         | Seed database with sample data |
+## Scripts
+
+| Command                | Description              |
+| ---------------------- | ------------------------ |
+| `npm run dev`          | Start development server |
+| `npm run build`        | Build for production     |
+| `npm start`            | Start production server  |
+| `npm run lint`         | ESLint                   |
+| `npm run format`       | Prettier write           |
+| `npm run format:check` | Prettier check           |
+
+---
 
 ## Deployment
 
 ### Vercel (Recommended)
 
 1. Push to GitHub
-2. Import project on [Vercel](https://vercel.com)
-3. Add environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`)
+2. Import on [vercel.com](https://vercel.com)
+3. Add env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
 4. Deploy — `NEXT_PUBLIC_SITE_URL` auto-detects from `VERCEL_PROJECT_PRODUCTION_URL`
 
-### GitHub Token (Optional)
-
-For accurate GitHub contribution data (including private repos), create a GitHub PAT with `read:user` scope and add `GITHUB_TOKEN` to your environment variables.
+---
 
 ## Developed By
 
-**Asad Saeed** — Senior Frontend & MERN Stack Developer
+**Asad Saeed** — Senior Frontend Engineer | MERN Stack Developer
 
 [![GitHub](https://img.shields.io/badge/GitHub-Asad--Saeed-181717?logo=github)](https://github.com/Asad-Saeed)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-asad--saeed--dev-0A66C2?logo=linkedin)](https://linkedin.com/in/asad-saeed-4685a9202)

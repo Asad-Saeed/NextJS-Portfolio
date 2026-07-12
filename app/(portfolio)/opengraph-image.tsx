@@ -17,7 +17,12 @@ const ACCENT_3 = "#ff5b4f";
 
 export default async function Image() {
   const slug = getPortfolioSlug();
-  const profileData = await getProfileBySlug(slug);
+  let profileData = null;
+  try {
+    profileData = await getProfileBySlug(slug);
+  } catch {
+    // env vars unavailable at build time — render static fallback
+  }
 
   const name = profileData?.name || "Portfolio";
   const designation = profileData?.designation || "Developer";

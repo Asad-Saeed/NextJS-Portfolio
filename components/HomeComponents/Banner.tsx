@@ -23,7 +23,8 @@ interface BannerProps {
 
 const Banner = ({ data, heading, name, designation, stack, availabilityStatus }: BannerProps) => {
   const buttonText = data?.explore_button_text ?? "";
-  const buttonUrl = data?.explore_button_url || data?.upwork_url;
+  // Default to /blog when no custom URL is set; falls back to upwork_url as last resort.
+  const buttonUrl = data?.explore_button_url || "/blog" || data?.upwork_url;
 
   const stats = [
     {
@@ -79,7 +80,7 @@ const Banner = ({ data, heading, name, designation, stack, availabilityStatus }:
         }}
       />
 
-      <div className="relative max-w-6xl mx-auto px-5 sm:px-8 lg:px-10 pt-6 pb-8 sm:pt-8 sm:pb-10">
+      <div className="relative px-5 sm:px-8 lg:px-10 pt-6 pb-8 sm:pt-8 sm:pb-10">
         {/* Eyebrow row */}
         <div className="ds-rise flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-4 min-w-0">
           <span

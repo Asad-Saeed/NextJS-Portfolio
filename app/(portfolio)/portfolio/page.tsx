@@ -96,10 +96,7 @@ export default async function PortfolioPage() {
         stack={parseCodeCardStack(profileData.code_card_stack)}
         availabilityStatus={profileData.availability_status}
       />
-      <section
-        aria-labelledby="portfolio-heading"
-        className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-      >
+      <section aria-labelledby="portfolio-heading" className="px-5 sm:px-8 py-4 sm:py-5">
         <SectionHeader
           id="portfolio-heading"
           eyebrow={profileData.portfolio_eyebrow ?? ""}

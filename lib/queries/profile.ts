@@ -22,18 +22,21 @@ export type BannerData = Pick<
 
 export const getProfileBySlug = cache(async (slug: string): Promise<Profile | null> => {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return null;
   const { data } = await supabase.from("profile").select("*").eq("slug", slug).single();
   return data as Profile | null;
 });
 
 export async function getProfile(userId: string): Promise<Profile | null> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return null;
   const { data } = await supabase.from("profile").select("*").eq("user_id", userId).single();
   return data as Profile | null;
 }
 
 export async function getSidebarProfile(userId: string): Promise<Partial<Profile> | null> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return null;
   const { data } = await supabase
     .from("profile")
     .select(

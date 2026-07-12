@@ -9,6 +9,7 @@ import { getEducation } from "@/lib/queries/education";
 import { getCertifications } from "@/lib/queries/certifications";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { getSiteUrl } from "@/lib/site-url";
+import { getLatestPosts } from "@/lib/queries/blog";
 
 function stripHtml(input: string | null | undefined): string {
   if (!input) return "";
@@ -40,14 +41,16 @@ export async function GET() {
   }
 
   const userId = profile.user_id;
-  const [expertise, skills, projects, experience, education, certifications] = await Promise.all([
-    getExpertise(userId),
-    getSkills(userId),
-    getPortfolio(userId),
-    getExperience(userId),
-    getEducation(userId),
-    getCertifications(userId),
-  ]);
+  const [expertise, skills, projects, experience, education, certifications, blogPosts] =
+    await Promise.all([
+      getExpertise(userId),
+      getSkills(userId),
+      getPortfolio(userId),
+      getExperience(userId),
+      getEducation(userId),
+      getCertifications(userId),
+      getLatestPosts(20),
+    ]);
 
   const name = profile.name || "Portfolio";
   const designation = profile.designation || "";
@@ -184,6 +187,25 @@ export async function GET() {
       const meta = [techs && `Stack: ${techs}`, detail].filter(Boolean).join(" — ");
       lines.push(
         `- [${name}](${siteUrl}/portfolio/${project.project_slug})${meta ? `: ${meta}` : ""}`
+      );
+    }
+    lines.push("");
+  }
+
+  // Blog — articles indexed for AI citation
+  if (blogPosts.length > 0) {
+    lines.push("## Writing / Blog");
+    lines.push("");
+    lines.push(`- [All posts](${siteUrl}/blog)`);
+    for (const post of blogPosts) {
+      if (!post.slug || !post.title) continue;
+      const excerpt = truncate(post.excerpt || "", 120);
+      const tags =
+        post.post_tags && post.post_tags.length > 0
+          ? ` [${post.post_tags.map((t) => t.tag).join(", ")}]`
+          : "";
+      lines.push(
+        `- [${post.title}](${siteUrl}/blog/${post.slug})${tags}${excerpt ? `: ${excerpt}` : ""}`
       );
     }
     lines.push("");

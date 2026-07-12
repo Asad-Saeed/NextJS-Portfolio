@@ -18,7 +18,7 @@ const Certifications = ({ data, eyebrow, heading, description }: CertificationsP
     <section
       id="certifications"
       aria-labelledby="certifications-heading"
-      className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto scroll-mt-8"
+      className="px-5 sm:px-8 py-4 sm:py-5 scroll-mt-8"
     >
       <SectionHeader
         id="certifications-heading"

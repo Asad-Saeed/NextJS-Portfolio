@@ -8,6 +8,7 @@ export async function GET(request: Request) {
   if (!userId) return NextResponse.json({ error: "userId is required" }, { status: 400 });
 
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return NextResponse.json([], { status: 200 });
 
   const [{ data: education }, { data: experience }] = await Promise.all([
     supabase.from("education").select("*").eq("user_id", userId).order("sort_order"),

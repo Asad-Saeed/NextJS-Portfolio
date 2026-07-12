@@ -3,6 +3,7 @@ import type { Skill } from "@/types";
 
 export async function getSkills(userId: string): Promise<Skill[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("skills")
     .select("*, skill_levels(*)")

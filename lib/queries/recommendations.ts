@@ -3,6 +3,7 @@ import type { Recommendation } from "@/types";
 
 export async function getRecommendations(userId: string): Promise<Recommendation[]> {
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase
     .from("recommendations")
     .select("*")

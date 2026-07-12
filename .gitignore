@@ -31,3 +31,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# internal docs / knowledge base
+/docs
+
+# Claude Code project instructions (local only)
+CLAUDE.md

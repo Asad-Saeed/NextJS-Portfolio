@@ -7,7 +7,7 @@ export default function Loading() {
     <div>
       <BannerSkeleton />
 
-      <div className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+      <div className="px-5 sm:px-8 py-4 sm:py-5">
         {/* Back link */}
         <Skeleton className="h-3 w-28 mb-6" />
 

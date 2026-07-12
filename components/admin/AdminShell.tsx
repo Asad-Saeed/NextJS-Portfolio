@@ -20,7 +20,9 @@ import {
   FiMenu,
   FiX,
   FiShield,
+  FiEdit3,
 } from "react-icons/fi";
+import Tooltip from "@/components/Common/Tooltip";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: FiHome },
@@ -33,6 +35,7 @@ const navItems = [
   { href: "/admin/recommendations", label: "Recommendations", icon: FiThumbsUp },
   { href: "/admin/reviews", label: "Reviews", icon: FiMessageCircle },
   { href: "/admin/certifications", label: "Certifications", icon: FiShield },
+  { href: "/admin/blog", label: "Blog", icon: FiEdit3 },
   { href: "/admin/sidebar", label: "Sidebar Data", icon: FiSidebar },
   { href: "/admin/messages", label: "Messages", icon: FiInbox },
 ];
@@ -61,9 +64,11 @@ export default function AdminShell({
         >
           Portfolio CMS
         </Link>
-        <button onClick={() => setIsOpen(!isOpen)} className="text-Green text-xl p-2">
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
+        <Tooltip content={isOpen ? "Close menu" : "Open menu"}>
+          <button onClick={() => setIsOpen(!isOpen)} className="text-Green text-xl p-2">
+            {isOpen ? <FiX /> : <FiMenu />}
+          </button>
+        </Tooltip>
       </div>
 
       {/* Mobile overlay */}

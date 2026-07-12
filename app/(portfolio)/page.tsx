@@ -17,6 +17,8 @@ import { getExpertise } from "@/lib/queries/expertise";
 import { getRecommendations } from "@/lib/queries/recommendations";
 import { getReviews } from "@/lib/queries/reviews";
 import { getCertifications } from "@/lib/queries/certifications";
+import { getLatestPosts } from "@/lib/queries/blog";
+import LatestBlog from "@/components/HomeComponents/Blog/LatestBlog";
 import { parseGithubUsername } from "@/lib/github";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
 import { getSiteUrl } from "@/lib/site-url";
@@ -169,7 +171,7 @@ function GitHubAchievementsSkeleton() {
 
 function SectionSkeleton({ count = 3 }: { count?: number }) {
   return (
-    <section className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+    <section className="px-5 sm:px-8 py-4 sm:py-5">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3 sm:mb-4">
         <div>
           <div className="ds-skeleton h-3 w-20 mb-2.5 rounded-full" />
@@ -230,6 +232,7 @@ export default async function HomePage() {
   const showRecommendations = profileData.show_recommendations_section !== false;
   const showReviews = profileData.show_reviews_section !== false;
   const showCertifications = profileData.show_certifications_section !== false;
+  const showBlog = profileData.show_blog_section !== false;
 
   const siteUrl = getSiteUrl();
   const breadcrumbJsonLd = {
@@ -256,7 +259,7 @@ export default async function HomePage() {
       />
 
       {showGithub && (
-        <section className="ds-cv-auto px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto flex flex-col gap-8 sm:gap-10">
+        <section className="ds-cv-auto px-5 sm:px-8 py-4 sm:py-5 flex flex-col gap-8 sm:gap-10">
           <Suspense fallback={<GitHubBlockSkeleton />}>
             <GitHubActivity usernames={githubUsernames} heading={githubHeading} />
           </Suspense>
@@ -333,6 +336,18 @@ export default async function HomePage() {
         </div>
       )}
 
+      {showBlog && (
+        <div className="ds-cv-auto">
+          <Suspense fallback={<SectionSkeleton count={4} />}>
+            <BlogSection
+              eyebrow={profileData.blog_eyebrow}
+              heading={profileData.blog_heading}
+              description={profileData.blog_description}
+            />
+          </Suspense>
+        </div>
+      )}
+
       <Footer data={profileData} />
     </div>
   );
@@ -369,4 +384,9 @@ async function ReviewsSection({ userId, eyebrow, heading, description }: Section
   return (
     <ClientReviews data={data} eyebrow={eyebrow} heading={heading} description={description} />
   );
+}
+
+async function BlogSection({ eyebrow, heading, description }: Omit<SectionMeta, "userId">) {
+  const posts = await getLatestPosts(3);
+  return <LatestBlog posts={posts} eyebrow={eyebrow} heading={heading} description={description} />;
 }

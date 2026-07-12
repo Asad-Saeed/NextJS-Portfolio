@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FiExternalLink, FiArrowUpRight } from "react-icons/fi";
 import Badge from "../Common/Badge";
 import ExpandableText from "../Common/ExpandableText";
+import Tooltip from "@/components/Common/Tooltip";
 import { PortfolioProject, ProjectTechnology } from "@/types";
 
 const ACCENTS = ["#3291ff", "#ff4d8d", "#ff5b4f"];
@@ -87,19 +88,21 @@ const PortfolioCard = ({ data, index = 0 }: PortfolioCardProps) => {
             {projectName}
           </h3>
           {data?.url && (
-            <a
-              href={data.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={`Visit ${projectName}`}
-              className="shrink-0 flex h-7 w-7 items-center justify-center rounded-md transition-colors"
-              style={{
-                color: "var(--ds-fg-secondary)",
-                boxShadow: "var(--ds-shadow-border-light)",
-              }}
-            >
-              <FiExternalLink size={13} />
-            </a>
+            <Tooltip content="Open link">
+              <a
+                href={data.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`Visit ${projectName}`}
+                className="shrink-0 flex h-7 w-7 items-center justify-center rounded-md transition-colors"
+                style={{
+                  color: "var(--ds-fg-secondary)",
+                  boxShadow: "var(--ds-shadow-border-light)",
+                }}
+              >
+                <FiExternalLink size={13} />
+              </a>
+            </Tooltip>
           )}
         </header>
 

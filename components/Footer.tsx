@@ -3,6 +3,7 @@ import { MdMail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { SiUpwork } from "react-icons/si";
 import FiverrFIcon from "@/components/Common/FiverrFIcon";
+import Tooltip from "@/components/Common/Tooltip";
 import { FooterData } from "@/types";
 
 interface FooterProps {
@@ -84,24 +85,25 @@ const Footer = ({ data }: FooterProps) => {
   const Socials = socials.length > 0 && (
     <div className="flex items-center gap-1 shrink-0">
       {socials.map(({ href, label, Icon }) => (
-        <Link
-          key={label}
-          href={href}
-          target={href.startsWith("mailto:") ? undefined : "_blank"}
-          rel={href.startsWith("mailto:") ? undefined : "noreferrer noopener"}
-          aria-label={label}
-          className="group flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150 hover:[color:var(--ds-fg)]"
-          style={{
-            color: "var(--ds-fg-secondary)",
-            boxShadow: "var(--ds-shadow-border-light)",
-          }}
-        >
-          <Icon
-            size={13}
-            aria-hidden
-            className="transition-transform duration-150 group-hover:scale-110"
-          />
-        </Link>
+        <Tooltip key={label} content={label} side="top">
+          <Link
+            href={href}
+            target={href.startsWith("mailto:") ? undefined : "_blank"}
+            rel={href.startsWith("mailto:") ? undefined : "noreferrer noopener"}
+            aria-label={label}
+            className="group flex h-8 w-8 items-center justify-center rounded-md transition-all duration-150 hover:[color:var(--ds-fg)]"
+            style={{
+              color: "var(--ds-fg-secondary)",
+              boxShadow: "var(--ds-shadow-border-light)",
+            }}
+          >
+            <Icon
+              size={13}
+              aria-hidden
+              className="transition-transform duration-150 group-hover:scale-110"
+            />
+          </Link>
+        </Tooltip>
       ))}
     </div>
   );

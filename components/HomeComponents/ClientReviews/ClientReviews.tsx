@@ -13,10 +13,7 @@ const ClientReviews = ({ data, eyebrow, heading, description }: ClientReviewsPro
   if (!data?.length) return null;
 
   return (
-    <section
-      aria-labelledby="client-reviews-heading"
-      className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-    >
+    <section aria-labelledby="client-reviews-heading" className="px-5 sm:px-8 py-4 sm:py-5">
       <SectionHeader
         id="client-reviews-heading"
         eyebrow={eyebrow ?? ""}

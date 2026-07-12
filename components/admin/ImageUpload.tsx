@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { FiUpload, FiX, FiLink, FiImage } from "react-icons/fi";
 import { uploadFile } from "@/lib/actions/upload";
 import Image from "next/image";
+import Tooltip from "@/components/Common/Tooltip";
 
 interface ImageUploadProps {
   value: string;
@@ -71,13 +72,18 @@ export default function ImageUpload({
               <FiLink /> View file
             </a>
           )}
-          <button
-            onClick={() => onChange("")}
-            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 text-xs"
-            type="button"
-          >
-            <FiX />
-          </button>
+          <div className="absolute -top-2 -right-2">
+            <Tooltip content="Remove image">
+              <button
+                onClick={() => onChange("")}
+                className="bg-red-500 text-white rounded-full p-0.5 text-xs"
+                type="button"
+                aria-label="Remove image"
+              >
+                <FiX />
+              </button>
+            </Tooltip>
+          </div>
         </div>
       )}
 

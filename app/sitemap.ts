@@ -5,7 +5,7 @@ import { getPublicSupabaseClient } from "@/lib/supabase/public";
 import { getSiteUrl } from "@/lib/site-url";
 import { getPortfolioSlug } from "@/lib/portfolio-slug";
 
-const portfolioSubpaths = ["/skills", "/background", "/portfolio", "/contact"] as const;
+const portfolioSubpaths = ["/skills", "/background", "/portfolio", "/contact", "/blog"] as const;
 
 type ProfileRow = { user_id: string; slug: string | null; updated_at: string | null };
 type ProjectRow = {
@@ -19,16 +19,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const slug = getPortfolioSlug();
   const supabase = getPublicSupabaseClient();
+  if (!supabase) return [];
 
   const now = new Date();
 
-  // Look up the active profile (for lastModified) and its projects
-  const [{ data: profile }, { data: projects }] = await Promise.all([
+  // Look up the active profile (for lastModified), its projects, and published posts
+  const [{ data: profile }, { data: projects }, { data: posts }] = await Promise.all([
     supabase.from("profile").select("user_id, slug, updated_at").eq("slug", slug).maybeSingle(),
     supabase
       .from("portfolio_projects")
       .select("user_id, project_slug, updated_at, image_url")
       .not("project_slug", "is", null),
+    supabase
+      .from("posts")
+      .select("slug, updated_at, cover_image_url")
+      .eq("status", "published")
+      .order("published_at", { ascending: false }),
   ]);
 
   const activeProfile = profile as ProfileRow | null;
@@ -56,6 +62,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  type PostRow = { slug: string; updated_at: string | null; cover_image_url: string | null };
+  const blogEntries: MetadataRoute.Sitemap = ((posts ?? []) as PostRow[])
+    .filter((p) => p.slug)
+    .map((post) => ({
+      url: `${siteUrl}/blog/${post.slug}`,
+      lastModified: post.updated_at ? new Date(post.updated_at) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      ...(post.cover_image_url && { images: [post.cover_image_url] }),
+    }));
+
   return [
     {
       url: siteUrl,
@@ -65,5 +82,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...baseEntries,
     ...projectEntries,
+    ...blogEntries,
   ];
 }
