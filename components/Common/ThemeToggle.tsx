@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
+import Tooltip from "@/components/Common/Tooltip";
 
 const subscribe = () => () => {};
 
@@ -19,23 +20,25 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
   const next = isDark ? "light" : "dark";
 
   return (
-    <button
-      type="button"
-      aria-label={`Switch to ${next} mode`}
-      title={`Switch to ${next} mode`}
-      onClick={() => setTheme(next)}
-      className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--ds-fg-secondary)] transition-colors hover:text-[var(--ds-fg)] ${className}`}
-      style={{ boxShadow: "var(--ds-shadow-border)" }}
-    >
-      {mounted ? (
-        isDark ? (
-          <FiSun size={14} />
+    <Tooltip content={`Switch to ${next} mode`}>
+      <button
+        type="button"
+        aria-label={`Switch to ${next} mode`}
+        title={`Switch to ${next} mode`}
+        onClick={() => setTheme(next)}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--ds-fg-secondary)] transition-colors hover:text-[var(--ds-fg)] ${className}`}
+        style={{ boxShadow: "var(--ds-shadow-border)" }}
+      >
+        {mounted ? (
+          isDark ? (
+            <FiSun size={14} />
+          ) : (
+            <FiMoon size={14} />
+          )
         ) : (
-          <FiMoon size={14} />
-        )
-      ) : (
-        <span className="h-3.5 w-3.5" aria-hidden />
-      )}
-    </button>
+          <span className="h-3.5 w-3.5" aria-hidden />
+        )}
+      </button>
+    </Tooltip>
   );
 }

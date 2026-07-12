@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FiTrash2, FiMail, FiCheck, FiLoader } from "react-icons/fi";
 import { markAsRead, deleteMessage } from "@/lib/actions/messages";
 import { Message } from "@/types";
+import Tooltip from "@/components/Common/Tooltip";
 
 export default function MessagesClient({ messages }: { messages: Message[] }) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -66,30 +67,36 @@ export default function MessagesClient({ messages }: { messages: Message[] }) {
 
               <div className="flex items-center gap-2 sm:ml-4">
                 {!msg.is_read && (
-                  <button
-                    onClick={() => handleMarkRead(msg.id)}
-                    disabled={markingId === msg.id}
-                    className="text-Green hover:text-Green/80 p-1.5 disabled:opacity-50"
-                    title="Mark as read"
-                  >
-                    {markingId === msg.id ? <FiLoader className="animate-spin" /> : <FiCheck />}
-                  </button>
+                  <Tooltip content="Mark as read">
+                    <button
+                      onClick={() => handleMarkRead(msg.id)}
+                      disabled={markingId === msg.id}
+                      className="text-Green hover:text-Green/80 p-1.5 disabled:opacity-50"
+                      title="Mark as read"
+                    >
+                      {markingId === msg.id ? <FiLoader className="animate-spin" /> : <FiCheck />}
+                    </button>
+                  </Tooltip>
                 )}
-                <a
-                  href={`mailto:${msg.sender_email}`}
-                  className="text-SilverGray hover:text-Snow p-1.5"
-                  title="Reply"
-                >
-                  <FiMail />
-                </a>
-                <button
-                  onClick={() => handleDelete(msg.id)}
-                  disabled={deletingId === msg.id}
-                  className="text-red-400 hover:text-red-300 p-1.5 disabled:opacity-50"
-                  title="Delete"
-                >
-                  {deletingId === msg.id ? <FiLoader className="animate-spin" /> : <FiTrash2 />}
-                </button>
+                <Tooltip content="Reply">
+                  <a
+                    href={`mailto:${msg.sender_email}`}
+                    className="text-SilverGray hover:text-Snow p-1.5"
+                    title="Reply"
+                  >
+                    <FiMail />
+                  </a>
+                </Tooltip>
+                <Tooltip content="Delete">
+                  <button
+                    onClick={() => handleDelete(msg.id)}
+                    disabled={deletingId === msg.id}
+                    className="text-red-400 hover:text-red-300 p-1.5 disabled:opacity-50"
+                    title="Delete"
+                  >
+                    {deletingId === msg.id ? <FiLoader className="animate-spin" /> : <FiTrash2 />}
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </div>

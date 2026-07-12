@@ -87,6 +87,15 @@ export interface Profile {
   contact_form_description?: string;
   /** Comma-separated stack names for the hero code card (e.g. "TypeScript, React, Next.js"). */
   code_card_stack?: string;
+  // Blog section
+  show_blog_section?: boolean;
+  blog_eyebrow?: string;
+  blog_heading?: string;
+  blog_description?: string;
+  // Blog post — related posts widget
+  show_related_posts?: boolean;
+  related_posts_eyebrow?: string;
+  related_posts_heading?: string;
   created_at: string;
   updated_at: string;
 }
@@ -243,6 +252,33 @@ export interface Message {
   message: string;
   is_read: boolean;
   created_at: string;
+}
+
+export type PostStatus = "draft" | "published";
+
+export interface PostTag {
+  id: string;
+  post_id: string;
+  tag: string;
+  sort_order: number;
+}
+
+export interface BlogPost {
+  id: string;
+  user_id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  cover_image_url: string;
+  status: PostStatus;
+  reading_time: number;
+  published_at: string | null;
+  seo_title: string;
+  seo_description: string;
+  post_tags: PostTag[];
+  created_at: string;
+  updated_at: string;
 }
 
 // ===== Derived types =====

@@ -1,4 +1,5 @@
 import { FaWhatsapp } from "react-icons/fa";
+import Tooltip from "@/components/Common/Tooltip";
 
 interface WhatsAppFabProps {
   phone?: string | null;
@@ -53,27 +54,29 @@ export default function WhatsAppFab({
         {label}
       </span>
 
-      <span className="relative inline-flex h-12 w-12 shrink-0 items-center justify-center">
-        <span
-          aria-hidden
-          className="wa-halo absolute inset-0 rounded-full"
-          style={{ backgroundColor: "#25D366" }}
-        />
-        <span
-          aria-hidden
-          className="wa-halo wa-halo-delayed absolute inset-0 rounded-full"
-          style={{ backgroundColor: "#25D366" }}
-        />
-        <span
-          className="relative inline-flex h-12 w-12 items-center justify-center rounded-full text-white transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none"
-          style={{
-            backgroundColor: "#25D366",
-            boxShadow: "0 8px 24px -6px rgba(37, 211, 102, 0.55), 0 0 0 1px rgba(0,0,0,0.04)",
-          }}
-        >
-          <FaWhatsapp aria-hidden size={24} className="wa-wiggle" />
+      <Tooltip content="Chat on WhatsApp" side="left">
+        <span className="relative inline-flex h-12 w-12 shrink-0 items-center justify-center">
+          <span
+            aria-hidden
+            className="wa-halo absolute inset-0 rounded-full"
+            style={{ backgroundColor: "#25D366" }}
+          />
+          <span
+            aria-hidden
+            className="wa-halo wa-halo-delayed absolute inset-0 rounded-full"
+            style={{ backgroundColor: "#25D366" }}
+          />
+          <span
+            className="relative inline-flex h-12 w-12 items-center justify-center rounded-full text-white transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none"
+            style={{
+              backgroundColor: "#25D366",
+              boxShadow: "0 8px 24px -6px rgba(37, 211, 102, 0.55), 0 0 0 1px rgba(0,0,0,0.04)",
+            }}
+          >
+            <FaWhatsapp aria-hidden size={24} className="wa-wiggle" />
+          </span>
         </span>
-      </span>
+      </Tooltip>
     </a>
   );
 }

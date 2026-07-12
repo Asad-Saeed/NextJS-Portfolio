@@ -13,10 +13,7 @@ const Recommendations = ({ data, eyebrow, heading, description }: Recommendation
   if (!data?.length) return null;
 
   return (
-    <section
-      aria-labelledby="recommendations-heading"
-      className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-    >
+    <section aria-labelledby="recommendations-heading" className="px-5 sm:px-8 py-4 sm:py-5">
       <SectionHeader
         id="recommendations-heading"
         eyebrow={eyebrow ?? ""}

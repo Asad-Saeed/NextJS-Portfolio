@@ -16,7 +16,7 @@ const MyExpertise = ({ data, eyebrow, heading, description }: MyExpertiseProps) 
     <section
       id="expertise"
       aria-labelledby="expertise-heading"
-      className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
+      className="px-5 sm:px-8 py-4 sm:py-5"
     >
       <SectionHeader
         id="expertise-heading"

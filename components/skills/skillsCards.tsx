@@ -13,10 +13,7 @@ const SkillsCards = ({ data, eyebrow, heading, description }: SkillsCardsProps) 
   if (!data?.length) return null;
 
   return (
-    <section
-      aria-labelledby="skills-heading"
-      className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-    >
+    <section aria-labelledby="skills-heading" className="px-5 sm:px-8 py-4 sm:py-5">
       <SectionHeader
         id="skills-heading"
         eyebrow={eyebrow ?? ""}

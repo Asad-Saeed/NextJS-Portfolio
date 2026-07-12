@@ -43,6 +43,9 @@ function performScroll(targetId: string) {
   const OFFSET = -24;
 
   const goSmooth = () => {
+    // react-scroll throws if the target has moved outside the container
+    // (can happen during Suspense streaming or breakpoint transitions)
+    if (!containerEl.contains(targetEl)) return;
     scroller.scrollTo(targetId, {
       duration: 600,
       smooth: "easeInOutQuart",

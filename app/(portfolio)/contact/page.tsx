@@ -153,10 +153,7 @@ export default async function ContactPage() {
         />
 
         {/* Contact info + socials */}
-        <section
-          aria-labelledby="contact-info-heading"
-          className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-        >
+        <section aria-labelledby="contact-info-heading" className="px-5 sm:px-8 py-4 sm:py-5">
           <SectionHeader
             id="contact-info-heading"
             eyebrow={profileData.contact_eyebrow ?? ""}
@@ -252,10 +249,7 @@ export default async function ContactPage() {
         </section>
 
         {/* Form */}
-        <section
-          aria-labelledby="contact-form-heading"
-          className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto"
-        >
+        <section aria-labelledby="contact-form-heading" className="px-5 sm:px-8 py-4 sm:py-5">
           <SectionHeader
             id="contact-form-heading"
             eyebrow={profileData.contact_form_eyebrow ?? ""}

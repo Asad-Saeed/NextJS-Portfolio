@@ -7,6 +7,7 @@ import { ImHome } from "react-icons/im";
 import { HiIdentification } from "react-icons/hi";
 import NavItem from "./NavItem";
 import DrawerLayout from "../DrawerLayout";
+import Tooltip from "@/components/Common/Tooltip";
 
 interface NavProps {
   setIsOpen: (open: boolean) => void;
@@ -24,7 +25,9 @@ const Nav = ({ setIsOpen, isOpen, slug }: NavProps) => {
           onClick={() => setIsOpen(false)}
           className="flex text-LightGray absolute top-0 w-full items-center justify-start pl-6 text-sm h-10 bg-EveningBlack cursor-pointer"
         >
-          <ImCross />
+          <Tooltip content="Close">
+            <ImCross />
+          </Tooltip>
         </div>
         <div className="flex flex-col gap-y-2 px-6 w-full transition">
           <NavItem

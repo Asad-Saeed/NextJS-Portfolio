@@ -7,6 +7,7 @@ import { updateProfile } from "@/lib/actions/profile";
 import ImageUpload from "@/components/admin/ImageUpload";
 import { parseGithubUsername } from "@/lib/github";
 import { Profile } from "@/types";
+import Tooltip from "@/components/Common/Tooltip";
 
 const sections = [
   {
@@ -183,6 +184,14 @@ const sections = [
     fields: [
       { key: "github_achievements_eyebrow", label: "Eyebrow (default: Milestones)" },
       { key: "github_achievements_heading", label: "Heading (default: Achievements)" },
+    ],
+  },
+  {
+    title: "Section: Blog",
+    fields: [
+      { key: "blog_eyebrow", label: "Eyebrow (default: Writing)" },
+      { key: "blog_heading", label: "Heading (default: Thoughts & Tutorials)" },
+      { key: "blog_description", label: "Description" },
     ],
   },
 ];
@@ -409,6 +418,60 @@ export default function ProfileClient({ profile }: { profile: Profile | null }) 
           )}
         </div>
 
+        {/* Blog Post — Related Posts */}
+        <div className="card_stylings p-6">
+          <h2 className="text-Snow text-base font-semibold mb-1">Blog Post Settings</h2>
+          <p className="text-LightGray text-xs mb-4">
+            Controls for the individual blog post detail page.
+          </p>
+          <div className="flex flex-col gap-4">
+            {/* Toggle */}
+            <label className="flex items-start gap-3 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={form.show_related_posts !== false}
+                onChange={(e) => setForm({ ...form, show_related_posts: e.target.checked })}
+                className="mt-1 w-4 h-4 accent-Green cursor-pointer"
+              />
+              <div className="flex-1">
+                <div className="text-Snow text-sm font-medium">Show Related Posts</div>
+                <div className="text-LightGray text-xs mt-0.5">
+                  Display a &ldquo;Keep Reading&rdquo; section at the end of each post with posts
+                  sharing the same tags.
+                </div>
+              </div>
+            </label>
+
+            {/* Heading fields — only visible when enabled */}
+            {form.show_related_posts !== false && (
+              <div className="flex flex-col gap-3 pl-7">
+                <div>
+                  <label className="text-LightGray text-xs mb-1 block">
+                    Eyebrow <span className="text-DarkGray">(default: Related Posts)</span>
+                  </label>
+                  <input
+                    value={String(form.related_posts_eyebrow || "")}
+                    onChange={(e) => setForm({ ...form, related_posts_eyebrow: e.target.value })}
+                    placeholder="Related Posts"
+                    className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                  />
+                </div>
+                <div>
+                  <label className="text-LightGray text-xs mb-1 block">
+                    Heading <span className="text-DarkGray">(default: Keep Reading)</span>
+                  </label>
+                  <input
+                    value={String(form.related_posts_heading || "")}
+                    onChange={(e) => setForm({ ...form, related_posts_heading: e.target.value })}
+                    placeholder="Keep Reading"
+                    className="w-full bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Typewriter Subheadings */}
         <div className="card_stylings p-6">
           <h2 className="text-Snow text-base font-semibold mb-4">Typewriter Subheadings</h2>
@@ -425,12 +488,14 @@ export default function ProfileClient({ profile }: { profile: Profile | null }) 
                   className="flex-1 bg-DeepNightBlack text-Snow text-sm rounded-lg border border-DarkGray/50 outline-none p-3 focus:border-Green"
                   placeholder="e.g. React.Js Engineer"
                 />
-                <button
-                  onClick={() => setSubheadings(subheadings.filter((_, j) => j !== i))}
-                  className="bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shrink-0"
-                >
-                  <FiX className="text-xs" />
-                </button>
+                <Tooltip content="Remove">
+                  <button
+                    onClick={() => setSubheadings(subheadings.filter((_, j) => j !== i))}
+                    className="bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shrink-0"
+                  >
+                    <FiX className="text-xs" />
+                  </button>
+                </Tooltip>
               </div>
             ))}
             <button

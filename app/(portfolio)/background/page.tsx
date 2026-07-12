@@ -85,7 +85,7 @@ export default async function BackgroundPage() {
         availabilityStatus={profileData.availability_status}
       />
 
-      <section aria-label="Background" className="px-5 sm:px-8 py-4 sm:py-5 max-w-6xl mx-auto">
+      <section aria-label="Background" className="px-5 sm:px-8 py-4 sm:py-5">
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-8 md:gap-y-0">
           {/* Center vertical timeline rail — desktop only */}
           <div

@@ -5,6 +5,7 @@ import { FiPlus, FiEdit2, FiTrash2, FiX, FiLoader } from "react-icons/fi";
 import { createProject, updateProject, deleteProject } from "@/lib/actions/portfolio";
 import ImageUpload from "@/components/admin/ImageUpload";
 import { PortfolioProject, ProjectTechnology } from "@/types";
+import Tooltip from "@/components/Common/Tooltip";
 
 export default function PortfolioClient({ data }: { data: PortfolioProject[] }) {
   const [showModal, setShowModal] = useState(false);
@@ -130,20 +131,24 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
                   <td className="px-4 py-3 text-SilverGray">{item.sort_order}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
-                      <button onClick={() => openEdit(item)} className="text-Green p-1">
-                        <FiEdit2 />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        disabled={deletingId === item.id}
-                        className="text-red-400 p-1 disabled:opacity-50"
-                      >
-                        {deletingId === item.id ? (
-                          <FiLoader className="animate-spin" />
-                        ) : (
-                          <FiTrash2 />
-                        )}
-                      </button>
+                      <Tooltip content="Edit">
+                        <button onClick={() => openEdit(item)} className="text-Green p-1">
+                          <FiEdit2 />
+                        </button>
+                      </Tooltip>
+                      <Tooltip content="Delete">
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          disabled={deletingId === item.id}
+                          className="text-red-400 p-1 disabled:opacity-50"
+                        >
+                          {deletingId === item.id ? (
+                            <FiLoader className="animate-spin" />
+                          ) : (
+                            <FiTrash2 />
+                          )}
+                        </button>
+                      </Tooltip>
                     </div>
                   </td>
                 </tr>
@@ -156,12 +161,14 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
       {showModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-Black/80 backdrop-blur-sm">
           <div className="card_stylings w-full max-w-lg mx-2 sm:mx-4 p-4 sm:p-6 max-h-[90vh] overflow-y-auto relative">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-LightGray hover:text-Snow"
-            >
-              <FiX className="text-lg" />
-            </button>
+            <Tooltip content="Close">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-LightGray hover:text-Snow"
+              >
+                <FiX className="text-lg" />
+              </button>
+            </Tooltip>
             <h2 className="text-Snow text-lg font-bold mb-4">
               {editItem ? "Edit" : "Add"} Project
             </h2>
@@ -273,10 +280,12 @@ export default function PortfolioClient({ data }: { data: PortfolioProject[] }) 
                       className="px-2 py-1 bg-Green/10 text-Green text-xs rounded-full flex items-center gap-1"
                     >
                       {t}{" "}
-                      <FiX
-                        className="cursor-pointer"
-                        onClick={() => setTechs(techs.filter((_, j) => j !== i))}
-                      />
+                      <Tooltip content="Remove">
+                        <FiX
+                          className="cursor-pointer"
+                          onClick={() => setTechs(techs.filter((_, j) => j !== i))}
+                        />
+                      </Tooltip>
                     </span>
                   ))}
                 </div>

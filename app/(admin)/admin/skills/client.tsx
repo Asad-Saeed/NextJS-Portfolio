@@ -5,6 +5,7 @@ import { FiPlus, FiEdit2, FiTrash2, FiX, FiLoader } from "react-icons/fi";
 import { createSkill, updateSkill, deleteSkill } from "@/lib/actions/skills";
 import ImageUpload from "@/components/admin/ImageUpload";
 import { Skill, SkillLevel } from "@/types";
+import Tooltip from "@/components/Common/Tooltip";
 
 export default function SkillsClient({ data }: { data: Skill[] }) {
   const [showModal, setShowModal] = useState(false);
@@ -97,20 +98,24 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
                   <td className="px-4 py-3 text-SilverGray">{item.sort_order}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
-                      <button onClick={() => openEdit(item)} className="text-Green p-1">
-                        <FiEdit2 />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        disabled={deletingId === item.id}
-                        className="text-red-400 p-1 disabled:opacity-50"
-                      >
-                        {deletingId === item.id ? (
-                          <FiLoader className="animate-spin" />
-                        ) : (
-                          <FiTrash2 />
-                        )}
-                      </button>
+                      <Tooltip content="Edit">
+                        <button onClick={() => openEdit(item)} className="text-Green p-1">
+                          <FiEdit2 />
+                        </button>
+                      </Tooltip>
+                      <Tooltip content="Delete">
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          disabled={deletingId === item.id}
+                          className="text-red-400 p-1 disabled:opacity-50"
+                        >
+                          {deletingId === item.id ? (
+                            <FiLoader className="animate-spin" />
+                          ) : (
+                            <FiTrash2 />
+                          )}
+                        </button>
+                      </Tooltip>
                     </div>
                   </td>
                 </tr>
@@ -123,12 +128,14 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
       {showModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-Black/80 backdrop-blur-sm">
           <div className="card_stylings w-full max-w-lg mx-2 sm:mx-4 p-4 sm:p-6 max-h-[90vh] overflow-y-auto relative">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-LightGray hover:text-Snow"
-            >
-              <FiX className="text-lg" />
-            </button>
+            <Tooltip content="Close">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-LightGray hover:text-Snow"
+              >
+                <FiX className="text-lg" />
+              </button>
+            </Tooltip>
             <h2 className="text-Snow text-lg font-bold mb-4">{editItem ? "Edit" : "Add"} Skill</h2>
             <div className="flex flex-col gap-3">
               <div>
