@@ -115,8 +115,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    image: post.cover_image_url || undefined,
-    datePublished: post.published_at,
+    image: post.cover_image_url
+      ? { "@type": "ImageObject", url: post.cover_image_url, width: 1200, height: 630 }
+      : undefined,
+    datePublished: post.published_at || undefined,
     dateModified: post.updated_at,
     wordCount,
     keywords: tags.join(", "),
