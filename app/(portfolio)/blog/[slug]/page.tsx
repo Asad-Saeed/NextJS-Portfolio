@@ -193,7 +193,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   boxShadow: "var(--ds-shadow-border-light)",
                 }}
               >
-                {tag}
+                {tag.toUpperCase()}
               </span>
             ))}
           </div>

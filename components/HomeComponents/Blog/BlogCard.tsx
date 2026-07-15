@@ -102,7 +102,7 @@ export default function BlogCard({ post, index = 0 }: BlogCardProps) {
                   className="inline-block w-1 h-1 rounded-full shrink-0"
                   style={{ backgroundColor: accent }}
                 />
-                {t.tag}
+                {t.tag.toUpperCase()}
               </span>
             ))}
           </div>
